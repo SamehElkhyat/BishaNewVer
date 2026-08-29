@@ -1,0 +1,377 @@
+/* ==========================================================================
+   اللوائح والأنظمة — redesigned (Material Design 3, green)
+   Design-only rewrite. react-pdf Document/Page rendering left intact.
+   ========================================================================== */
+
+.regulationsContainer {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image: radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Page header (start-aligned) ---- */
+.pageHeader {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem) 0;
+  text-align: right;
+  background: transparent;
+  color: inherit;
+}
+
+.headerContent {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+}
+
+.pageTitle::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.55rem;
+  width: 3.5rem;
+  height: 4px;
+  background: var(--bisha-secondary);
+  border-radius: 9999px;
+}
+
+.pageDescription {
+  max-width: 48rem;
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.75;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Content ---- */
+.contentContainer {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.pdfSection {
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* ---- Card header ---- */
+.pdfHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem clamp(1rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.pdfTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pdfIcon {
+  font-size: 1.75rem;
+  color: var(--bisha-primary);
+}
+
+.pdfTitle h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.downloadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  background: var(--bisha-primary-container);
+  border-radius: 0.5rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.downloadButton:hover {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+/* ---- Viewer ---- */
+.pdfViewerContainer {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+  height: 70vh;
+  background: var(--bisha-surface-variant);
+}
+
+.pdfDocument {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.pdfPage {
+  margin: 1rem auto;
+  box-shadow: 0 4px 20px rgba(11, 93, 86, 0.1);
+}
+
+.pdfPage canvas {
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto !important;
+}
+
+.pdfLoading,
+.pdfError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: var(--bisha-on-surface-variant);
+}
+
+.loadingSpinner {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid var(--bisha-surface-variant);
+  border-top-color: var(--bisha-primary);
+  border-radius: 9999px;
+  animation: spin 1s linear infinite;
+}
+
+.errorIcon {
+  font-size: 3.5rem;
+  color: var(--bisha-outline);
+  opacity: 0.6;
+}
+
+.pdfError p {
+  max-width: 28rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ---- Bottom toolbar ---- */
+.pdfControls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(247, 249, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--bisha-outline-variant);
+}
+
+.pageNavigation {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--bisha-on-surface-variant);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navButton:hover:not(:disabled) {
+  background: var(--bisha-surface-variant);
+  color: var(--bisha-primary);
+}
+
+.navButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  padding: 0.35rem 1rem;
+  font-size: 0.85rem;
+  color: var(--bisha-on-surface-variant);
+  background: var(--bisha-surface-container);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 9999px;
+}
+
+.zoomControls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  background: var(--bisha-surface-container);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+}
+
+.zoomButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--bisha-on-surface-variant);
+  background: transparent;
+  border: none;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.zoomButton:hover {
+  background: var(--bisha-surface-variant);
+  color: var(--bisha-primary);
+}
+
+.zoomLevel {
+  min-width: 3.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--bisha-on-surface);
+}
+
+.fullScreenButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.fullScreenButton:hover {
+  background: var(--bisha-secondary);
+}
+
+/* ---- Instructions ---- */
+.pdfInstructions {
+  padding: 1.75rem clamp(1rem, 3vw, 2rem);
+  background: var(--bisha-surface-low);
+  border-top: 1px solid var(--bisha-outline-variant);
+}
+
+.pdfInstructions h3 {
+  margin: 0 0 0.9rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.pdfInstructions ul {
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 1.25rem;
+  list-style: disc;
+  color: var(--bisha-on-surface-variant);
+}
+
+.pdfInstructions li {
+  margin-bottom: 0.4rem;
+  line-height: 1.6;
+}
+
+.pdfInstructions li::marker {
+  color: var(--bisha-primary-container);
+}
+
+/* ---- Motion ---- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .pdfHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .downloadButton {
+    justify-content: center;
+  }
+
+  .pdfViewerContainer {
+    height: 62vh;
+  }
+
+  .pdfControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pageNavigation,
+  .zoomControls {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdfSection {
+    animation: none;
+  }
+}

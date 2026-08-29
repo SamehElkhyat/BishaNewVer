@@ -1,0 +1,62 @@
+.videoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background-color: #003366; /* Solid background color for the container */
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #003366; /* Rich blue background color */
+}
+
+.backgroundImage1,
+.backgroundImage2 {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.backgroundImage1 {
+  animation: backgroundSwitch 8s infinite;
+  z-index: 1;
+}
+
+.backgroundImage2 {
+  animation: backgroundSwitch 8s infinite reverse;
+  opacity: 0;
+  z-index: 2;
+}
+
+@keyframes backgroundSwitch {
+  0%, 45% {
+    opacity: 1;
+  }
+  55%, 100% {
+    opacity: 0;
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 40, 80, 0.65);
+  /* Solid background color instead of gradient to prevent blur */
+}

@@ -1,0 +1,1074 @@
+/* ==========================================================================
+   Admin list / management pages + modals — recolored to green
+   Material-Design-3. Every class name is preserved so no page loses styling.
+   ========================================================================== */
+
+.adminListContainer {
+  max-width: 1200px;
+  margin: 2.5rem auto;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  direction: rtl;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+/* ---- Header ---- */
+.listHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.listHeader h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.headerIcon {
+  color: var(--bisha-primary-container);
+}
+
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  background-color: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+/* ---- Filter / search ---- */
+.filterSection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius);
+}
+
+.searchBox {
+  position: relative;
+  flex: 1;
+  min-width: 16rem;
+  max-width: 32rem;
+}
+
+.searchBox input,
+.searchInput {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  padding-right: 3rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.6rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchBox input:focus,
+.searchInput:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+.searchBox input::placeholder,
+.searchInput::placeholder {
+  color: var(--bisha-outline);
+}
+
+.searchIcon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.05rem;
+  color: var(--bisha-primary-container);
+  pointer-events: none;
+}
+
+.categoryFilter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 1rem;
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.6rem;
+  transition: border-color 0.2s ease;
+}
+
+.categoryFilter:hover {
+  border-color: var(--bisha-primary-container);
+}
+
+.filterIcon {
+  font-size: 1.05rem;
+  color: var(--bisha-primary-container);
+}
+
+.categoryFilter select,
+.filterSelect {
+  padding: 0.55rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bisha-on-surface);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.categoryFilter select:focus {
+  outline: none;
+  color: var(--bisha-primary);
+}
+
+.filterSelect {
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+/* ---- Table ---- */
+.tableContainer {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  padding: 0.5rem;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dataTable th,
+.dataTable td {
+  padding: 1rem;
+  text-align: right;
+  border-bottom: 1px solid var(--bisha-surface-variant);
+}
+
+.dataTable th {
+  font-weight: 600;
+  color: var(--bisha-on-surface-variant);
+  background-color: var(--bisha-surface-container);
+}
+
+.dataTable tr:last-child td {
+  border-bottom: none;
+}
+
+.dataTable tbody tr:hover {
+  background-color: var(--bisha-surface-low);
+}
+
+.titleCell {
+  font-weight: 600;
+  color: var(--bisha-primary);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+  border-bottom: 3px solid var(--bisha-primary);
+}
+
+.contentCell,
+.responseCell {
+  max-width: 220px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  color: var(--bisha-on-surface-variant);
+}
+
+.actionsCell {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.editButton,
+.deleteButton,
+.viewButton,
+.permissionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.editButton {
+  color: var(--bisha-on-surface-variant);
+  background-color: var(--bisha-surface-variant);
+}
+
+.editButton:hover {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-container);
+}
+
+.deleteButton {
+  color: var(--bisha-on-error-container);
+  background-color: var(--bisha-error-container);
+}
+
+.deleteButton:hover {
+  background-color: #ffcdd0;
+}
+
+.viewButton,
+.permissionButton {
+  color: var(--bisha-primary-container);
+  background-color: var(--bisha-secondary-container);
+}
+
+.viewButton:hover,
+.permissionButton:hover {
+  background-color: var(--bisha-secondary-fixed-dim);
+  transform: scale(1.08);
+}
+
+.noResults {
+  padding: 2rem;
+  text-align: center;
+  font-style: italic;
+  color: var(--bisha-on-surface-variant);
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 50vh;
+  color: var(--bisha-on-surface-variant);
+}
+
+.spinner {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 4px solid var(--bisha-surface-variant);
+  border-top-color: var(--bisha-primary);
+  border-radius: 9999px;
+  animation: adminListSpin 1s linear infinite;
+}
+
+@keyframes adminListSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Status pills ---- */
+.activeStatus,
+.inactiveStatus,
+.readStatus,
+.unreadStatus {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 9999px;
+}
+
+.activeStatus,
+.readStatus {
+  color: var(--bisha-on-secondary-container);
+  background-color: var(--bisha-secondary-container);
+}
+
+.inactiveStatus {
+  color: var(--bisha-on-error-container);
+  background-color: var(--bisha-error-container);
+}
+
+.unreadStatus {
+  color: #7a5a00;
+  background-color: #fff3cd;
+}
+
+.inactiveRow {
+  opacity: 0.65;
+}
+
+.unreadRow {
+  font-weight: 500;
+  background-color: #fffdf5;
+}
+
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.paginationButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--bisha-on-surface-variant);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.paginationButton:hover:not(:disabled) {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-variant);
+  border-color: transparent;
+}
+
+.paginationButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-size: 0.875rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.errorMessage {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--bisha-on-error-container);
+  background-color: var(--bisha-error-container);
+  border-inline-start: 4px solid var(--bisha-error);
+  border-radius: 0.5rem;
+}
+
+/* ==========================================================================
+   Modals
+   ========================================================================== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(3, 20, 18, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.modalContent,
+.editModal,
+.permissionModal,
+.contactModal {
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  direction: rtl;
+  background: var(--bisha-surface-lowest);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+.modalContent {
+  max-width: 500px;
+}
+
+.editModal {
+  max-width: 600px;
+}
+
+.permissionModal {
+  max-width: 800px;
+}
+
+.contactModal {
+  max-width: 700px;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.35rem 1.5rem;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.modalHeader h3,
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.2rem;
+  color: var(--bisha-on-surface-variant);
+  background: none;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.closeButton:hover {
+  color: var(--bisha-error);
+  background-color: var(--bisha-error-container);
+}
+
+.modalBody {
+  padding: 1.5rem;
+}
+
+.inputGroup,
+.formGroup {
+  margin-bottom: 1.4rem;
+}
+
+.inputLabel,
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.modalInput,
+.modalTextarea,
+.formControl {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modalInput:focus,
+.modalTextarea:focus,
+.formControl:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 2px #dcebe7, 0 0 0 4px rgba(11, 93, 86, 0.1);
+}
+
+.modalTextarea {
+  min-height: 6.5rem;
+  resize: vertical;
+}
+
+.modalFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--bisha-surface-low);
+  border-top: 1px solid var(--bisha-outline-variant);
+  border-radius: 0 0 var(--bisha-radius-lg) var(--bisha-radius-lg);
+}
+
+.cancelButton,
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.cancelButton {
+  color: var(--bisha-primary);
+  background-color: transparent;
+  border: 1px solid var(--bisha-outline-variant);
+}
+
+.cancelButton:hover {
+  background-color: var(--bisha-surface-container);
+  border-color: var(--bisha-primary);
+}
+
+.saveButton {
+  color: #fff;
+  background-color: var(--bisha-primary-container);
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modalLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.imageInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.currentImage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--bisha-on-surface-variant);
+  background-color: var(--bisha-surface-low);
+  border-radius: 0.5rem;
+}
+
+.imageLink {
+  color: var(--bisha-primary);
+  text-decoration: underline;
+}
+
+.imageLink:hover {
+  color: var(--bisha-secondary);
+}
+
+/* ---- Edit / permission / contact modal shared header ---- */
+.editForm {
+  padding: 1.5rem;
+}
+
+.permissionModal .modalHeader,
+.editModal .modalHeader,
+.contactModal .modalHeader {
+  align-items: flex-start;
+  padding: 1.75rem;
+  color: #fff;
+  background: var(--bisha-primary);
+  border-bottom: none;
+  border-radius: var(--bisha-radius-lg) var(--bisha-radius-lg) 0 0;
+}
+
+.permissionModal .modalHeader h2,
+.editModal .modalHeader h2,
+.contactModal .modalHeader h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.userName {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.closeModalButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.closeModalButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
+}
+
+.permissionModal .modalBody {
+  padding: 1.75rem;
+}
+
+.permissionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.permissionSection {
+  padding: 1.5rem;
+  background: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: 0.75rem;
+}
+
+.permissionSection h3 {
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+  border-bottom: 2px solid var(--bisha-secondary-container);
+}
+
+.permissionItem {
+  margin-bottom: 0.75rem;
+}
+
+.permissionItem:last-child {
+  margin-bottom: 0;
+}
+
+.permissionItem label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bisha-on-surface);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.permissionItem label:hover {
+  background-color: rgba(11, 93, 86, 0.06);
+}
+
+.permissionItem input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkboxCustom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  background: var(--bisha-surface-lowest);
+  border: 2px solid var(--bisha-primary-container);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.permissionItem input[type="checkbox"]:checked + .checkboxCustom {
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border-color: var(--bisha-primary-container);
+  transform: scale(1.08);
+}
+
+.permissionItem input[type="checkbox"]:checked + .checkboxCustom svg {
+  font-size: 12px;
+  animation: checkAnimation 0.2s ease-in-out;
+}
+
+@keyframes checkAnimation {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.permissionModal .modalFooter,
+.editModal .modalFooter {
+  padding: 1.75rem;
+}
+
+.permissionModal .saveButton,
+.editModal .saveButton {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  box-shadow: 0 2px 8px rgba(11, 93, 86, 0.25);
+}
+
+.permissionModal .saveButton:hover,
+.editModal .saveButton:hover {
+  background: var(--bisha-secondary);
+  transform: translateY(-2px);
+}
+
+.permissionModal .cancelButton,
+.editModal .cancelButton {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+}
+
+/* ---- Contact modal ---- */
+.contactDetails {
+  padding: 1rem 0;
+}
+
+.detailRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: var(--bisha-surface-low);
+  border-inline-start: 4px solid var(--bisha-primary-container);
+  border-radius: 0.5rem;
+}
+
+.detailRow .label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 9rem;
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.detailRow .value {
+  flex: 1;
+  color: var(--bisha-on-surface-variant);
+  word-break: break-word;
+}
+
+.messageSection,
+.replySection {
+  margin-top: 1.75rem;
+  padding: 1.5rem;
+  background: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: 0.75rem;
+}
+
+.messageSection h3,
+.replySection h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+}
+
+.messageContent,
+.replyContent {
+  padding: 1.25rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: 0.5rem;
+}
+
+.replySection {
+  background: #fff8e8;
+  border-color: #ffe0a3;
+}
+
+.replySection h3 {
+  color: #a35d00;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .filterSection {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchBox {
+    max-width: 100%;
+  }
+
+  .categoryFilter {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .permissionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modalFooter,
+  .permissionModal .modalFooter,
+  .editModal .modalFooter {
+    flex-direction: column;
+  }
+
+  .modalFooter .saveButton,
+  .modalFooter .cancelButton,
+  .permissionModal .saveButton,
+  .permissionModal .cancelButton,
+  .editModal .saveButton,
+  .editModal .cancelButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .detailRow .label {
+    min-width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner,
+  .checkboxCustom {
+    animation: none;
+  }
+
+  .modalContent,
+  .editModal,
+  .permissionModal,
+  .contactModal {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Extra classes used by /admin/users (search wrapper + role-change modal).
+   ========================================================================== */
+.searchContainer {
+  margin-bottom: 1.5rem;
+}
+
+.searchInputContainer {
+  position: relative;
+  max-width: 32rem;
+}
+
+.searchInputContainer .searchIcon {
+  right: 1rem;
+}
+
+.searchInputContainer .searchInput {
+  padding-right: 3rem;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.roleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--bisha-primary-container);
+  background-color: var(--bisha-secondary-container);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.roleButton:hover {
+  background-color: var(--bisha-secondary-fixed-dim);
+  transform: scale(1.08);
+}
+
+.modal {
+  width: 95%;
+  max-width: 30rem;
+  padding: 1.75rem;
+  direction: rtl;
+  background: var(--bisha-surface-lowest);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+.modal h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+}
+
+.modal p {
+  margin: 0 0 1.25rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.selectInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.selectInput:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+.modalActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.primaryButton {
+  color: #fff;
+  background-color: var(--bisha-primary-container);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background-color: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secondaryButton {
+  color: var(--bisha-primary);
+  background-color: transparent;
+  border: 1px solid var(--bisha-outline-variant);
+}
+
+.secondaryButton:hover {
+  background-color: var(--bisha-surface-container);
+  border-color: var(--bisha-primary);
+}
+
+/* used inside submit buttons on some add-forms */
+.buttonContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}

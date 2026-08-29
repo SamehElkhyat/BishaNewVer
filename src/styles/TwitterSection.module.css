@@ -1,0 +1,329 @@
+.twitterSection {
+  background: linear-gradient(135deg, #0c2547 0%, #1e3a5f 50%, #0a1f3d 100%);
+  padding: 6rem 0;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Luxury background effects */
+.backgroundGradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 30%, rgba(43, 154, 243, 0.15), transparent 70%);
+  z-index: -2;
+}
+
+.backgroundPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+  z-index: -1;
+  animation: floatPattern 120s linear infinite;
+}
+
+@keyframes floatPattern {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+.glowEffect1 {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(43, 154, 243, 0.15), transparent 70%);
+  filter: blur(50px);
+  z-index: -1;
+  animation: float 15s ease-in-out infinite alternate;
+}
+
+.glowEffect2 {
+  position: absolute;
+  bottom: 10%;
+  right: 15%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(43, 154, 243, 0.1), transparent 70%);
+  filter: blur(60px);
+  z-index: -1;
+  animation: float 20s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-30px, 20px); }
+  100% { transform: translate(30px, -20px); }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 4rem;
+}
+
+/* Twitter Profile Container */
+.twitterProfileContainer {
+  flex: 1;
+  max-width: 600px;
+  position: relative;
+  perspective: 1000px;
+}
+
+.imageGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(ellipse at center, rgba(43, 154, 243, 0.3) 0%, rgba(43, 154, 243, 0) 70%);
+  border-radius: 20px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.imageFrame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(43, 154, 243, 0.2);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.twitterProfileImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.7s ease;
+}
+
+.imageFrame:hover .twitterProfileImage {
+  transform: scale(1.03);
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  pointer-events: none;
+}
+
+/* Content Container */
+.contentContainer {
+  flex: 1;
+  text-align: right;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.titleWrapper {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.titleUnderline {
+  position: absolute;
+  bottom: -10px;
+  right: 0;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(43, 154, 243, 0.5), rgba(255, 255, 255, 0.8));
+  border-radius: 2px;
+}
+
+.sectionDescription {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Stats Container */
+.statsContainer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 3rem;
+  margin: 1rem 0;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.statItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.statNumber {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.statLabel {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.3rem;
+}
+
+/* Twitter Button */
+.twitterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background-color: #000000;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.8rem 2rem;
+
+  border-radius: 13px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+}
+
+.twitterButton:hover {
+  opacity: 0.9;
+}
+
+.xLogo {
+  width: 22px;
+  height: 22px;
+  fill: #ffffff;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column-reverse;
+    gap: 3rem;
+  }
+  
+  .twitterProfileContainer {
+    max-width: 500px;
+  }
+  
+  .contentContainer {
+    text-align: center;
+    align-items: center;
+  }
+  
+  .statsContainer {
+    justify-content: center;
+  }
+  
+  .titleUnderline {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .twitterSection {
+    padding: 4rem 0;
+  }
+  
+  .sectionTitle {
+    font-size: 2.2rem;
+  }
+  
+  .sectionDescription {
+    font-size: 1.1rem;
+  }
+  
+  .statNumber {
+    font-size: 2.2rem;
+  }
+  
+  .statsContainer {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .twitterSection {
+    padding: 3rem 0;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+  
+  .statsContainer {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .statItem {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .statNumber {
+    font-size: 2rem;
+  }
+}

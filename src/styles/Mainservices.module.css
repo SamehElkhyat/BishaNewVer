@@ -1,0 +1,138 @@
+/* ==========================================================================
+   Landing "ماذا تريد أن تفعل؟" quick services — redesigned (MD3, green).
+   Design-only rewrite. Card names kept; committee* classes now describe the
+   quick-service cells. Consumed by src/app/Mainservices.jsx.
+   ========================================================================== */
+
+.sectoralSection {
+  position: relative;
+  z-index: 20;
+  margin-top: clamp(-5.5rem, -8vw, -3.5rem);
+  padding: 0 clamp(1rem, 4vw, 3rem) clamp(2.5rem, 6vw, 4rem);
+  background: transparent;
+}
+
+/* Empty decorative layers from the previous design — no longer painted */
+.sectionBackground,
+.sectionOverlay {
+  display: none;
+}
+
+.sectionContent {
+  position: relative;
+  z-index: 1;
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+/* The surface card that floats over the hero */
+.committeesContainer {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.sectionHeader {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: clamp(1.4rem, 3.5vw, 1.75rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.titleGlow {
+  display: inline-block;
+}
+
+.sectionSubtitle {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* Grid of service shortcuts */
+.committeesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.committeeCard {
+  border-radius: var(--bisha-radius);
+}
+
+.committeeCardLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 0.5rem;
+  text-decoration: none;
+  border-radius: var(--bisha-radius);
+  transition: background-color 0.2s ease;
+}
+
+.committeeCardLink:hover {
+  background-color: var(--bisha-surface-low);
+}
+
+.committeeIconWrapper {
+  width: 4rem;
+  height: 4rem;
+}
+
+.committeeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+  border-radius: 9999px;
+  transition: transform 0.2s ease;
+}
+
+.committeeCard:hover .committeeIcon {
+  transform: scale(1.1);
+}
+
+.committeeContent {
+  text-align: center;
+}
+
+.committeeTitle {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--bisha-on-surface);
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 640px) {
+  .committeesGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .committeesGrid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .committeeCard:hover .committeeIcon {
+    transform: none;
+  }
+}

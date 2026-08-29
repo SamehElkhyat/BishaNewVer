@@ -1,0 +1,117 @@
+.aboutSection {
+  padding: 5rem 0;
+  background-color: #ffffff;
+}
+
+.aboutContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.aboutContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4rem;
+  direction: rtl;
+}
+
+.imageContainer {
+  flex: 0 0 auto;
+  max-width: 350px;
+  background-color: #00264b;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.aboutImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.textContainer {
+  flex: 1;
+  text-align: right;
+}
+
+.aboutTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.aboutText {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .aboutContent {
+    gap: 3rem;
+  }
+  
+  .imageContainer {
+    max-width: 300px;
+  }
+  
+  .aboutTitle {
+    font-size: 2.2rem;
+  }
+  
+  .aboutText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .aboutContent {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  
+  .imageContainer {
+    max-width: 280px;
+    order: -1; /* This ensures the image appears first on mobile */
+  }
+  
+  .textContainer {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutSection {
+    padding: 3rem 0;
+  }
+  
+  .aboutContainer {
+    padding: 0 1.5rem;
+  }
+  
+  .imageContainer {
+    max-width: 220px;
+    padding: 1.5rem;
+  }
+  
+  .aboutTitle {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .aboutText {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+}

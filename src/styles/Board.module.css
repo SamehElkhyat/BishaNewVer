@@ -1,0 +1,508 @@
+/* ==========================================================================
+   مجلس الإدارة — redesigned (Material Design 3, green)
+   Design-only rewrite. Data still comes from the existing API call.
+   ========================================================================== */
+
+.boardContainer {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image:
+    radial-gradient(circle at top left, rgba(203, 234, 227, 0.5), transparent 42%),
+    radial-gradient(circle at bottom right, rgba(214, 244, 236, 0.5), transparent 42%),
+    radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 22px 22px;
+  background-repeat: no-repeat, no-repeat, repeat;
+}
+
+/* ---- Page header ---- */
+.pageHeader {
+  position: relative;
+  padding: clamp(2.5rem, 6vw, 4rem) 1rem 0;
+  text-align: center;
+  background: transparent;
+  color: inherit;
+}
+
+.headerContent {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.pageTitle {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+}
+
+.pageTitle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.6rem;
+  width: 4rem;
+  height: 4px;
+  transform: translateX(-50%);
+  background: var(--bisha-secondary);
+  border-radius: 9999px;
+}
+
+.pageDescription {
+  max-width: 42rem;
+  margin: 1.75rem auto 0;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.75;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Content ---- */
+.contentContainer {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 3rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.membersSection {
+  margin: 0;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Redundant with the page title in the redesigned layout */
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.6rem;
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+  border-bottom: 3px solid var(--bisha-primary);
+}
+
+.sectionTitle h2 {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.sectionIcon {
+  color: var(--bisha-primary-container);
+}
+
+.membersGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* ---- Member card ---- */
+.memberCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: var(--bisha-shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.memberCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bisha-shadow-lg);
+}
+
+.memberImageContainer {
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+  margin: 0 auto 1.25rem;
+}
+
+.memberImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 9999px;
+  border: 4px solid var(--bisha-surface);
+  background: var(--bisha-surface-low);
+  box-shadow: inset 0 0 0 1px var(--bisha-outline-variant), 0 6px 16px rgba(11, 93, 86, 0.1);
+}
+
+.memberImage {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.placeholderImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--bisha-surface-low);
+}
+
+.placeholderIcon {
+  font-size: 3rem;
+  color: var(--bisha-outline);
+}
+
+.memberInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.memberName {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--bisha-primary);
+}
+
+.memberName::after {
+  content: "";
+  display: block;
+  width: 7px;
+  height: 7px;
+  margin: 0.65rem auto 0.2rem;
+  background: var(--bisha-secondary-fixed-dim);
+  border-radius: 9999px;
+}
+
+.memberPosition {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Motion ---- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 640px) {
+  .membersGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .membersGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .membersSection {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Admin variants — card actions, add button, edit / add modal + form.
+   Used by /admin/board(+add) and /admin/generalSecrtery(+add).
+   ========================================================================== */
+
+.addMemberButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 0.65rem 1.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.addMemberButton:hover {
+  background-color: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.memberActions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.editButton,
+.deleteButton {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.editButton {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-container);
+  border-color: var(--bisha-outline-variant);
+}
+
+.editButton:hover {
+  color: #fff;
+  background-color: var(--bisha-primary-container);
+  border-color: var(--bisha-primary-container);
+}
+
+.deleteButton {
+  color: var(--bisha-on-error-container);
+  background-color: var(--bisha-error-container);
+}
+
+.deleteButton:hover {
+  background-color: #ffcdd0;
+}
+
+.noMembersFound {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--bisha-on-surface-variant);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+}
+
+.noMembersIcon {
+  font-size: 2.5rem;
+  color: var(--bisha-outline);
+}
+
+/* ---- Edit / add modal ---- */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(3, 20, 18, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.editModal {
+  width: 95%;
+  max-width: 34rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  direction: rtl;
+  background: var(--bisha-surface-lowest);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  animation: boardModalIn 0.3s ease-out;
+}
+
+@keyframes boardModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 1.5rem 1.75rem;
+  color: #fff;
+  background: var(--bisha-primary);
+  border-radius: var(--bisha-radius-lg) var(--bisha-radius-lg) 0 0;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.userName {
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.closeModalButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-inline-start: auto;
+  font-size: 1.15rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.closeModalButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
+}
+
+.modalBody {
+  padding: 1.75rem;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.formControl,
+.formSelect,
+.formFile {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formControl:focus,
+.formSelect:focus,
+.formFile:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 2px #dcebe7, 0 0 0 4px rgba(11, 93, 86, 0.1);
+}
+
+.formSelect {
+  cursor: pointer;
+}
+
+.formFile {
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+}
+
+.modalFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.saveButton,
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.saveButton {
+  color: #fff;
+  background-color: var(--bisha-primary-container);
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  color: var(--bisha-primary);
+  background-color: transparent;
+  border: 1px solid var(--bisha-outline-variant);
+}
+
+.cancelButton:hover {
+  background-color: var(--bisha-surface-container);
+  border-color: var(--bisha-primary);
+}
+
+.spinner {
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 9999px;
+  animation: boardSpin 0.8s linear infinite;
+}
+
+@keyframes boardSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

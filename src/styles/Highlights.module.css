@@ -1,0 +1,185 @@
+/* ==========================================================================
+   Landing "أبرز الفرص الاستثمارية" — new presentational section (MD3, green).
+   Consumed by src/app/Highlights.jsx. No app logic.
+   ========================================================================== */
+
+.highlightsSection {
+  padding: clamp(3rem, 7vw, 4.5rem) 0;
+  background: var(--bisha-surface);
+}
+
+.container {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 2px solid var(--bisha-surface-variant);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.viewAll {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+  text-decoration: none;
+}
+
+.viewAll:hover {
+  text-decoration: underline;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--bisha-shadow-md);
+  transform: translateY(-4px);
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 11rem;
+  overflow: hidden;
+}
+
+.mediaImage {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Two distinct slices of the same Bisha photo for the two cards */
+.card:first-child .mediaImage {
+  object-position: 42% 78%;
+}
+
+.card:last-child .mediaImage {
+  object-position: 90% 32%;
+}
+
+.card:hover .mediaImage {
+  transform: scale(1.05);
+}
+
+.tag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+  background: rgba(247, 249, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 9999px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.cardTitle {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--bisha-on-surface);
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bisha-outline-variant);
+}
+
+.size {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.sizeLabel {
+  font-size: 0.8rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.sizeValue {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.cardArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-low);
+  border-radius: var(--bisha-radius);
+  transition: background-color 0.2s ease;
+}
+
+.cardArrow:hover {
+  background: var(--bisha-secondary-container);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover,
+  .mediaImage,
+  .card:hover .mediaImage {
+    transform: none;
+    transition: none;
+  }
+}

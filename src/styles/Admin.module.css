@@ -1,0 +1,494 @@
+/* ==========================================================================
+   Admin dashboard + inline sidebar — recolored to green Material-Design-3.
+   Class names, structure and responsive breakpoints unchanged.
+   ========================================================================== */
+
+.adminContainer {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  overflow: visible;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 1rem;
+  background-color: var(--bisha-surface-lowest);
+  border-left: 1px solid var(--bisha-outline-variant);
+  box-shadow: 0 0 24px rgba(11, 93, 86, 0.05);
+}
+
+.adminProfile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.profileImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  color: #fff;
+  background-color: var(--bisha-primary-container);
+  border-radius: 9999px;
+}
+
+.profileInfo h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.profileInfo p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.adminNav {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.25rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  color: var(--bisha-on-surface-variant);
+  text-decoration: none;
+  border-radius: 0.6rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-low);
+}
+
+.navLink.active {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-container);
+  font-weight: 600;
+}
+
+.navIcon {
+  display: inline-flex;
+  font-size: 1.15rem;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: auto;
+  padding: 0.8rem 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: right;
+  color: var(--bisha-error);
+  background: none;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: var(--bisha-error-container);
+}
+
+/* ---- Main content ---- */
+.mainContent {
+  flex-grow: 1;
+  padding: 2rem;
+}
+
+.adminHeader {
+  margin-bottom: 2rem;
+}
+
+.adminHeader h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.adminHeader p {
+  margin: 0.5rem 0 0;
+  color: var(--bisha-on-surface-variant);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.statCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-top: 4px solid var(--bisha-primary);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.statIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: var(--bisha-primary-container);
+  background-color: var(--bisha-surface-low);
+  border-radius: 9999px;
+}
+
+.statInfo h3 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--bisha-on-surface);
+}
+
+.statInfo p {
+  margin: 0;
+  color: var(--bisha-on-surface-variant);
+}
+
+.quickActions {
+  padding: 1.5rem;
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.quickActions h2 {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.actionCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.actionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.actionCard:hover {
+  background-color: var(--bisha-surface-container);
+  border-color: var(--bisha-primary-container);
+  transform: translateY(-4px);
+}
+
+.actionIcon {
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+  color: var(--bisha-primary-container);
+}
+
+.actionCard h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.actionCard p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* action items rendered with .navLink inside .actionCards */
+.actionCards .navLink {
+  justify-content: center;
+  padding: 1.1rem 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-surface-variant);
+}
+
+.actionCards .navLink:hover {
+  background-color: var(--bisha-surface-container);
+  border-color: var(--bisha-primary-container);
+  color: var(--bisha-primary);
+}
+
+/* ---- Loading ---- */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 100vh;
+  color: var(--bisha-on-surface-variant);
+  background-color: var(--bisha-surface);
+}
+
+.spinner {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 4px solid var(--bisha-surface-variant);
+  border-top-color: var(--bisha-primary);
+  border-radius: 9999px;
+  animation: adminSpin 1s linear infinite;
+}
+
+@keyframes adminSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Mobile header ---- */
+.mobileHeader {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: var(--bisha-surface-lowest);
+  border-bottom: 1px solid var(--bisha-outline-variant);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.mobileMenuButton {
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  color: var(--bisha-primary);
+  background: none;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobileMenuButton:hover {
+  background-color: var(--bisha-surface-low);
+}
+
+.mobileHeader h1 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--bisha-primary);
+}
+
+.mobileProfileImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: #fff;
+  background-color: var(--bisha-primary-container);
+  border-radius: 9999px;
+}
+
+.mobileOverlay {
+  position: fixed !important;
+  inset: 0;
+  z-index: 9999 !important;
+  display: none;
+  background-color: rgba(3, 20, 18, 0.5);
+}
+
+.mobileCloseContainer {
+  display: none;
+  justify-content: flex-end;
+  padding: 0.5rem 0.5rem 1rem 0;
+}
+
+.mobileCloseButton {
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--bisha-on-surface-variant);
+  background: none;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobileCloseButton:hover {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-low);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .adminContainer {
+    flex-direction: column;
+  }
+
+  .mobileHeader {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    right: -320px;
+    width: 320px;
+    height: 100vh !important;
+    z-index: 10000 !important;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+  }
+
+  .sidebarOpen {
+    right: 0 !important;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.25);
+    z-index: 10000 !important;
+  }
+
+  .mobileOverlay {
+    display: block;
+  }
+
+  .mobileCloseContainer {
+    display: flex;
+  }
+
+  .mainContent {
+    padding: 1.5rem;
+  }
+
+  .statsGrid,
+  .actionCards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .adminContainer {
+    flex-direction: column;
+  }
+
+  .mobileHeader {
+    display: flex;
+    padding: 1rem;
+  }
+
+  .mobileHeader h1 {
+    font-size: 1.05rem;
+  }
+
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    right: -290px;
+    width: 290px;
+    height: 100vh !important;
+    z-index: 10000 !important;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+  }
+
+  .sidebarOpen {
+    right: 0 !important;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.25);
+    z-index: 10000 !important;
+  }
+
+  .mobileOverlay {
+    display: block;
+  }
+
+  .mobileCloseContainer {
+    display: flex;
+  }
+
+  .mainContent {
+    padding: 1rem;
+  }
+
+  .adminHeader {
+    display: none;
+  }
+
+  .statsGrid,
+  .actionCards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .statCard {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem;
+  }
+
+  .statIcon {
+    margin-bottom: 0.25rem;
+  }
+
+  .quickActions {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobileHeader {
+    padding: 0.8rem;
+  }
+
+  .sidebar {
+    width: 260px;
+    right: -260px;
+  }
+
+  .mainContent {
+    padding: 0.8rem;
+  }
+}

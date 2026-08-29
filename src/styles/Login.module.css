@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Admin login — redesigned (Material Design 3, green).
+   Design-only rewrite. Class names preserved; auth logic untouched.
+   ========================================================================== */
+
+.loginContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: clamp(1rem, 4vw, 3rem);
+  overflow: hidden;
+  background: var(--bisha-surface);
+}
+
+/* Subtle decorative glow, matching the reference */
+.loginContainer::before,
+.loginContainer::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.loginContainer::before {
+  top: -18%;
+  right: -12%;
+  width: 32rem;
+  height: 32rem;
+  background: radial-gradient(circle at 30% 30%, rgba(11, 93, 86, 0.28), transparent 70%);
+}
+
+.loginContainer::after {
+  bottom: -20%;
+  left: -12%;
+  width: 36rem;
+  height: 36rem;
+  background: radial-gradient(circle at 70% 70%, rgba(169, 236, 225, 0.4), transparent 70%);
+}
+
+.loginCard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 28rem;
+  padding: clamp(1.75rem, 5vw, 2.5rem);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: var(--bisha-shadow-md);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.loginHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.loginLogo {
+  height: 5.5rem;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 0.85rem;
+}
+
+.loginIcon {
+  font-size: 2.75rem;
+  color: var(--bisha-primary);
+  margin-bottom: 0.85rem;
+}
+
+.loginHeader h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.loginSubtitle {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--bisha-on-surface-variant);
+}
+
+.errorMessage {
+  margin-bottom: 1.25rem;
+  padding: 0.8rem 1rem;
+  text-align: center;
+  font-weight: 500;
+  color: var(--bisha-on-error-container);
+  background: var(--bisha-error-container);
+  border-radius: 0.5rem;
+  border-inline-start: 4px solid var(--bisha-error);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.inputWithIcon {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  color: var(--bisha-outline);
+  pointer-events: none;
+}
+
+.inputWithIcon input {
+  width: 100%;
+  padding: 0.75rem 2.6rem 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputWithIcon input::placeholder {
+  color: var(--bisha-outline);
+  opacity: 0.8;
+}
+
+.inputWithIcon input:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 2px #dcebe7, 0 0 0 4px rgba(11, 93, 86, 0.1);
+}
+
+.loginOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.rememberMe {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--bisha-on-surface-variant);
+  cursor: pointer;
+}
+
+.rememberMe input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--bisha-primary);
+  cursor: pointer;
+}
+
+.forgotLink {
+  color: var(--bisha-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgotLink:hover {
+  color: var(--bisha-secondary);
+}
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: var(--bisha-shadow-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.loginButton:hover:not(:disabled) {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.loginButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.buttonIcon {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+.loginFooter {
+  margin-top: 1.75rem;
+  padding-top: 1.15rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--bisha-on-surface-variant);
+  border-top: 1px solid var(--bisha-outline-variant);
+}
+
+.loginFooter a {
+  color: var(--bisha-secondary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.loginFooter a:hover {
+  text-decoration: underline;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,433 @@
+/* ==========================================================================
+   التعاميم — list page + details / image modals (Material Design 3, green)
+   ========================================================================== */
+
+.container {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image: radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Page header ---- */
+.header {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem) 0;
+  text-align: right;
+}
+
+.headerInner {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+}
+
+.subtitle {
+  max-width: 42rem;
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.8;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Content ---- */
+.content {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* ---- Card ---- */
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-top: 4px solid var(--bisha-primary-container);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.cardDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.cardDate svg {
+  color: var(--bisha-primary-container);
+}
+
+.cardTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--bisha-on-surface);
+}
+
+.cardExcerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--bisha-on-surface-variant);
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding: 1rem;
+  background: var(--bisha-surface-lowest);
+  border-top: 1px solid var(--bisha-outline-variant);
+}
+
+.btnGhost,
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btnGhost {
+  color: var(--bisha-primary-container);
+  background: var(--bisha-surface-container);
+}
+
+.btnGhost:hover {
+  color: #fff;
+  background: var(--bisha-secondary);
+}
+
+.btnPrimary {
+  color: #fff;
+  background: var(--bisha-primary-container);
+}
+
+.btnPrimary:hover {
+  background: var(--bisha-secondary);
+}
+
+/* ---- State box ---- */
+.stateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+  color: var(--bisha-on-surface-variant);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.stateBox h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--bisha-primary);
+}
+
+.stateBox p {
+  margin: 0;
+}
+
+.spinner {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 4px solid var(--bisha-surface-variant);
+  border-top-color: var(--bisha-primary);
+  border-radius: 9999px;
+  animation: circspin 1s linear infinite;
+}
+
+@keyframes circspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Pagination ---- */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 2.5rem;
+}
+
+.pagerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface-variant);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.pagerBtn:hover:not(:disabled):not(.pagerActive) {
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-variant);
+  border-color: transparent;
+}
+
+.pagerBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagerActive {
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border-color: var(--bisha-primary-container);
+}
+
+.pagerGap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2.5rem;
+  color: var(--bisha-outline);
+}
+
+.pageInfo {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Modals ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(18, 29, 38, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: circfade 0.2s ease;
+}
+
+@keyframes circfade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 40rem;
+  max-height: 90vh;
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border-radius: var(--bisha-radius);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  animation: circpop 0.25s ease;
+}
+
+@keyframes circpop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modalHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--bisha-on-surface);
+}
+
+.modalClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  color: var(--bisha-on-surface-variant);
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.modalClose:hover {
+  color: var(--bisha-error);
+  background: var(--bisha-error-container);
+}
+
+.modalBody {
+  padding: 1.5rem;
+  overflow-y: auto;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--bisha-on-surface);
+}
+
+.modalBody p {
+  margin: 0 0 1rem;
+}
+
+.modalBody p:last-child {
+  margin-bottom: 0;
+}
+
+.modalLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.5rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* image modal */
+.imageModal {
+  max-width: 56rem;
+  background: var(--bisha-surface-lowest);
+}
+
+.imageClose {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: var(--bisha-shadow-sm);
+  backdrop-filter: blur(4px);
+}
+
+.imageWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  overflow: auto;
+  background: var(--bisha-surface-low);
+}
+
+.imageWrap img {
+  max-width: 100%;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 0.4rem;
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .spinner {
+    animation: none;
+  }
+
+  .overlay,
+  .modal {
+    animation: none;
+  }
+}

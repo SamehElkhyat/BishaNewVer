@@ -1,0 +1,320 @@
+/* ==========================================================================
+   اللجان القطاعية — redesigned (Material Design 3, green)
+   Design-only rewrite. Search + expand/collapse logic unchanged.
+   ========================================================================== */
+
+.committeesContainer {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image: radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Hero header card ---- */
+.pageHeader {
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 0;
+  background: transparent;
+  color: inherit;
+}
+
+.headerContent {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem);
+  text-align: center;
+  background: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.pageTitle {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+}
+
+.pageDescription {
+  max-width: 44rem;
+  margin: 0 auto;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.8;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Content ---- */
+.contentContainer {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.searchSection {
+  margin-bottom: 2rem;
+}
+
+.searchBox {
+  position: relative;
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.9rem 3rem 0.9rem 1rem;
+  font-size: 1rem;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.75rem;
+  outline: none;
+  box-shadow: var(--bisha-shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: var(--bisha-outline);
+}
+
+/* ---- Committees grid ---- */
+.committeesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.committeeCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-top: 4px solid var(--bisha-primary);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.committeeCard:not(.expanded):hover {
+  transform: translateY(-3px);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.committeeCard.expanded {
+  grid-column: 1 / -1;
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.committeeHeader {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "icon . toggle"
+    "name name name";
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.committeeHeader:hover {
+  background: var(--bisha-surface-low);
+}
+
+.committeeIcon {
+  grid-area: icon;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  background: rgba(11, 93, 86, 0.1);
+  border-radius: 9999px;
+}
+
+.usersIcon {
+  font-size: 1.35rem;
+  color: var(--bisha-primary-container);
+}
+
+.committeeName {
+  grid-area: name;
+  margin: 0;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--bisha-on-surface);
+}
+
+.expandButton {
+  grid-area: toggle;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--bisha-primary-container);
+  background: var(--bisha-surface-low);
+  border-radius: 9999px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.committeeCard.expanded .expandButton {
+  color: #fff;
+  background: var(--bisha-primary);
+}
+
+.chevronIcon {
+  font-size: 0.9rem;
+}
+
+/* ---- Expanded content ---- */
+.committeeContent {
+  padding: 0 1.5rem 1.5rem;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.membersTitle {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--bisha-surface-variant);
+}
+
+.membersTitle h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+}
+
+.membersList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 0.85rem;
+}
+
+.memberCard {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: 0.6rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.memberCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.memberAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border-radius: 9999px;
+}
+
+.memberInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.memberName {
+  margin: 0 0 0.15rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.memberPosition {
+  font-size: 0.82rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.memberCard:nth-child(1) .memberAvatar,
+.memberCard:nth-child(2) .memberAvatar {
+  background: var(--bisha-primary);
+  box-shadow: 0 4px 10px rgba(11, 93, 86, 0.25);
+}
+
+.memberCard:nth-child(1) .memberPosition,
+.memberCard:nth-child(2) .memberPosition {
+  font-weight: 600;
+  color: var(--bisha-primary);
+}
+
+/* ---- Empty state ---- */
+.noResults {
+  grid-column: 1 / -1;
+  padding: 3rem;
+  text-align: center;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.noResults h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+  color: var(--bisha-primary);
+}
+
+.noResults p {
+  margin: 0;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Motion ---- */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 640px) {
+  .committeesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .committeesGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .committeeContent {
+    animation: none;
+  }
+}

@@ -1,0 +1,304 @@
+.initiativesContainer {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding-bottom: 4rem;
+}
+
+.pageHeader {
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  color: white;
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+}
+
+.pageHeader::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to bottom right, transparent 49%, #f8fafc 50%);
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pageDescription {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+.contentContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Initiatives Intro */
+.initiativesIntro {
+  text-align: center;
+  margin-bottom: 3rem;
+  direction: rtl;
+}
+
+.initiativesIntro h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.initiativesIntro h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #003366;
+  border-radius: 2px;
+}
+
+.initiativesIntro p {
+  font-size: 1.1rem;
+  color: #64748b;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* Initiatives Grid */
+.initiativesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  direction: rtl;
+}
+
+/* Initiative Card */
+.initiativeCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.initiativeCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.initiativeHeader {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.initiativeIconContainer {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.initiativeIcon {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.initiativeTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.initiativeImageContainer {
+  height: 200px;
+  overflow: hidden;
+}
+
+.initiativeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.initiativeCard:hover .initiativeImage {
+  transform: scale(1.05);
+}
+
+.initiativeContent {
+  padding: 1.5rem;
+}
+
+.initiativeDescription {
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.initiativeGoals {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.initiativeGoals h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.initiativeGoals ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.initiativeGoals li {
+  position: relative;
+  padding-right: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #334155;
+}
+
+.initiativeGoals li:before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0.5rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #003366;
+}
+
+.initiativeGoals li:last-child {
+  margin-bottom: 0;
+}
+
+.initiativeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #003366;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.initiativeLink:hover {
+  color: #004080;
+  text-decoration: underline;
+}
+
+.linkIcon {
+  font-size: 0.9rem;
+}
+
+/* Join Section */
+.joinSection {
+  margin-top: 4rem;
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  padding: 3rem;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  direction: rtl;
+}
+
+.joinContent {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.joinContent h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.joinContent p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.joinButton {
+  display: inline-block;
+  background: white;
+  color: #003366;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.joinButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .initiativesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 2.5rem;
+  }
+  
+  .initiativesIntro h2 {
+    font-size: 1.8rem;
+  }
+  
+  .initiativesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .joinSection {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .initiativeHeader {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .initiativeIconContainer {
+    margin-bottom: 1rem;
+  }
+}

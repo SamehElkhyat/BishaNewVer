@@ -1,0 +1,432 @@
+/* ==========================================================================
+   تواصل معنا — redesigned (Material Design 3, green)
+   Design-only rewrite. Form state, handleChange / handleSubmit, the
+   GetContact axios call and the map iframe are all untouched.
+   ========================================================================== */
+
+.contactContainer {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image: radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Hero ---- */
+.pageHeader {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem) 0;
+  text-align: center;
+  background: transparent;
+  color: inherit;
+}
+
+.headerContent {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.pageTitle {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+  text-shadow: none;
+}
+
+.pageDescription {
+  max-width: 44rem;
+  margin: 0 auto;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.8;
+  color: var(--bisha-on-surface-variant);
+  opacity: 1;
+}
+
+/* ---- Layout ---- */
+.contentContainer {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 0;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  direction: rtl;
+}
+
+/* ---- Contact info column ---- */
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.infoHeader {
+  display: none;
+}
+
+.infoCard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 1.35rem;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.infoCard > .infoItem:first-child {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+}
+
+.infoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  font-size: 1.15rem;
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-low);
+  border-radius: 0.6rem;
+}
+
+.infoContent {
+  flex: 1;
+}
+
+.infoContent h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.infoContent p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--bisha-on-surface-variant);
+}
+
+.emailLink {
+  color: var(--bisha-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.emailLink:hover {
+  color: var(--bisha-secondary);
+  text-decoration: underline;
+}
+
+.mapContainer {
+  height: clamp(240px, 40vw, 340px);
+  overflow: hidden;
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+/* ---- Contact form column ---- */
+.contactForm {
+  padding: clamp(1.5rem, 4vw, 2rem);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.formHeader {
+  margin-bottom: 1.75rem;
+  text-align: right;
+}
+
+.formHeader h2 {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+  border-bottom: 3px solid var(--bisha-primary);
+}
+
+.formHeader p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem 1.25rem;
+  align-content: start;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.formControl {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  direction: rtl;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formControl::placeholder {
+  color: var(--bisha-outline);
+  opacity: 0.75;
+}
+
+.formControl:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 2px #dcebe7, 0 0 0 4px rgba(11, 93, 86, 0.1);
+}
+
+select.formControl {
+  appearance: none;
+  padding-left: 2.75rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236f7977' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 0.9rem center;
+  background-size: 1.05rem;
+}
+
+.textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.35rem;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submitButton:hover {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.buttonIcon {
+  font-size: 1rem;
+}
+
+.successMessage,
+.errorMessage {
+  padding: 0.9rem 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  animation: contactFade 0.3s ease;
+}
+
+.successMessage {
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+}
+
+.errorMessage {
+  color: var(--bisha-on-error-container);
+  background: var(--bisha-error-container);
+}
+
+@keyframes contactFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* two-column form rows on wider screens */
+@media (min-width: 560px) {
+  .form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form > .formGroup:nth-child(5),
+  .form > .submitButton,
+  .form > .successMessage,
+  .form > .errorMessage {
+    grid-column: 1 / -1;
+  }
+
+  .form > .submitButton {
+    justify-self: start;
+  }
+}
+
+@media (min-width: 560px) {
+  .infoCard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .contactGrid {
+    grid-template-columns: 5fr 7fr;
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+/* ---- FAQ ---- */
+.faqSection {
+  margin-top: 1.5rem;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.faqInner {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 5vw, 3rem);
+  background: var(--bisha-surface-low);
+  border-radius: var(--bisha-radius);
+}
+
+.faqHead {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.faqTitle {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.faqSub {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.faqItem {
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: 0.6rem;
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.faqQ {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+  cursor: pointer;
+  list-style: none;
+}
+
+.faqQ::-webkit-details-marker {
+  display: none;
+}
+
+.faqItem[open] .faqQ {
+  color: var(--bisha-primary);
+}
+
+.faqChevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--bisha-primary);
+  transition: transform 0.2s ease;
+}
+
+.faqItem[open] .faqChevron {
+  transform: rotate(45deg);
+}
+
+.faqA {
+  margin: 0;
+  padding: 0 1.35rem 1.2rem;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .submitButton,
+  .emailLink,
+  .formControl,
+  .faqChevron {
+    transition: none;
+  }
+
+  .successMessage,
+  .errorMessage {
+    animation: none;
+  }
+}

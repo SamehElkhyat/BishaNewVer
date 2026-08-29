@@ -1,0 +1,622 @@
+.container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 2rem 1rem;
+  direction: rtl;
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  color: white;
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  border-radius: 0 0 20px 20px;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to bottom right, transparent 49%, #f8fafc 50%);
+}
+
+.headerContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.headerIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  line-height: 1.5;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.backButton {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.backButton:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateX(5px);
+}
+
+.formContainer {
+  max-width: 800px;
+  margin: 2rem auto 0;
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.labelIcon {
+  color: #003366;
+  font-size: 1.1rem;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  color: #1e293b;
+  text-align: right;
+  direction: rtl;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #003366;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23003366' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 1rem center;
+  padding-left: 2.5rem;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.submitContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  color: white;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 51, 102, 0.4);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success Page Styles */
+.successContainer {
+  max-width: 600px;
+  margin: 4rem auto;
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.successIcon {
+  font-size: 5rem;
+  color: #10b981;
+  margin-bottom: 1.5rem;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.successTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.successMessage {
+  font-size: 1.1rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.successActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.homeButton,
+.newSurveyButton {
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.homeButton {
+  background: linear-gradient(135deg, #003366 0%, #004080 100%);
+  color: white;
+  border: none;
+}
+
+.homeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+}
+
+.newSurveyButton {
+  background: white;
+  color: #003366;
+  border: 2px solid #003366;
+}
+
+.newSurveyButton:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 0.5rem;
+  }
+
+  .header {
+    padding: 3rem 1.5rem 2rem;
+    border-radius: 0;
+  }
+
+  .backButton {
+    top: 0.5rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .formContainer {
+    padding: 2rem 1.5rem;
+    margin: 1rem 0.5rem 0;
+    border-radius: 12px;
+  }
+
+  .form {
+    gap: 1.5rem;
+  }
+
+  .label {
+    font-size: 0.95rem;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.95rem;
+  }
+
+  .submitButton {
+    width: 100%;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+
+  .successContainer {
+    margin: 2rem 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .successIcon {
+    font-size: 4rem;
+  }
+
+  .successTitle {
+    font-size: 1.5rem;
+  }
+
+  .successMessage {
+    font-size: 1rem;
+  }
+
+  .successActions {
+    flex-direction: column;
+  }
+
+  .homeButton,
+  .newSurveyButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 2.5rem 1rem 1.5rem;
+  }
+
+  .headerIcon {
+    font-size: 2.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .formContainer {
+    padding: 1.5rem 1rem;
+  }
+
+  .successIcon {
+    font-size: 3.5rem;
+  }
+
+  .successTitle {
+    font-size: 1.25rem;
+  }
+}
+
+/* Survey Cards Grid */
+.surveysGrid {
+  max-width: 1200px;
+  margin: 3rem auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+.surveyCard {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.surveyCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.cardHeader {
+  padding: 3rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardHeader::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.cardIcon {
+  font-size: 4rem;
+  color: white;
+  z-index: 1;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.cardBody {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.cardDescription {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.surveyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.surveyButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.surveyButton:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.surveyButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 51, 102, 0.4);
+}
+
+.buttonIcon {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.surveyButton:hover .buttonIcon {
+  transform: translateX(-3px);
+}
+
+.cardFooter {
+  padding: 1rem 2rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.footerText {
+  font-size: 0.9rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.footerText::before {
+  content: '⏱️';
+  font-size: 1.1rem;
+}
+
+/* Responsive Design for Survey Cards */
+@media (max-width: 768px) {
+  .surveysGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 2rem auto;
+  }
+
+  .cardHeader {
+    padding: 2rem 1.5rem;
+  }
+
+  .cardIcon {
+    font-size: 3rem;
+  }
+
+  .cardBody {
+    padding: 1.5rem;
+  }
+
+  .cardTitle {
+    font-size: 1.3rem;
+  }
+
+  .cardDescription {
+    font-size: 0.95rem;
+  }
+
+  .surveyButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .surveysGrid {
+    padding: 0 0.5rem;
+  }
+
+  .cardHeader {
+    padding: 1.5rem 1rem;
+  }
+
+  .cardIcon {
+    font-size: 2.5rem;
+  }
+
+  .cardBody {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .cardTitle {
+    font-size: 1.15rem;
+  }
+
+  .cardDescription {
+    font-size: 0.9rem;
+  }
+
+  .surveyButton {
+    width: 100%;
+  }
+
+  .cardFooter {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .footerText {
+    font-size: 0.85rem;
+  }
+}

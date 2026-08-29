@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Sidebar — recolored to the green Material-Design-3 admin palette.
+   Class names and structure unchanged.
+   ========================================================================== */
+
+.sidebar {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: var(--bisha-surface-lowest);
+  border-left: 1px solid var(--bisha-outline-variant);
+  box-shadow: -4px 0 24px rgba(11, 93, 86, 0.06);
+  transition: transform 0.3s ease-in-out;
+}
+
+.logoContainer {
+  padding: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.logo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0.75rem;
+  margin: 0;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface-variant);
+  text-decoration: none;
+  border-radius: 0.6rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navLink:hover,
+.navLink.active {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-low);
+}
+
+.navLink.active {
+  font-weight: 600;
+}
+
+.navLink svg {
+  margin-left: 0;
+  font-size: 1.15rem;
+}
+
+.logoutContainer {
+  margin-top: auto;
+  padding: 1.25rem;
+  border-top: 1px solid var(--bisha-outline-variant);
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: right;
+  color: var(--bisha-error);
+  background: none;
+  border: 1px solid var(--bisha-error-container);
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: var(--bisha-error-container);
+}
+
+.logoutButton svg {
+  margin-left: 0;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(100%);
+    z-index: 1000;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}

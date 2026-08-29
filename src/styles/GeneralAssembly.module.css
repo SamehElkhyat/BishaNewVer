@@ -1,0 +1,377 @@
+/* ==========================================================================
+   الجمعية العمومية — redesigned (Material Design 3, green)
+   Design-only rewrite. Accordion + search/year filter logic unchanged.
+   ========================================================================== */
+
+.assemblyContainer {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image: radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Page header ---- */
+.pageHeader {
+  padding: clamp(2.5rem, 6vw, 4rem) 1rem 0;
+  text-align: center;
+  background: transparent;
+  color: inherit;
+}
+
+.headerContent {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.pageTitle {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+}
+
+.pageTitle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.6rem;
+  width: 4rem;
+  height: 4px;
+  transform: translateX(-50%);
+  background: var(--bisha-secondary);
+  border-radius: 9999px;
+}
+
+.pageDescription {
+  max-width: 40rem;
+  margin: 1.75rem auto 0;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.75;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Content ---- */
+.contentContainer {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+/* ---- Filter bar ---- */
+.filterSection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.searchBox {
+  position: relative;
+  flex: 1 1 20rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1rem;
+  font-size: 1rem;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: var(--bisha-outline);
+}
+
+.yearFilter {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.yearSelect {
+  min-width: 12rem;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.yearSelect:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+/* ---- Meetings grid ---- */
+.timelineContainer {
+  position: relative;
+  padding: 0;
+}
+
+.timeline {
+  display: none;
+}
+
+.meetingsContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.meetingCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-top: 4px solid var(--bisha-primary);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.meetingCard:not(.expanded):hover {
+  transform: translateY(-3px);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.meetingCard.expanded {
+  grid-column: 1 / -1;
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.meetingHeader {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "year toggle"
+    "title title";
+  align-items: center;
+  gap: 0.6rem 0.75rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.meetingHeader:hover {
+  background: var(--bisha-surface-low);
+}
+
+.yearBadge {
+  grid-area: year;
+  width: auto;
+  height: auto;
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--bisha-primary-container);
+  background: none;
+  box-shadow: none;
+}
+
+.meetingTitle {
+  grid-area: title;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.meetingTitle h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--bisha-on-surface);
+}
+
+.meetingDate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--bisha-on-surface-variant);
+  border-top: 1px solid var(--bisha-surface-variant);
+}
+
+.dateIcon {
+  font-size: 1rem;
+  color: var(--bisha-primary-container);
+}
+
+.expandButton {
+  grid-area: toggle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  color: var(--bisha-on-surface-variant);
+  background: var(--bisha-surface-low);
+  border-radius: 9999px;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.meetingCard.expanded .expandButton {
+  color: #fff;
+  background: var(--bisha-primary);
+}
+
+/* ---- Expanded content ---- */
+.meetingContent {
+  padding: 0 1.5rem 1.5rem;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.meetingImageContainer {
+  width: 100%;
+  height: clamp(220px, 40vw, 400px);
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  background: var(--bisha-surface-low);
+  border-radius: var(--bisha-radius);
+}
+
+.meetingImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.meetingDescription {
+  margin-bottom: 1.25rem;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--bisha-on-surface-variant);
+}
+
+.meetingActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.actionButton:hover {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.meetingActions .actionButton:last-child {
+  color: var(--bisha-primary-container);
+  background: transparent;
+  border: 1px solid var(--bisha-primary-container);
+}
+
+.meetingActions .actionButton:last-child:hover {
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-container);
+}
+
+/* ---- Empty state ---- */
+.noResults {
+  grid-column: 1 / -1;
+  padding: 3rem;
+  text-align: center;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.noResults h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+  color: var(--bisha-primary);
+}
+
+.noResults p {
+  margin: 0;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Motion ---- */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 640px) {
+  .meetingsContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .meetingsContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .filterSection {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .yearSelect {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meetingContent {
+    animation: none;
+  }
+}

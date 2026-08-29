@@ -1,0 +1,215 @@
+/* ==========================================================================
+   Site footer — redesigned (Material Design 3, green).
+   Design-only rewrite. Every class name preserved. Consumed by
+   src/components/Footer.tsx (markup unchanged).
+   ========================================================================== */
+
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.5rem, 6vw, 4rem) 0 2rem;
+  direction: rtl;
+  color: #fff;
+  background: var(--bisha-primary);
+  border-top: 4px solid var(--bisha-secondary);
+}
+
+.footer::before {
+  display: none;
+}
+
+.footerContainer {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.footerTop {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.logoImage {
+  width: auto;
+  height: 3.5rem;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.footerAbout {
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--bisha-outline-variant);
+}
+
+.socialIcons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.socialIcon:hover {
+  color: var(--bisha-primary);
+  background: var(--bisha-secondary-fixed-dim);
+  transform: translateY(-2px);
+}
+
+.socialIcon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.footerHeading {
+  position: relative;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.6rem;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.footerHeading::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--bisha-secondary-fixed-dim);
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerLinks li {
+  margin-bottom: 0.6rem;
+}
+
+.footerLinks a {
+  display: inline-block;
+  color: var(--bisha-outline-variant);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footerLinks a::before {
+  content: "•";
+  margin-left: 0.5rem;
+  color: var(--bisha-secondary-fixed-dim);
+}
+
+.footerLinks a:hover {
+  color: #fff;
+  transform: translateX(-4px);
+}
+
+.contactInfo {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contactInfo li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  color: var(--bisha-outline-variant);
+}
+
+.contactInfo svg {
+  margin-left: 0.65rem;
+  flex-shrink: 0;
+  color: var(--bisha-secondary-fixed-dim);
+}
+
+.contactInfo span {
+  font-size: 0.9rem;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.footerCopyright {
+  font-size: 0.85rem;
+  color: var(--bisha-outline-variant);
+}
+
+.footerBottomLinks {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.footerBottomLinks a {
+  color: var(--bisha-outline-variant);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.footerBottomLinks a:hover {
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .footerTop {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 3rem 0 1.5rem;
+  }
+
+  .footerTop {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footerBottomLinks {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,236 @@
+/* ==========================================================================
+   Landing "إدارات الغرفة" section — redesigned (MD3, green).
+   Design-only rewrite. Every class name preserved. Consumed by
+   src/app/DetailsBisha.jsx (state + mobile prev/next logic untouched).
+   ========================================================================== */
+
+.detailsSection {
+  position: relative;
+  padding: clamp(3rem, 7vw, 4.5rem) 0;
+  overflow: hidden;
+  background: var(--bisha-surface-low);
+}
+
+.backgroundGradient,
+.backgroundPattern {
+  display: none;
+}
+
+.sectionContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.sectionHeader {
+  position: relative;
+  margin-bottom: 2.5rem;
+  text-align: right;
+  color: var(--bisha-on-surface);
+}
+
+.sectionTitle {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+}
+
+.sectionTitle::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.5rem;
+  width: 60%;
+  height: 3px;
+  background: var(--bisha-secondary);
+  border-radius: 2px;
+}
+
+.sectionSubtitle {
+  display: inline-block;
+  margin: 1rem 0 0;
+  padding: 0.35rem 1.1rem;
+  font-size: 0.9rem;
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+  border: none;
+  border-radius: 9999px;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* ---- Mobile prev / next ---- */
+.mobileNavigation {
+  display: none;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background: var(--bisha-surface-container);
+  border: 1px solid var(--bisha-outline-variant);
+  color: var(--bisha-primary);
+  cursor: pointer;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: background-color 0.2s ease;
+}
+
+.navButton:hover {
+  background: var(--bisha-secondary-container);
+  box-shadow: none;
+}
+
+/* ---- Cards ---- */
+.departmentsContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.departmentCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.75rem;
+  color: var(--bisha-on-surface);
+  text-align: right;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: var(--bisha-shadow-sm);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.departmentCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.cardGlow {
+  display: none;
+}
+
+.cardContent {
+  flex: 1;
+  padding: 0;
+  text-align: right;
+}
+
+.departmentTitle {
+  display: block;
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.departmentTitle::after {
+  display: none;
+}
+
+.departmentDescription {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--bisha-on-surface-variant);
+}
+
+.iconContainer {
+  order: -1;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.iconBackground {
+  display: none;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  color: #fff;
+  background: var(--bisha-primary);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+  transition: transform 0.3s ease;
+}
+
+.departmentCard:hover .icon {
+  transform: scale(1.05);
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 768px) {
+  .departmentsContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .sectionHeader {
+    text-align: center;
+  }
+
+  .sectionTitle::after {
+    right: 50%;
+    transform: translateX(50%);
+    width: 4rem;
+  }
+
+  .mobileNavigation {
+    display: flex;
+  }
+
+  .departmentCard {
+    display: none;
+  }
+
+  .activeMobile {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+
+  .activeMobile .cardContent {
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .departmentCard,
+  .departmentCard:hover {
+    transform: none;
+  }
+}

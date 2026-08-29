@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "بيشة",
+        "id": "bisha",
+        "population": 205346,
+        "males": 106182,
+        "females": 99859,
+        "schools": 250,
+        "houses": 35000,
+        "subscribers": 20000,
+        "factories": 45,
+        "area": 27840,
+        "description": "مدينة بيشة هي عاصمة محافظة بيشة في منطقة عسير جنوب غرب المملكة العربية السعودية"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[42.4, 20.0], [42.65, 20.15], [42.85, 20.05], [42.9, 19.85], [42.7, 19.75], [42.45, 19.8], [42.3, 19.9], [42.4, 20.0]]]
+      }
+    }
+  ]
+}

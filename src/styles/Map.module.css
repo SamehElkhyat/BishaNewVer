@@ -1,0 +1,385 @@
+/* ==========================================================================
+   Landing "بيشة" indicators + interactive map — redesigned (MD3, green).
+   Design-only rewrite. Every class name preserved. Consumed by
+   src/app/page.tsx, src/components/MapClient.tsx, src/components/RegionStats.tsx
+   and the Leaflet map (data + selection logic untouched).
+   ========================================================================== */
+
+.mapSection {
+  padding: clamp(3rem, 7vw, 4.5rem) clamp(1rem, 4vw, 3rem);
+  background: var(--bisha-surface-low);
+}
+
+.mapContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 2rem;
+  align-items: stretch;
+  width: 100%;
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.mapWrapper {
+  flex: 1;
+  min-width: 0;
+  height: 600px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--bisha-radius-lg);
+  border: 1px solid var(--bisha-outline-variant);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.mapWrapper > div {
+  height: 100% !important;
+}
+
+.mapWrapper .leaflet-container {
+  cursor: grab;
+}
+
+.mapWrapper .leaflet-container.leaflet-drag-target,
+.mapWrapper .leaflet-container:active {
+  cursor: grabbing;
+}
+
+.mapLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 480px;
+  font-size: 1.1rem;
+  color: var(--bisha-on-surface-variant);
+  background: var(--bisha-surface-container);
+  border-radius: var(--bisha-radius-lg);
+}
+
+.mapError {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 480px;
+  color: var(--bisha-on-error-container);
+  background: var(--bisha-error-container);
+  border-radius: var(--bisha-radius-lg);
+}
+
+.mapErrorContent {
+  text-align: center;
+  padding: 2rem;
+}
+
+.mapErrorContent h3 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  color: var(--bisha-on-error-container);
+}
+
+.mapErrorContent p {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.mapRetryButton {
+  padding: 0.75rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.mapRetryButton:hover {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+/* ---- Leaflet overlays ---- */
+.overlayTiles {
+  filter: opacity(0.35) saturate(0.7);
+}
+
+.regionLabel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 4px;
+  padding: 3px 7px;
+  box-shadow: var(--bisha-shadow-sm);
+  color: var(--bisha-primary);
+  font-weight: 700;
+  font-size: 14px;
+  text-shadow: none;
+  direction: rtl;
+  white-space: nowrap;
+}
+
+.cityTooltip {
+  background: rgba(18, 29, 38, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  direction: rtl;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.cityPopup {
+  direction: rtl;
+  text-align: right;
+  padding: 5px;
+  min-width: 200px;
+}
+
+.cityPopup h3 {
+  margin: 0 0 10px;
+  padding-bottom: 5px;
+  color: var(--bisha-primary);
+  font-size: 18px;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.cityPopup h3 span {
+  font-size: 14px;
+  color: var(--bisha-on-surface-variant);
+  font-weight: normal;
+}
+
+.cityDescription {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--bisha-on-surface-variant);
+  line-height: 1.5;
+}
+
+.cityStats {
+  margin: 10px 0;
+}
+
+.cityStat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.cityStatLabel {
+  font-weight: bold;
+  color: var(--bisha-on-surface-variant);
+}
+
+.cityStatValue {
+  color: var(--bisha-primary);
+  font-weight: bold;
+}
+
+.selectCityButton {
+  width: 100%;
+  margin-top: 10px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.selectCityButton:hover {
+  background: var(--bisha-secondary);
+}
+
+/* ---- Stats panel ---- */
+.statsContainer {
+  flex: 1;
+  min-width: 0;
+}
+
+.regionTitle {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  text-align: center;
+  direction: rtl;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.regionTitle h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--bisha-primary);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  text-shadow: none;
+}
+
+.regionTitle span {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--bisha-on-surface-variant);
+}
+
+.regionMeta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.regionMetaItem {
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.regionMetaItem span {
+  display: block;
+  margin: 0 0 0.25rem;
+  font-weight: 500;
+  color: var(--bisha-on-surface-variant);
+}
+
+.regionFooter {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  direction: rtl;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.regionFooterStat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  color: var(--bisha-on-surface);
+}
+
+.regionFooterStat:last-child {
+  margin-bottom: 0;
+}
+
+.footerStatLabel {
+  font-size: 0.9rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.footerStatValue {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  direction: rtl;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: var(--bisha-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.statCard::before {
+  display: none;
+}
+
+.statCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--bisha-shadow-md);
+  background: var(--bisha-surface-lowest);
+}
+
+.statIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  color: #fff;
+  background: var(--bisha-primary);
+  border: none;
+  border-radius: var(--bisha-radius);
+  box-shadow: none;
+}
+
+.statCard:hover .statIcon {
+  transform: none;
+  background: var(--bisha-primary);
+}
+
+.statContent {
+  flex: 1;
+  text-align: right;
+}
+
+.statContent h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--bisha-on-surface-variant);
+  text-shadow: none;
+}
+
+.statContent p {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--bisha-primary);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  text-shadow: none;
+  letter-spacing: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .mapContainer {
+    flex-direction: column;
+  }
+
+  .mapWrapper {
+    height: 420px;
+  }
+}
+
+@media (max-width: 560px) {
+  .statsGrid,
+  .regionMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .mapWrapper {
+    height: 360px;
+  }
+}

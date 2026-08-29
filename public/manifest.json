@@ -1,0 +1,28 @@
+{
+  "name": "غرفة بيشة التجارية",
+  "short_name": "بيشة",
+  "description": "غرفة بيشة التجارية - نمثل القطاع التجاري والصناعي في منطقة بيشة",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#003366",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/bisha-chamber-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/bisha-chamber-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["business", "commerce", "government"]
+}
+

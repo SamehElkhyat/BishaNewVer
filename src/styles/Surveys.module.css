@@ -1,0 +1,310 @@
+/* ==========================================================================
+   الاستبيانات — redesigned (Material Design 3, green)
+   Design-only rewrite. Tab filtering logic unchanged.
+   ========================================================================== */
+
+.surveysContainer {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image: radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Page header (start-aligned) ---- */
+.pageHeader {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem) 0;
+  text-align: right;
+  background: transparent;
+  color: inherit;
+}
+
+.headerContent {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.pageTitle {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+}
+
+.pageTitle::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.55rem;
+  width: 3.5rem;
+  height: 4px;
+  background: var(--bisha-secondary);
+  border-radius: 9999px;
+}
+
+.pageDescription {
+  max-width: 44rem;
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.8;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Content ---- */
+.contentContainer {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+/* ---- Tabs ---- */
+.tabsContainer {
+  margin-bottom: 2rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  padding: 0 0 0.25rem;
+  background: transparent;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+  box-shadow: none;
+}
+
+.tabButton {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface-variant);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tabButton:hover {
+  color: var(--bisha-primary);
+  background: transparent;
+}
+
+.activeTab,
+.activeTab:hover {
+  color: var(--bisha-primary);
+  background: transparent;
+  border-bottom-color: var(--bisha-primary);
+}
+
+/* ---- Surveys grid ---- */
+.surveysGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.surveyCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-top: 4px solid var(--bisha-primary);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.surveyCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.surveyHeader {
+  display: block;
+  padding: 1.5rem 1.5rem 0;
+  background: transparent;
+  border: none;
+}
+
+.surveyIconContainer {
+  display: none;
+}
+
+.surveyTitleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.surveyTitle {
+  flex: 1 1 60%;
+  margin: 0;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--bisha-primary);
+}
+
+.surveyStatus {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 9999px;
+}
+
+.availableStatus {
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+}
+
+.closedStatus {
+  color: var(--bisha-on-error-container);
+  background: var(--bisha-error-container);
+}
+
+.statusIcon {
+  font-size: 0.85rem;
+}
+
+/* ---- Card body ---- */
+.surveyContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.surveyDescription {
+  margin: 0;
+  line-height: 1.8;
+  color: var(--bisha-on-surface-variant);
+}
+
+.surveyMeta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem 1rem;
+  margin: 0;
+  padding: 1rem 0;
+  background: transparent;
+  border-top: 1px solid var(--bisha-surface-variant);
+  border-bottom: 1px solid var(--bisha-surface-variant);
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.metaLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bisha-outline);
+}
+
+.metaValue {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+}
+
+.surveyActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.participateButton,
+.resultsButton {
+  flex: 1 1 12rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.participateButton {
+  color: #fff;
+  background: var(--bisha-primary-container);
+}
+
+.participateButton:hover {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.resultsButton {
+  color: var(--bisha-primary-container);
+  background: transparent;
+  border: 1px solid var(--bisha-primary-container);
+}
+
+.resultsButton:hover {
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-container);
+  transform: translateY(-1px);
+}
+
+.actionIcon {
+  font-size: 1rem;
+}
+
+/* ---- Empty state ---- */
+.noResults {
+  grid-column: 1 / -1;
+  padding: 3rem;
+  text-align: center;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.noResults h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+  color: var(--bisha-primary);
+}
+
+.noResults p {
+  margin: 0;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 900px) {
+  .surveysGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .surveyMeta {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,390 @@
+/* ==========================================================================
+   النشرات التجارية — redesigned (Material Design 3, green)
+   Design-only rewrite. Search / month / year / sort filters + the
+   flip-card interaction are all left untouched.
+   ========================================================================== */
+
+.bulletinsContainer {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface);
+  background-image: radial-gradient(rgba(146, 211, 200, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Page header ---- */
+.pageHeader {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem) 0;
+  text-align: right;
+  background: transparent;
+  color: inherit;
+}
+
+.headerContent {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.pageTitle {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bisha-primary);
+}
+
+.pageTitle::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.55rem;
+  width: 3.5rem;
+  height: 4px;
+  background: var(--bisha-secondary);
+  border-radius: 9999px;
+}
+
+.pageDescription {
+  max-width: 46rem;
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.8;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Content ---- */
+.contentContainer {
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+/* ---- Filter bar ---- */
+.filterSection {
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.searchBox {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1rem;
+  font-size: 1rem;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: var(--bisha-outline);
+}
+
+.filterControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1 1 14rem;
+}
+
+.filterLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--bisha-on-surface);
+}
+
+.filterSelect {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filterSelect:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px var(--bisha-secondary-container);
+}
+
+/* ---- Bulletins grid (flip cards) ---- */
+.bulletinsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.bulletinCard {
+  height: 420px;
+  perspective: 1600px;
+  cursor: pointer;
+}
+
+.bulletinInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.bulletinCard.flipped .bulletinInner {
+  transform: rotateY(180deg);
+}
+
+.bulletinFront,
+.bulletinBack {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-top: 4px solid var(--bisha-primary);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.bulletinCard:not(.flipped):hover .bulletinFront {
+  box-shadow: var(--bisha-shadow-md);
+}
+
+.bulletinBack {
+  transform: rotateY(180deg);
+  padding: 1.5rem;
+}
+
+.bulletinImageContainer {
+  position: relative;
+  height: 170px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--bisha-surface-low);
+}
+
+.bulletinImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.bulletinCard:hover .bulletinImage {
+  transform: scale(1.05);
+}
+
+.bulletinOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0.85rem;
+  background: linear-gradient(to bottom, rgba(0, 68, 62, 0.35), transparent 60%);
+}
+
+.bulletinDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+  border-radius: 9999px;
+}
+
+.dateIcon {
+  font-size: 0.8rem;
+  color: var(--bisha-on-secondary-container);
+}
+
+.bulletinInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+  padding: 1.25rem;
+  text-align: right;
+}
+
+.bulletinTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--bisha-primary);
+}
+
+.bulletinSize {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: auto;
+  font-size: 0.8rem;
+  color: var(--bisha-outline);
+}
+
+.bulletinInfo::after {
+  content: "اضغط لعرض التفاصيل";
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--bisha-primary-container);
+}
+
+/* back face */
+.bulletinBackTitle {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--bisha-primary);
+}
+
+.bulletinDescription {
+  flex: 1;
+  margin: 0 0 1rem;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--bisha-on-surface-variant);
+}
+
+.bulletinActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.actionButton {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.viewButton {
+  color: #fff;
+  background: var(--bisha-primary-container);
+}
+
+.viewButton:hover {
+  background: var(--bisha-secondary);
+}
+
+.downloadButton {
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+}
+
+.downloadButton:hover {
+  background: var(--bisha-secondary-fixed-dim);
+}
+
+.actionIcon {
+  font-size: 0.9rem;
+}
+
+.flipHint {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--bisha-outline);
+}
+
+/* ---- Empty state ---- */
+.noResults {
+  grid-column: 1 / -1;
+  padding: 3rem;
+  text-align: center;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.noResults h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+  color: var(--bisha-primary);
+}
+
+.noResults p {
+  margin: 0;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 640px) {
+  .bulletinsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .bulletinsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .bulletinCard {
+    height: 460px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bulletinInner {
+    transition: none;
+  }
+}

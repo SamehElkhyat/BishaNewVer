@@ -1,0 +1,21 @@
+.layout {
+  display: flex;
+  direction: rtl;
+}
+
+.main {
+  flex-grow: 1;
+  margin-right: 280px; /* Same as sidebar width */
+  transition: margin-right 0.3s ease-in-out;
+}
+
+.content {
+  padding: 1.5rem;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .main {
+    margin-right: 0;
+  }
+}

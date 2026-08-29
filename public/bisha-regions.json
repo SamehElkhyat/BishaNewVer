@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "بيشة",
+        "id": "bisha",
+        "males": 106182,
+        "females": 99859,
+        "schools": 358,
+        "houses": 37010,
+        "subscribers": 206041,
+        "factories": 68
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[42.5, 20.0], [42.65, 20.05], [42.75, 19.95], [42.7, 19.85], [42.55, 19.8], [42.45, 19.9], [42.5, 20.0]]]
+      }
+    }
+  ]
+}

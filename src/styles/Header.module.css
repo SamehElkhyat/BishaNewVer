@@ -1,0 +1,611 @@
+/* ==========================================================================
+   Site header — redesigned (Material Design 3, green).
+   Design-only rewrite. Every class name preserved. Consumed by
+   src/components/Header.tsx (navigation / dropdown / auth logic untouched).
+   ========================================================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  padding: 0.75rem clamp(1rem, 4vw, 3rem);
+  color: var(--bisha-on-surface);
+  background: var(--bisha-surface);
+  border-bottom: 1px solid var(--bisha-outline-variant);
+  box-shadow: var(--bisha-shadow-sm);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: var(--bisha-container);
+  margin: 0 auto;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.navLink {
+  color: var(--bisha-on-surface-variant);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.5rem;
+  text-shadow: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+@media (min-width: 1025px) and (max-width: 1180px) {
+  .navLink {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.4rem;
+  }
+}
+
+.navLink:hover {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-low);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---- Dropdowns ---- */
+.dropdownContainer {
+  position: relative;
+  z-index: 1000;
+}
+
+.dropdownTrigger {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 1001;
+}
+
+.activeDropdown {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-low);
+  box-shadow: none;
+}
+
+.dropdownIcon {
+  font-size: 0.7rem;
+  margin-right: 0.1rem;
+  transition: transform 0.3s ease;
+}
+
+.rotateIcon {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  min-width: 12rem;
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-lg);
+  z-index: 1002;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.2s ease-in-out;
+}
+
+.largeDropdown {
+  width: 16rem;
+  max-height: 24rem;
+  overflow-y: auto;
+  right: -1rem;
+}
+
+.largeDropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.largeDropdown::-webkit-scrollbar-track {
+  background: var(--bisha-surface-low);
+  border-radius: 10px;
+}
+
+.largeDropdown::-webkit-scrollbar-thumb {
+  background: var(--bisha-outline-variant);
+  border-radius: 10px;
+}
+
+.largeDropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--bisha-outline);
+}
+
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.dropdownItem {
+  display: block;
+  padding: 0.7rem 1.1rem;
+  color: var(--bisha-on-surface-variant);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: right;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdownItem:hover {
+  background-color: var(--bisha-surface-low);
+  color: var(--bisha-primary);
+}
+
+.dropdownItem:not(:last-child) {
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+/* ---- Social icons ---- */
+.socialIcons {
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface-variant);
+  border-radius: 9999px;
+  text-shadow: none;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.socialIcon:hover {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-low);
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+
+/* ---- Brand (mobile / tablet) ---- */
+.brandSection {
+  display: none;
+}
+
+.brandLink {
+  color: var(--bisha-primary);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-shadow: none;
+}
+
+/* ---- Mobile menu button ---- */
+.mobileMenuButton {
+  z-index: 1001;
+  display: none;
+  padding: 0.4rem;
+  font-size: 1.5rem;
+  color: var(--bisha-primary);
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobileMenuButton:hover {
+  background-color: var(--bisha-surface-low);
+}
+
+/* ---- Mobile navigation ---- */
+.mobileNav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 998;
+  background: var(--bisha-surface-lowest);
+  border-top: 1px solid var(--bisha-outline-variant);
+  box-shadow: var(--bisha-shadow-lg);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  animation: slideDown 0.3s ease-out;
+}
+
+.mobileNavContent {
+  padding: 1.25rem;
+}
+
+.mobileNavHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.mobileCloseButton {
+  padding: 0.4rem;
+  font-size: 1.2rem;
+  color: var(--bisha-on-surface-variant);
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobileCloseButton:hover {
+  background-color: var(--bisha-surface-low);
+  color: var(--bisha-primary);
+}
+
+.mobileSocialIcons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.mobileNavLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0.85rem 1rem;
+  color: var(--bisha-on-surface);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: right;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobileNavLink:hover {
+  background-color: var(--bisha-surface-low);
+  color: var(--bisha-primary);
+}
+
+.mobileDropdownContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileDropdownTrigger {
+  cursor: pointer;
+}
+
+.mobileDropdownMenu {
+  margin: 0.35rem 0 0.75rem 1rem;
+  background-color: var(--bisha-surface-low);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.mobileDropdownItem {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.75rem 1.25rem;
+  color: var(--bisha-on-surface-variant);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: right;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.mobileDropdownItem:hover {
+  background-color: var(--bisha-surface-container);
+  color: var(--bisha-primary);
+}
+
+.mobileDropdownItem:not(:last-child) {
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+/* ---- Tablet (769px - 1024px) ---- */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .header {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .brandSection {
+    display: block;
+    flex: 1;
+  }
+
+  .mobileMenuButton {
+    display: block;
+  }
+
+  .desktopNav,
+  .desktopSocial {
+    display: none;
+  }
+
+  .mobileNavContent {
+    padding: 1.75rem;
+  }
+}
+
+/* ---- Mobile (max-width: 768px) ---- */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .brandSection {
+    display: block;
+    flex: 1;
+  }
+
+  .mobileMenuButton {
+    display: block;
+  }
+
+  .desktopNav,
+  .desktopSocial {
+    display: none;
+  }
+}
+
+/* ---- Small mobile (max-width: 480px) ---- */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.65rem 1rem;
+  }
+
+  .brandLink {
+    font-size: 1rem;
+  }
+
+  .mobileNavContent {
+    padding: 1rem;
+  }
+
+  .mobileSocialIcons {
+    gap: 0.8rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .mobileNavLink {
+    font-size: 0.95rem;
+    padding: 0.75rem 0.85rem;
+  }
+
+  .mobileDropdownItem {
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+  }
+}
+
+/* ==========================================================================
+   Survey modal (kept for parity — recoloured to the green system)
+   ========================================================================== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(3, 20, 18, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--bisha-outline-variant);
+}
+
+.modalHeader h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: right;
+  color: var(--bisha-primary);
+}
+
+.modalCloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0.5rem;
+  font-size: 1.4rem;
+  color: var(--bisha-on-surface-variant);
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.modalCloseButton:hover {
+  background-color: var(--bisha-surface-low);
+  color: var(--bisha-error);
+  transform: rotate(90deg);
+}
+
+.surveyForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: right;
+  color: var(--bisha-on-surface);
+}
+
+.errorMessage {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  text-align: right;
+  direction: rtl;
+  color: var(--bisha-error);
+}
+
+.formInput,
+.formTextarea {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  text-align: right;
+  direction: rtl;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: var(--bisha-secondary);
+  background-color: var(--bisha-surface-lowest);
+  box-shadow: 0 0 0 2px #dcebe7, 0 0 0 4px rgba(11, 93, 86, 0.1);
+}
+
+.formInput::placeholder,
+.formTextarea::placeholder {
+  color: var(--bisha-outline);
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 0.75rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.submitButton {
+  color: #fff;
+  background: var(--bisha-primary-container);
+}
+
+.submitButton:hover {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.cancelButton {
+  color: var(--bisha-primary);
+  background-color: transparent;
+  border: 1px solid var(--bisha-outline-variant);
+}
+
+.cancelButton:hover {
+  background-color: var(--bisha-surface-container);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  .modalHeader h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 1rem;
+  }
+
+  .formActions {
+    flex-direction: column-reverse;
+  }
+
+  .submitButton,
+  .cancelButton {
+    width: 100%;
+  }
+}

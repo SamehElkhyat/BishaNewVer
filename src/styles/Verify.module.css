@@ -1,0 +1,221 @@
+/* ==========================================================================
+   Login verification code (2FA) — Material Design 3, green.
+   Mirrors the admin login screen's shell and navigation pattern.
+   ========================================================================== */
+
+.verifyContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: var(--bisha-surface-variant);
+}
+
+.verifyCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 28rem;
+  padding: clamp(1.75rem, 5vw, 2.5rem);
+  overflow: hidden;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius-lg);
+  box-shadow: var(--bisha-shadow-md);
+  animation: verifyFadeIn 0.4s ease-in-out;
+}
+
+.accentBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--bisha-primary);
+}
+
+.iconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-low);
+  border-radius: 9999px;
+}
+
+.verifyTitle {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.verifySubtitle {
+  margin: 0 0 1.75rem;
+  padding: 0 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--bisha-on-surface-variant);
+}
+
+.errorMessage,
+.infoMessage {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  font-weight: 500;
+  border-radius: 0.5rem;
+}
+
+.errorMessage {
+  color: var(--bisha-on-error-container);
+  background: var(--bisha-error-container);
+  border-inline-start: 4px solid var(--bisha-error);
+}
+
+.infoMessage {
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+  border-inline-start: 4px solid var(--bisha-secondary);
+}
+
+.verifyForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.otpRow {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.otpInput {
+  width: 3rem;
+  height: 3.5rem;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.otpInput:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 2px #dcebe7, inset 0 0 0 1px #3f8178;
+}
+
+.confirmButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--bisha-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: var(--bisha-shadow-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background: var(--bisha-secondary);
+  transform: translateY(-1px);
+}
+
+.confirmButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.buttonIcon {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.spinner {
+  animation: verifySpin 1s linear infinite;
+  margin-left: 8px;
+}
+
+.secondaryActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.resendButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bisha-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.resendButton:hover:not(:disabled) {
+  color: var(--bisha-primary);
+}
+
+.resendButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (min-width: 480px) {
+  .otpRow {
+    gap: 0.75rem;
+  }
+
+  .otpInput {
+    width: 3.25rem;
+    height: 4rem;
+  }
+}
+
+@keyframes verifySpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes verifyFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

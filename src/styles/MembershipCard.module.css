@@ -1,0 +1,1059 @@
+/* Premium Luxury Membership Card - Professional Design */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Visibility Class for Animations */
+.visible {
+  animation-play-state: running !important;
+}
+
+.adContainer {
+  width: 100%;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #f0f4f8 0%, #ffffff 50%, #fafbfc 100%);
+  padding: 3rem 4rem;
+  position: relative;
+  direction: rtl;
+  font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+  overflow: hidden;
+}
+
+.adContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(123, 104, 238, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Bisha Chamber Logo - Top Left */
+.chamberLogo {
+  position: absolute;
+  top: 2rem;
+  left: 3rem;
+  width: 150px;
+  height: 150px;
+  z-index: 10;
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12));
+  transition: transform 0.3s ease;
+}
+
+.logoImage:hover {
+  transform: scale(1.05);
+}
+
+/* Premium Badge */
+.premiumBadge {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.badgeShine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: shimmer 3s infinite;
+}
+
+.badgeText {
+  position: relative;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Benefits Text */
+.benefitsText {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.benefitsIcon {
+  color: #7B68EE;
+  font-size: 1.8rem;
+  animation: pulse 2s infinite;
+}
+
+/* Main Content */
+.mainContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3rem 0;
+  padding: 0 4rem;
+}
+
+.contentLeft {
+  flex: 1;
+  text-align: right;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.mainContent.visible .contentLeft {
+  opacity: 1;
+}
+
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.decorativeLine {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #FFD700, transparent);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.membershipHeader {
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -2px;
+  position: relative;
+}
+
+.headerGlow {
+  background: linear-gradient(135deg, #2d2d2d 0%, #4a4a4a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+}
+
+/* Hand Icon - Right Side */
+.handIconRight {
+  position: relative;
+  width: 300px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floatingAnimation {
+  animation: float 3s ease-in-out infinite;
+  width: 100%;
+  height: 100%;
+}
+
+.handIconRight.visible .floatingAnimation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.handGraphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.idCardGraphic {
+  width: 200px;
+  height: 130px;
+  background: linear-gradient(135deg, #8B7FEE 0%, #7B68EE 50%, #6A5ACD 100%);
+  border-radius: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-5deg);
+  box-shadow: 
+    0 15px 40px rgba(123, 104, 238, 0.5),
+    0 5px 15px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border: 4px solid #fff;
+  overflow: hidden;
+}
+
+.cardShine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+  animation: shimmer 4s infinite;
+  pointer-events: none;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.userIcon {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.cardLines {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.line {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+}
+
+.checkmarkBadge {
+  position: absolute;
+  top: 8%;
+  right: 8%;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 6px 20px rgba(76, 175, 80, 0.5),
+    0 0 0 4px white,
+    0 0 0 6px rgba(76, 175, 80, 0.3);
+  z-index: 2;
+}
+
+.checkmarkPulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(76, 175, 80, 0.4);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.checkmark {
+  position: relative;
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  z-index: 1;
+}
+
+/* 30+ Brands Section */
+.brandsSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.moreThanText {
+  font-size: 2.3rem;
+  font-weight: 600;
+  color: #2d2d2d;
+  letter-spacing: 0.5px;
+}
+
+.number30Container {
+  position: relative;
+  display: inline-block;
+}
+
+.number30 {
+  font-size: 12rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 30%, #FF8C00 60%, #FFD700 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(3px 6px 12px rgba(255, 165, 0, 0.6));
+  position: relative;
+  line-height: 0.85;
+  font-family: 'Arial Black', 'Impact', sans-serif;
+  text-shadow: 
+    4px 4px 0px rgba(255, 215, 0, 0.3),
+    8px 8px 0px rgba(255, 165, 0, 0.2);
+}
+
+.numberGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, transparent 70%);
+  animation: glow 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+.brandText {
+  font-size: 2.3rem;
+  font-weight: 600;
+  color: #2d2d2d;
+  letter-spacing: 0.5px;
+}
+
+/* CTA Section */
+.ctaSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3rem 0;
+  padding: 0 4rem;
+  gap: 3rem;
+}
+
+.mazayaLogo {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.logoGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(123, 104, 238, 0.2) 0%, transparent 70%);
+  animation: glow 3s ease-in-out infinite;
+  z-index: 0;
+}
+
+.logoText {
+  position: relative;
+  z-index: 1;
+  text-align: right;
+}
+
+.mazayaAr {
+  display: block;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #2d2d2d;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.mazayaEn {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6A5ACD;
+  font-style: normal;
+  letter-spacing: 1px;
+  margin-top: 0.2rem;
+}
+
+.ctaButton {
+  position: relative;
+  background: linear-gradient(135deg, #8B7FEE 0%, #7B68EE 50%, #6A5ACD 100%);
+  color: #FFFFFF;
+  font-size: 1.7rem;
+  font-weight: 700;
+  padding: 1.3rem 3.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 25px rgba(123, 104, 238, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.buttonShine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 3s infinite;
+}
+
+.buttonText {
+  position: relative;
+  z-index: 1;
+}
+
+.buttonIcon {
+  position: relative;
+  z-index: 1;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.ctaButton:hover {
+  background: linear-gradient(135deg, #7B68EE 0%, #6A5ACD 50%, #5B4BC4 100%);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 35px rgba(123, 104, 238, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ctaButton:hover .buttonIcon {
+  transform: translateX(-5px);
+}
+
+.ctaButton:active {
+  transform: translateY(-1px);
+}
+
+/* Logos Container - Premium Display */
+.logosContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  flex: 1;
+}
+
+.logosWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.logosRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  flex-wrap: nowrap;
+}
+
+.logoWrapper {
+  position: relative;
+  width: 65px;
+  height: 65px;
+  background: white;
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 
+    0 3px 10px rgba(0, 0, 0, 0.1),
+    0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.logoWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(123, 104, 238, 0.1) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.logoWrapper:hover {
+  transform: translateY(-5px) scale(1.08);
+  box-shadow: 
+    0 10px 25px rgba(123, 104, 238, 0.25),
+    0 5px 12px rgba(0, 0, 0, 0.12);
+}
+
+.logoWrapper:hover::before {
+  opacity: 1;
+}
+
+.brandLogo {
+  width: 55px !important;
+  height: 55px !important;
+  object-fit: contain;
+  filter: grayscale(0%);
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.logoWrapper:hover .brandLogo {
+  filter: brightness(1.1) contrast(1.05);
+  transform: scale(1.05);
+}
+
+/* Premium Footer */
+.footer {
+  margin-top: 4rem;
+  padding: 2rem 0;
+}
+
+.footerDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dividerLine {
+  flex: 1;
+  max-width: 300px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+
+.dividerDiamond {
+  font-size: 1.2rem;
+  color: #d4af37;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.footerContent {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 4rem;
+  gap: 3rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(248,249,250,0.8) 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.contactItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,249,250,1) 100%);
+}
+
+.contactIcon {
+  font-size: 1.5rem;
+  filter: grayscale(0.3);
+}
+
+.website {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2d2d2d;
+  letter-spacing: 0.3px;
+}
+
+.phone {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2d2d2d;
+  direction: ltr;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .adContainer {
+    padding: 2rem 2rem;
+  }
+
+  .chamberLogo {
+    width: 120px;
+    height: 120px;
+    top: 1.5rem;
+    left: 2rem;
+  }
+
+  .mainContent {
+    flex-direction: column;
+    padding: 0 2rem;
+  }
+
+  .membershipHeader {
+    font-size: 3rem;
+  }
+
+  .number30 {
+    font-size: 6rem;
+  }
+
+  .handIconRight {
+    width: 200px;
+    height: 180px;
+  }
+
+  .ctaSection {
+    padding: 0 2rem;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .mazayaLogo {
+    font-size: 2rem;
+  }
+
+  .logosRow {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .membershipHeader {
+    font-size: 2.5rem;
+  }
+
+  .brandsSection {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .number30 {
+    font-size: 5rem;
+  }
+
+  .moreThanText,
+  .brandText {
+    font-size: 1.5rem;
+  }
+
+  .handIconRight {
+    width: 180px;
+    height: 150px;
+  }
+
+  .idCardGraphic {
+    width: 140px;
+    height: 90px;
+  }
+
+  .ctaButton {
+    font-size: 1.4rem;
+    padding: 1rem 2rem;
+  }
+
+  .logosContainer {
+    width: 100%;
+  }
+
+  .logosRow {
+    gap: 0.4rem;
+  }
+
+  .brandLogo {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .footerContent {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .adContainer {
+    padding: 1.5rem 1rem;
+  }
+
+  .chamberLogo {
+    width: 90px;
+    height: 90px;
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .benefitsText {
+    font-size: 1rem;
+  }
+
+  .membershipHeader {
+    font-size: 2rem;
+  }
+
+  .number30 {
+    font-size: 4rem;
+  }
+
+  .moreThanText,
+  .brandText {
+    font-size: 1.2rem;
+  }
+
+  .mazayaLogo {
+    font-size: 1.8rem;
+  }
+
+  .mazayaEn {
+    font-size: 1.4rem;
+  }
+
+  .ctaButton {
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+  }
+
+  .logosRow {
+    gap: 0.3rem;
+  }
+
+  .brandLogo {
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  .handIconRight {
+    width: 150px;
+    height: 120px;
+  }
+
+  .idCardGraphic {
+    width: 110px;
+    height: 70px;
+  }
+
+  .checkmarkBadge {
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+  }
+}
+
+/* File Input Styles */
+.fileInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 16px;
+  color: #374151;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.fileInput:hover {
+  border-color: #3b82f6;
+  background: #f8fafc;
+}
+
+.fileInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.fileHint {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* PDF Preview Styles */
+.pdfPreview {
+  margin-top: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.pdfPreviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pdfPreviewHeader h4 {
+  margin: 0;
+  color: #374151;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.pdfActions {
+  display: flex;
+  gap: 8px;
+}
+
+.previewButton,
+.downloadButton,
+.removeButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.previewButton {
+  background: #3b82f6;
+  color: white;
+}
+
+.previewButton:hover {
+  background: #2563eb;
+}
+
+.downloadButton {
+  background: #10b981;
+  color: white;
+}
+
+.downloadButton:hover {
+  background: #059669;
+}
+
+.removeButton {
+  background: #ef4444;
+  color: white;
+}
+
+.removeButton:hover {
+  background: #dc2626;
+}
+
+.pdfViewer {
+  padding: 16px;
+  background: #ffffff;
+}
+
+.fileInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.fileName {
+  color: #374151;
+  font-weight: 500;
+  flex: 1;
+  margin-right: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileSize {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* More Info Button Styles - Professional Design */
+.moreInfoButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 32px;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1d4ed8 100%);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 8px 25px rgba(30, 58, 138, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  min-width: 200px;
+}
+
+.moreInfoButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.15), 
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.moreInfoButton::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+}
+
+.moreInfoButton:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 12px 35px rgba(30, 58, 138, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.moreInfoButton:hover::before {
+  left: 100%;
+}
+
+.moreInfoButton:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.moreInfoButton:active {
+  transform: translateY(-1px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+.moreInfoIcon {
+  font-size: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.moreInfoText {
+  font-family: 'Cairo', sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes gentlePulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .moreInfoButton {
+    padding: 14px 28px;
+    font-size: 15px;
+    min-width: 180px;
+    gap: 10px;
+  }
+  
+  .moreInfoIcon {
+    font-size: 18px;
+  }
+}

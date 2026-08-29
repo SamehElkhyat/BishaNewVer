@@ -1072,3 +1072,51 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+/* ---- Permissions page: catalogue of assignable permissions ---- */
+.catalogueBlock {
+  margin-bottom: 1.75rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--bisha-surface-low);
+  border: 1px solid var(--bisha-surface-variant);
+  border-radius: var(--bisha-radius);
+}
+
+.catalogueTitle {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+}
+
+.catalogueChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.catalogueChip {
+  padding: 0.3rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+  border-radius: 9999px;
+}
+
+.catalogueEmpty {
+  font-size: 0.85rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.catalogueActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.catalogueActions .cancelButton {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+}

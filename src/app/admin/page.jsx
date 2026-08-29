@@ -13,9 +13,48 @@ import {
   FaBullhorn,
   FaBars,
   FaTimes,
+  FaUserShield,
+  FaUserTie,
+  FaClipboardList,
+  FaCheckDouble,
 } from "react-icons/fa";
 import Link from "next/link";
 import axios from "axios";
+import { permissionsAPI } from "../../services/api";
+import {
+  normalizePermissions,
+  buildPermissionSet,
+  hasAnyPermission,
+} from "../../utils/permissions";
+
+// Aliases so gating works whether the API returns permission keys or Arabic names
+const ALIAS = {
+  complaints: [
+    "GetContact",
+    "Contact",
+    "GetComplaints",
+    "تسجيل والاطلاع على الشكاوي",
+    "الاطلاع على الشكاوي",
+    "الشكاوي",
+  ],
+  news: [
+    "AddNewsPaper",
+    "AddNews",
+    "News",
+    "NewsPaper",
+    "إضافة الأخبار",
+    "تعديل الأخبار",
+    "حذف الأخبار",
+  ],
+  users: ["GetAllUsers", "GetUsers", "Users", "Clients", "عملاء"],
+  manageRoles: [
+    "ChangeRoles",
+    "Change-Roles",
+    "GetAllPermissions",
+    "Permissions",
+    "تغيير صلاحيات",
+  ],
+};
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -26,70 +65,9 @@ const AdminDashboard = () => {
     ID: null,
     role: null,
   });
+  const [myPermissions, setMyPermissions] = useState([]);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [counts, setCounts] = useState();
-  const navItems = [
-    {
-      permission: "GetContact",
-      links: [
-        {
-          href: "/admin",
-          label: "لوحة التحكم",
-          icon: <FaChartBar />,
-        },
-        {
-          href: "/admin/contact",
-          label: "الاطلاع علي الشكاوي",
-          icon: <FaUserPlus />,
-        },
-        {
-          href: "/admin/contact/edit",
-          label: "تعديل البيانات تواصل معنا",
-          icon: <FaUserPlus />,
-        },
-        {
-          href: "/admin/board",
-          label: "تعديل المجلس الاداري",
-          icon: <FaUserPlus />,
-        },
-        {
-          href: "/admin/generalSecrtery",
-          label: "تعديل المسؤول العام",
-          icon: <FaUserPlus />,
-        },
-        {
-          href: "/admin/general-assembly",
-          label: "إدارة الجمعية العمومية",
-          icon: <FaUserPlus />,
-        },
-        {
-          href: "/admin/voting-dashboard",
-          label: "نتائج التصويت",
-          icon: <FaChartBar />,
-        },
-      ],
-    },
-    {
-      permission: "AddNewsPaper",
-      links: [
-        {
-          href: "/admin/news",
-          label: "إدارة الأخبار والاعلانات",
-          icon: <FaNewspaper />,
-        },
-      ],
-    },
-    {
-      permission: "GetAllUsers",
-      links: [
-        {
-          href: "/admin/clients",
-          label: "إدارة العملاء",
-          icon: <FaUsers />,
-        },
-      ],
-    },
-  ];
 
   const GetAllCounts = async () => {
     // const token = localStorage.getItem("auth_token");
@@ -100,7 +78,6 @@ const AdminDashboard = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/Admin/Count`,
         {
           withCredentials: true,
-
         }
       );
       setCounts(response.data);
@@ -112,6 +89,15 @@ const AdminDashboard = () => {
     }
   };
 
+  // Permissions granted to the signed-in admin (drives what the UI exposes)
+  const GetMyPermissions = async () => {
+    try {
+      const res = await permissionsAPI.getMine();
+      setMyPermissions(normalizePermissions(res));
+    } catch (error) {
+      console.error("Failed to load permissions:", error);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -126,6 +112,7 @@ const AdminDashboard = () => {
       // }
 
       GetAllCounts();
+      GetMyPermissions();
     }
 
     setLoading(false);
@@ -140,6 +127,17 @@ const AdminDashboard = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
+  const closeMobile = () => setIsMobileSidebarOpen(false);
+
+  // ---- Permission gating -------------------------------------------------
+  const permSet = buildPermissionSet(
+    myPermissions,
+    Array.isArray(decodedToken?.Permission) ? decodedToken.Permission : []
+  );
+  const knowsPerms = permSet.size > 0;
+  // Permissive when we truly know nothing; otherwise honour the list.
+  const can = (aliases) => !knowsPerms || hasAnyPermission(permSet, aliases);
+
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
@@ -148,6 +146,19 @@ const AdminDashboard = () => {
       </div>
     );
   }
+
+  const navLinks = [
+    { show: true, href: "/admin", label: "لوحة التحكم", icon: <FaChartBar />, active: true },
+    { show: can(ALIAS.news), href: "/admin/news", label: "إدارة الأخبار والاعلانات", icon: <FaNewspaper /> },
+    { show: can(ALIAS.complaints), href: "/admin/contact", label: "الاطلاع علي الشكاوي", icon: <FaClipboardList /> },
+    { show: can(ALIAS.complaints), href: "/admin/contact/edit", label: "تعديل البيانات تواصل معنا", icon: <FaUserPlus /> },
+    { show: can(ALIAS.complaints), href: "/admin/board", label: "تعديل المجلس الاداري", icon: <FaUserTie /> },
+    { show: can(ALIAS.complaints), href: "/admin/generalSecrtery", label: "تعديل المسؤول العام", icon: <FaUserTie /> },
+    { show: can(ALIAS.complaints), href: "/admin/general-assembly", label: "إدارة الجمعية العمومية", icon: <FaUsers /> },
+    { show: can(ALIAS.complaints), href: "/admin/voting-dashboard", label: "نتائج التصويت", icon: <FaCheckDouble /> },
+    { show: can(ALIAS.users), href: "/admin/clients", label: "إدارة العملاء", icon: <FaUsers /> },
+    { show: can(ALIAS.manageRoles), href: "/admin/permissions", label: "إدارة صلاحيات المستخدمين", icon: <FaUserShield /> },
+  ];
 
   return (
     <AdminRoute>
@@ -174,8 +185,9 @@ const AdminDashboard = () => {
 
         {/* Sidebar */}
         <div
-          className={`${styles.sidebar} ${isMobileSidebarOpen ? styles.sidebarOpen : ""
-            }`}
+          className={`${styles.sidebar} ${
+            isMobileSidebarOpen ? styles.sidebarOpen : ""
+          }`}
         >
           {/* Mobile Close Button */}
           <div className={styles.mobileCloseContainer}>
@@ -214,64 +226,19 @@ const AdminDashboard = () => {
           <div className={styles.navLabel}>القائمة الرئيسية</div>
 
           <nav className={styles.adminNav}>
-            {decodedToken?.Permission?.map?.((item, index) => {
-              return (
-                <div key={`nav-${item}-${index}`}>
-                  {item === "GetContact" && (
-                    <Link
-                      href="/admin"
-                      className={`${styles.navLink} ${styles.active}`}
-                      onClick={() => setIsMobileSidebarOpen(false)}
-                    >
-                      <FaChartBar className={styles.navIcon} />
-                      <span>لوحة التحكم</span>
-                    </Link>
-                  )}
-                  {item === "AddNewsPaper" && (
-                    <Link
-                      href="/admin/news"
-                      className={styles.navLink}
-                      onClick={() => setIsMobileSidebarOpen(false)}
-                    >
-                      <FaNewspaper className={styles.navIcon} />
-                      <span>إدارة الأخبار والاعلانات</span>
-                    </Link>
-                  )}
-                  {item === "GetAllUsers" &&
-                    decodedToken?.ID ===
-                    "de902473-e179-4364-bff1-7e7abeab6868" && (
-                      <Link
-                        href="/admin/clients"
-                        className={styles.navLink}
-                        onClick={() => setIsMobileSidebarOpen(false)}
-                      >
-                        <FaUsers className={styles.navIcon} />
-                        <span>إدارة العملاء</span>
-                      </Link>
-                    )}
-                  {item === "GetContact" && (
-                    <Link
-                      href="/admin/contact"
-                      className={styles.navLink}
-                      onClick={() => setIsMobileSidebarOpen(false)}
-                    >
-                      <FaUserPlus className={styles.navIcon} />
-                      <span>الاطلاع علي الشكاوي</span>
-                    </Link>
-                  )}
-                  {item === "GetContact" && (
-                    <Link
-                      href="/admin/contact/edit"
-                      className={styles.navLink}
-                      onClick={() => setIsMobileSidebarOpen(false)}
-                    >
-                      <FaUserPlus className={styles.navIcon} />
-                      <span>تعديل البيانات تواصل معنا</span>
-                    </Link>
-                  )}
-                </div>
-              );
-            })}
+            {navLinks
+              .filter((l) => l.show)
+              .map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className={`${styles.navLink} ${l.active ? styles.active : ""}`}
+                  onClick={closeMobile}
+                >
+                  <span className={styles.navIcon}>{l.icon}</span>
+                  <span>{l.label}</span>
+                </Link>
+              ))}
           </nav>
 
           <div className={styles.sidebarFooter}>
@@ -287,6 +254,7 @@ const AdminDashboard = () => {
             <h1>مرحباً بك في لوحة تحكم غرفة بيشة</h1>
             <p>نظرة عامة على نشاط الغرفة ومحتواها الرقمي</p>
           </div>
+
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
               <div className={styles.statIcon}>
@@ -315,6 +283,27 @@ const AdminDashboard = () => {
                 <p>الاعلانات</p>
               </div>
             </div>
+          </div>
+
+          {/* Signed-in admin's own permissions */}
+          <div className={styles.permPanel}>
+            <div className={styles.permPanelHead}>
+              <FaUserShield className={styles.permPanelIcon} />
+              <span className={styles.permPanelTitle}>صلاحياتك الحالية</span>
+            </div>
+            {myPermissions.length > 0 ? (
+              <div className={styles.permChips}>
+                {myPermissions.map((p) => (
+                  <span key={p.key} className={styles.permChip}>
+                    {p.name}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className={styles.permEmpty}>
+                لا توجد صلاحيات محددة أو تعذّر تحميلها.
+              </p>
+            )}
           </div>
 
           <section className={styles.contentGrid}>
@@ -408,44 +397,19 @@ const AdminDashboard = () => {
           <div className={styles.quickActions}>
             <h2>إجراءات سريعة</h2>
             <div className={styles.actionCards}>
-              {Array.isArray(decodedToken?.Permission) &&
-                navItems.map(
-                  ({ permission, links }) =>
-                    decodedToken.Permission.includes(permission) &&
-                    links.map(({ href, label, icon }, index) => {
-                      // Show client management only for specific user
-                      if (
-                        permission === "GetAllUsers" &&
-                        decodedToken?.ID !==
-                        "de902473-e179-4364-bff1-7e7abeab6868"
-                      ) {
-                        return null;
-                      }
-
-                      // Show board and general secretary only for specific user
-                      if (
-                        permission === "GetContact" &&
-                        (href === "/admin/board" ||
-                          href === "/admin/generalSecrtery") &&
-                        decodedToken?.ID !==
-                        "de902473-e179-4364-bff1-7e7abeab6868"
-                      ) {
-                        return null;
-                      }
-
-                      return (
-                        <Link
-                          key={`${permission}-${index}`}
-                          href={href}
-                          className={styles.navLink}
-                          onClick={() => setIsMobileSidebarOpen(false)}
-                        >
-                          <span className={styles.navIcon}>{icon}</span>
-                          <span>{label}</span>
-                        </Link>
-                      );
-                    })
-                )}
+              {navLinks
+                .filter((l) => l.show && !l.active)
+                .map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className={styles.navLink}
+                    onClick={closeMobile}
+                  >
+                    <span className={styles.navIcon}>{l.icon}</span>
+                    <span>{l.label}</span>
+                  </Link>
+                ))}
             </div>
           </div>
         </div>

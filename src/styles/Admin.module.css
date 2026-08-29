@@ -292,6 +292,55 @@
   opacity: 0.45;
 }
 
+/* ---- "Your permissions" panel ---- */
+.permPanel {
+  margin-bottom: 18px;
+  padding: 18px 22px;
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--admin-outline);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--admin-shadow);
+}
+
+.permPanelHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.permPanelIcon {
+  font-size: 1rem;
+  color: var(--bisha-primary);
+}
+
+.permPanelTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--bisha-primary);
+}
+
+.permChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.permChip {
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+  border-radius: 9999px;
+}
+
+.permEmpty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--bisha-on-surface-variant);
+}
+
 /* ---- Content grid (analytics) ---- */
 .contentGrid {
   display: grid;

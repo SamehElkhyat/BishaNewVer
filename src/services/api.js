@@ -120,6 +120,30 @@ export const authAPI = {
   },
 };
 
+// Permissions APIs
+export const permissionsAPI = {
+  // Permissions granted to the currently signed-in admin
+  getMine: async () => {
+    return fetchAPI("/Register/My-Permissions");
+  },
+
+  // Full catalogue of assignable permissions
+  getAll: async () => {
+    return fetchAPI("/Register/Get-All-Permissions");
+  },
+
+  // Replace a user's permission set
+  changeUserRoles: async (userId, permissionName) => {
+    return fetchAPI("/Admin/Change-Roles", {
+      method: "POST",
+      body: JSON.stringify({
+        userId: String(userId),
+        permissionName: Array.isArray(permissionName) ? permissionName : [],
+      }),
+    });
+  },
+};
+
 // Verification (2FA) APIs
 export const verifyAPI = {
   verifyCode: async (code, typeOfGenerate = "VerifyLogin") => {

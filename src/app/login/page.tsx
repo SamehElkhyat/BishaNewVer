@@ -103,7 +103,14 @@ const LoginPage = () => {
               <input type="checkbox" />
               <span>تذكرني</span>
             </label>
-            <Link href="/contact" className={styles.forgotLink}>
+            <Link
+              href={
+                email
+                  ? `/forgot-password?email=${encodeURIComponent(email)}`
+                  : "/forgot-password"
+              }
+              className={styles.forgotLink}
+            >
               نسيت كلمة المرور؟
             </Link>
           </div>

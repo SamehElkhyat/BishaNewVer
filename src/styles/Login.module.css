@@ -100,6 +100,50 @@
   border-inline-start: 4px solid var(--bisha-error);
 }
 
+.infoMessage {
+  margin-bottom: 1.25rem;
+  padding: 0.8rem 1rem;
+  text-align: center;
+  font-weight: 500;
+  color: var(--bisha-on-secondary-container);
+  background: var(--bisha-secondary-container);
+  border-radius: 0.5rem;
+  border-inline-start: 4px solid var(--bisha-secondary);
+}
+
+/* Success confirmation state (forgot / reset password) */
+.confirmState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0 0.25rem;
+}
+
+.confirmIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+  color: var(--bisha-primary);
+  background: var(--bisha-secondary-container);
+  border-radius: 9999px;
+}
+
+.confirmState p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--bisha-on-surface-variant);
+}
+
+.confirmState strong {
+  color: var(--bisha-on-surface);
+}
+
 .loginForm {
   display: flex;
   flex-direction: column;
@@ -200,6 +244,7 @@
   font-size: 0.95rem;
   font-weight: 700;
   color: #fff;
+  text-decoration: none;
   background: var(--bisha-primary-container);
   border: none;
   border-radius: 0.5rem;

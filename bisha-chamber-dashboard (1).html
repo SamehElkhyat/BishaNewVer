@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم غرفة بيشة التجارية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary: #0B5D56;
+    --primary-deep: #00443E;
+    --secondary: #246960;
+    --secondary-teal: #3F8178;
+    --secondary-container: #A9ECE1;
+    --soft-green: #DCEBE7;
+    --background: #F8FAF9;
+    --surface: #FFFFFF;
+    --surface-low: #EDF4FF;
+    --on-surface: #1F2933;
+    --on-surface-variant: #5B6B67;
+    --outline: #E1E8E6;
+    --error: #BA1A1A;
+    --error-container: #FFDAD6;
+    --shadow-tint: rgba(11,93,86,.10);
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{
+    font-family:'IBM Plex Sans Arabic',sans-serif;
+    background:var(--background);
+    color:var(--on-surface);
+    direction:rtl;
+    line-height:1.4;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--secondary-container);color:var(--primary-deep)}
+
+  .app{display:flex;height:100vh}
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    width:272px;flex:0 0 272px;
+    background:var(--surface);
+    border-left:1px solid var(--outline);
+    display:flex;flex-direction:column;
+    padding:24px 20px;
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+  }
+  .brand{display:flex;align-items:center;gap:12px;padding:4px 4px 20px;border-bottom:1px solid var(--outline);margin-bottom:20px}
+  .brand-mark{
+    width:44px;height:44px;border-radius:12px;
+    background:linear-gradient(155deg,var(--primary),var(--primary-deep));
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .brand-name{font-size:15px;font-weight:700;color:var(--primary-deep)}
+  .brand-sub{font-size:11px;color:var(--on-surface-variant);font-weight:500;letter-spacing:.02em}
+
+  .profile-card{
+    display:flex;align-items:center;gap:12px;
+    background:var(--soft-green);
+    border-radius:var(--radius-lg);
+    padding:12px;margin-bottom:24px;
+  }
+  .avatar{
+    width:42px;height:42px;border-radius:50%;flex:0 0 auto;
+    background:linear-gradient(155deg,var(--secondary-teal),var(--primary));
+    display:flex;align-items:center;justify-content:center;color:#fff;
+  }
+  .profile-name{font-size:14px;font-weight:600;color:var(--primary-deep)}
+  .profile-role{font-size:11.5px;color:var(--on-surface-variant)}
+
+  .nav-label{font-size:11px;font-weight:600;color:var(--on-surface-variant);letter-spacing:.04em;margin:18px 8px 8px;text-transform:uppercase}
+  .nav-label:first-of-type{margin-top:0}
+  nav a{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 12px;border-radius:10px;
+    color:var(--on-surface);text-decoration:none;
+    font-size:14px;font-weight:500;
+    transition:background .15s ease, color .15s ease;
+  }
+  nav a svg{flex:0 0 auto;opacity:.75}
+  nav a:hover{background:var(--surface-low)}
+  nav a.active{background:var(--primary);color:#fff;box-shadow:0 6px 16px var(--shadow-tint)}
+  nav a.active svg{opacity:1}
+  .badge{
+    margin-right:auto;background:var(--error-container);color:var(--error);
+    font-size:10.5px;font-weight:700;border-radius:99px;padding:1px 7px;
+  }
+  nav a.active .badge{background:rgba(255,255,255,.24);color:#fff}
+
+  .sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--outline)}
+  .logout{color:var(--error) !important;font-weight:600}
+
+  /* ---------- MAIN ---------- */
+  .main{flex:1;min-width:0;height:100vh;overflow:hidden;padding:22px 32px;display:flex;flex-direction:column}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .breadcrumb{font-size:13px;color:var(--on-surface-variant);font-weight:500}
+  .breadcrumb b{color:var(--primary-deep)}
+  .topbar-actions{display:flex;align-items:center;gap:12px}
+  .icon-btn{
+    width:38px;height:38px;border-radius:10px;background:var(--surface);
+    border:1px solid var(--outline);display:flex;align-items:center;justify-content:center;
+    color:var(--on-surface-variant);cursor:pointer;
+  }
+  .date-chip{font-size:12.5px;background:var(--surface);border:1px solid var(--outline);color:var(--on-surface-variant);
+    padding:8px 14px;border-radius:99px;font-weight:500}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    background:linear-gradient(120deg,var(--primary-deep) 0%,var(--primary) 62%,var(--secondary-teal) 100%);
+    border-radius:20px;padding:34px 38px;color:#fff;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    box-shadow:0 18px 38px var(--shadow-tint);
+    margin-bottom:22px;
+  }
+  .hero-text h1{font-size:28px;font-weight:700;margin-bottom:8px}
+  .hero-text p{font-size:14.5px;color:rgba(255,255,255,.82);max-width:440px;font-weight:400}
+  .hero-illustration{flex:0 0 auto;width:180px;height:120px;position:relative;z-index:1}
+  .sadu-band{position:absolute;inset-inline:0;bottom:0;height:14px;opacity:.9}
+
+  /* ---------- STATS ---------- */
+  .stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:18px;flex:0 0 auto}
+  .stat-card{
+    background:var(--surface);border:1px solid var(--outline);border-radius:var(--radius-lg);
+    padding:20px;display:flex;flex-direction:column;gap:14px;
+    box-shadow:0 4px 20px var(--shadow-tint);
+    position:relative;overflow:hidden;
+  }
+  .stat-top{display:flex;align-items:flex-start;justify-content:space-between}
+  .stat-illustration{width:56px;height:56px}
+  .stat-value{font-size:34px;font-weight:700;color:var(--primary-deep);line-height:1}
+  .stat-label{font-size:13.5px;color:var(--on-surface-variant);font-weight:500;margin-top:6px}
+  .stat-trend{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--primary)}
+  .stat-trend.down{color:var(--error)}
+  .stat-sparkline{width:100%;height:34px}
+
+  /* ---------- CONTENT GRID ---------- */
+  .content-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:18px;align-items:stretch;flex:1;min-height:0}
+
+  .panel{
+    background:var(--surface);border:1px solid var(--outline);border-radius:var(--radius-lg);
+    padding:20px 22px;box-shadow:0 4px 20px var(--shadow-tint);
+    display:flex;flex-direction:column;min-height:0;
+  }
+  .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .panel-title{font-size:16px;font-weight:600;color:var(--primary-deep)}
+  .panel-sub{font-size:12.5px;color:var(--on-surface-variant);margin-bottom:10px}
+  .legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-left:6px}
+
+  .chart-wrap{flex:1;min-height:0;margin-top:8px}
+  .chart-legend{display:flex;align-items:center;gap:22px;justify-content:center;margin-top:4px}
+  .chart-legend-item{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--on-surface-variant);font-weight:500}
+
+  .side-col{display:flex;flex-direction:column;gap:18px;min-height:0}
+  .side-col .panel{flex:1;min-height:0}
+
+  .donut-wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}
+  .donut-wrap svg{display:block}
+  .donut-center{position:absolute;text-align:center}
+  .donut-center b{display:block;font-size:22px;color:var(--primary-deep)}
+  .donut-center span{font-size:11px;color:var(--on-surface-variant)}
+  .donut-legend{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .donut-legend-row{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--on-surface-variant)}
+  .donut-legend-row b{color:var(--on-surface);font-weight:600}
+
+  .actions-panel .panel-title{margin-bottom:2px}
+  .actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .action-tile{
+    display:flex;flex-direction:column;gap:10px;align-items:flex-start;
+    background:var(--surface-low);border-radius:12px;padding:14px;
+    text-decoration:none;color:var(--on-surface);
+    border:1px solid transparent;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .action-tile:hover{border-color:var(--secondary-teal);background:var(--soft-green);transform:translateY(-2px)}
+  .action-icon{
+    width:34px;height:34px;border-radius:9px;background:var(--secondary-container);
+    display:flex;align-items:center;justify-content:center;color:var(--primary-deep);
+  }
+  .action-tile span{font-size:12.5px;font-weight:600;line-height:1.35}
+
+  @media (max-width:1080px){
+    html,body{overflow:auto}
+    .main{height:auto;overflow:visible}
+    .content-grid{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:repeat(3,1fr)}
+  }
+  @media (max-width:900px){
+    html,body{overflow:auto}
+    .app{flex-direction:column;height:auto}
+    .sidebar{position:relative;height:auto;width:100%;flex:none;border-left:none;border-bottom:1px solid var(--outline)}
+    .main{height:auto;overflow:visible;padding:22px 18px 40px}
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .content-grid{min-height:auto}
+    .chart-wrap{min-height:220px}
+    .donut-wrap{min-height:170px}
+  }
+  @media (max-width:600px){
+    .main{padding:16px 14px 32px}
+    .sidebar{padding:18px 16px}
+    .stats-grid{grid-template-columns:1fr;gap:12px}
+    .stat-card{padding:16px}
+    .panel{padding:16px 18px}
+    .brand-name{font-size:13.5px}
+    .nav-label{margin:14px 8px 6px}
+    nav a{font-size:13.5px;padding:9px 10px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20V10L12 4L20 10V20" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 20V14H15V20" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">غرفة بيشة التجارية</div>
+        <div class="brand-sub">لوحة التحكم الإدارية</div>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <div class="avatar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#fff" stroke-width="1.8"/><path d="M5 19.5C5 16 8 14 12 14C16 14 19 16 19 19.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="profile-name">مدير النظام</div>
+        <div class="profile-role">صلاحية كاملة</div>
+      </div>
+    </div>
+
+    <div class="nav-label">الرئيسية</div>
+    <nav>
+      <a href="#" class="active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.6" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="5" rx="1.6" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="12" width="7" height="9" rx="1.6" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="16" width="7" height="5" rx="1.6" stroke="currentColor" stroke-width="1.8"/></svg>
+        لوحة التحكم
+      </a>
+    </nav>
+
+    <div class="nav-label">المحتوى</div>
+    <nav>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="14" height="14" rx="1.6" stroke="currentColor" stroke-width="1.8"/><path d="M7 9H13M7 12.5H13M17 8V17.5C17 18.5 17.8 19 18.6 18.6L21 17.4V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        إدارة الأخبار والإعلانات
+      </a>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 10H21" stroke="currentColor" stroke-width="1.8"/><path d="M8 3V7M16 3V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        إدارة الفعاليات
+      </a>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 3H14L19 8V19C19 20.1 18.1 21 17 21H6C5.9 21 5 20.1 5 19V5C5 3.9 5.9 3 6 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 3V8H19" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 12H15.5M8.5 15.5H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        إدارة التعاميم
+      </a>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 5H16.5C18 5 19 6 19 7.5V13.5C19 15 18 16 16.5 16H10L5.5 19.5V16H4C2.9 16 2 15 2 13.5V7.5C2 6 2.9 5 4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M6 9H15M6 12H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        الاطلاع على الشكاوي
+      </a>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 8.5L12 14L21 8.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5.5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>
+        تعديل بيانات تواصل معنا
+      </a>
+    </nav>
+
+    <div class="nav-label">الحوكمة</div>
+    <nav>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20V10L12 4L20 10V20" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 20V13H16V20" stroke="currentColor" stroke-width="1.7"/></svg>
+        تعديل المجلس الإداري
+      </a>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="9" r="2.6" stroke="currentColor" stroke-width="1.7"/><circle cx="16" cy="9" r="2.6" stroke="currentColor" stroke-width="1.7"/><path d="M3 19C3 15.8 5.2 14 8 14C10.8 14 13 15.8 13 19M12 19C12 15.8 14.2 14 17 14C19.8 14 21 16 21 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        إدارة الجمعية العمومية
+      </a>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 12.5L11 15.5L16.5 9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/></svg>
+        نتائج التصويت
+      </a>
+    </nav>
+
+    <div class="nav-label">المستخدمون</div>
+    <nav>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 19C3.5 15.7 6 13.5 9 13.5C12 13.5 14.5 15.7 14.5 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M16 8.3C17 8.7 17.7 9.6 17.7 10.8C17.7 12 17 12.9 16 13.3M18 19C18 16.5 17 15 15.3 14.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        إدارة العملاء
+      </a>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M5.5 19.5C5.5 16 8.4 14 12 14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="18" cy="17.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M18 16.2V17.5L19 18.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        تعديل المسؤول العام
+      </a>
+    </nav>
+
+    <div class="nav-label">النظام</div>
+    <nav>
+      <a href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 9V13L15 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 6.5L6.5 8.5M19.5 6.5L17.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        سجل النشاطات
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <nav>
+        <a href="#" class="logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 4H8C6.9 4 6 4.9 6 6V18C6 19.1 6.9 20 8 20H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M11 12H21M21 12L17.5 8.5M21 12L17.5 15.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          تسجيل الخروج
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+
+    <!-- STATS -->
+    <section class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <svg class="stat-illustration" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" fill="var(--soft-green)"/>
+            <path d="M17 24V32L24 33.5V22.5L17 24Z" fill="var(--secondary-container)" stroke="var(--primary)" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M24 22.5L38 17V39L24 33.5" stroke="var(--primary)" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+            <path d="M20 33.5L22 39.5C22.4 40.6 23.9 40.9 24.7 40L26 38.5" stroke="var(--primary-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="33" cy="28" r="1.6" fill="var(--primary-deep)"/>
+          </svg>
+          <div class="stat-trend"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 16L10 10L14 14L20 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>+12%</div>
+        </div>
+        <div>
+          <div class="stat-value">45</div>
+          <div class="stat-label">الإعلانات</div>
+        </div>
+        <svg class="stat-sparkline" viewBox="0 0 160 34" preserveAspectRatio="none">
+          <polyline points="0,26 20,22 40,24 60,16 80,18 100,10 120,14 140,6 160,8" fill="none" stroke="var(--primary)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <svg class="stat-illustration" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" fill="var(--soft-green)"/>
+            <rect x="16" y="16" width="20" height="24" rx="2" fill="#fff" stroke="var(--primary)" stroke-width="1.6"/>
+            <rect x="20" y="12" width="20" height="24" rx="2" fill="var(--secondary-container)" stroke="var(--primary)" stroke-width="1.6"/>
+            <path d="M24 18H36M24 22H36M24 26H31" stroke="var(--primary-deep)" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <div class="stat-trend"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 16L10 10L14 14L20 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>+9%</div>
+        </div>
+        <div>
+          <div class="stat-value">78</div>
+          <div class="stat-label">الأخبار</div>
+        </div>
+        <svg class="stat-sparkline" viewBox="0 0 160 34" preserveAspectRatio="none">
+          <polyline points="0,24 20,18 40,20 60,10 80,14 100,6 120,10 140,4 160,6" fill="none" stroke="var(--primary)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <svg class="stat-illustration" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" fill="var(--soft-green)"/>
+            <path d="M20 14H32L38 20V40C38 41.1 37.1 42 36 42H20C18.9 42 18 41.1 18 40V16C18 14.9 18.9 14 20 14Z" fill="#fff" stroke="var(--primary)" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M32 14V20H38" stroke="var(--primary)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            <path d="M22.5 26H33.5M22.5 30.5H33.5M22.5 35H29" stroke="var(--primary-deep)" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <div class="stat-trend"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 16L10 10L14 14L20 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>+5%</div>
+        </div>
+        <div>
+          <div class="stat-value">21</div>
+          <div class="stat-label">التعاميم</div>
+        </div>
+        <svg class="stat-sparkline" viewBox="0 0 160 34" preserveAspectRatio="none">
+          <polyline points="0,25 20,23 40,19 60,20 80,15 100,17 120,10 140,12 160,6" fill="none" stroke="var(--primary)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <svg class="stat-illustration" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" fill="var(--soft-green)"/>
+            <rect x="16" y="17" width="24" height="21" rx="3" fill="#fff" stroke="var(--primary)" stroke-width="1.6"/>
+            <rect x="16" y="17" width="24" height="7" rx="3" fill="var(--secondary-container)" stroke="var(--primary)" stroke-width="1.6"/>
+            <path d="M22 14V19M34 14V19" stroke="var(--primary-deep)" stroke-width="1.7" stroke-linecap="round"/>
+            <circle cx="22.5" cy="30" r="1.5" fill="var(--primary)"/>
+            <circle cx="28" cy="30" r="1.5" fill="var(--secondary-teal)"/>
+            <circle cx="33.5" cy="30" r="1.5" fill="var(--primary)"/>
+            <circle cx="22.5" cy="34.5" r="1.5" fill="var(--secondary-teal)"/>
+          </svg>
+          <div class="stat-trend"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 16L10 10L14 14L20 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>+2</div>
+        </div>
+        <div>
+          <div class="stat-value">4</div>
+          <div class="stat-label">الفعاليات</div>
+        </div>
+        <svg class="stat-sparkline" viewBox="0 0 160 34" preserveAspectRatio="none">
+          <polyline points="0,20 20,20 40,14 60,14 80,12 100,12 120,8 140,8 160,4" fill="none" stroke="var(--primary)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <svg class="stat-illustration" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" fill="var(--soft-green)"/>
+            <circle cx="22" cy="24" r="5" fill="var(--secondary-container)" stroke="var(--primary)" stroke-width="1.6"/>
+            <circle cx="34" cy="26" r="4" fill="#fff" stroke="var(--secondary-teal)" stroke-width="1.5"/>
+            <path d="M13 40C13 33.5 17 30 22 30C27 30 31 33.5 31 40" stroke="var(--primary)" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+            <path d="M30 32C34.2 32 37 34.9 37 40" stroke="var(--secondary-teal)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div class="stat-trend"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 16L10 10L14 14L20 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>+3</div>
+        </div>
+        <div>
+          <div class="stat-value">12</div>
+          <div class="stat-label">المستخدمين</div>
+        </div>
+        <svg class="stat-sparkline" viewBox="0 0 160 34" preserveAspectRatio="none">
+          <polyline points="0,22 20,20 40,16 60,18 80,12 100,14 120,8 140,10 160,4" fill="none" stroke="var(--primary)" stroke-width="2"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="content-grid">
+
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">نشاط الغرفة خلال ٦ أشهر</div>
+        </div>
+        <div class="panel-sub">مقارنة الإعلانات والأخبار المنشورة شهرياً</div>
+        <div class="chart-wrap"><svg viewBox="0 0 320 150" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <line x1="20" y1="20" x2="20" y2="110" stroke="var(--outline)" stroke-width="1"/>
+          <line x1="20" y1="110" x2="300" y2="110" stroke="var(--outline)" stroke-width="1"/>
+          <line x1="20" y1="65" x2="300" y2="65" stroke="var(--outline)" stroke-width="1" stroke-dasharray="3 4"/>
+          <path d="M20,67.6 L76,59.2 L132,51.8 L188,44.4 L244,35.9 L300,27.4 L300,110 L20,110 Z" fill="var(--primary)" opacity=".10"/>
+          <path d="M20,86.7 L76,82.5 L132,78.2 L188,74 L244,67.6 L300,62.4 L300,110 L20,110 Z" fill="var(--secondary-teal)" opacity=".10"/>
+          <polyline points="20,67.6 76,59.2 132,51.8 188,44.4 244,35.9 300,27.4" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="20,86.7 76,82.5 132,78.2 188,74 244,67.6 300,62.4" fill="none" stroke="var(--secondary-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="var(--primary)">
+            <circle cx="20" cy="67.6" r="3"/><circle cx="76" cy="59.2" r="3"/><circle cx="132" cy="51.8" r="3"/>
+            <circle cx="188" cy="44.4" r="3"/><circle cx="244" cy="35.9" r="3"/><circle cx="300" cy="27.4" r="3"/>
+          </g>
+          <g fill="var(--secondary-teal)">
+            <circle cx="20" cy="86.7" r="3"/><circle cx="76" cy="82.5" r="3"/><circle cx="132" cy="78.2" r="3"/>
+            <circle cx="188" cy="74" r="3"/><circle cx="244" cy="67.6" r="3"/><circle cx="300" cy="62.4" r="3"/>
+          </g>
+          <g fill="var(--on-surface-variant)" font-size="10.5" font-family="'IBM Plex Sans Arabic',sans-serif" text-anchor="middle">
+            <text x="20" y="128">مارس</text><text x="76" y="128">أبريل</text><text x="132" y="128">مايو</text>
+            <text x="188" y="128">يونيو</text><text x="244" y="128">يوليو</text><text x="300" y="128">أغسطس</text>
+          </g>
+        </svg></div>
+        <div class="chart-legend">
+          <div class="chart-legend-item"><span class="legend-dot" style="background:var(--primary)"></span>الأخبار</div>
+          <div class="chart-legend-item"><span class="legend-dot" style="background:var(--secondary-teal)"></span>الإعلانات</div>
+        </div>
+      </div>
+
+      <div class="side-col">
+        <div class="panel">
+          <div class="panel-title">توزيع المحتوى</div>
+          <div class="panel-sub">النسبة الحالية لكل قسم</div>
+          <div class="donut-wrap">
+            <svg viewBox="0 0 140 140" width="150" height="150">
+              <g transform="rotate(-90 70 70)">
+                <circle cx="70" cy="70" r="52" fill="none" stroke="var(--soft-green)" stroke-width="20"/>
+                <circle cx="70" cy="70" r="52" fill="none" stroke="var(--primary)" stroke-width="20"
+                  stroke-dasharray="200.6 326.7" stroke-dashoffset="0" stroke-linecap="round"/>
+                <circle cx="70" cy="70" r="52" fill="none" stroke="var(--secondary-teal)" stroke-width="20"
+                  stroke-dasharray="115.8 326.7" stroke-dashoffset="-202" stroke-linecap="round"/>
+                <circle cx="70" cy="70" r="52" fill="none" stroke="var(--secondary-container)" stroke-width="20"
+                  stroke-dasharray="10.3 326.7" stroke-dashoffset="-319" stroke-linecap="round"/>
+              </g>
+            </svg>
+            <div class="donut-center"><b>127</b><span>إجمالي العناصر</span></div>
+          </div>
+          <div class="donut-legend">
+            <div class="donut-legend-row"><span><span class="legend-dot" style="background:var(--primary)"></span>الأخبار</span><b>78</b></div>
+            <div class="donut-legend-row"><span><span class="legend-dot" style="background:var(--secondary-teal)"></span>الإعلانات</span><b>45</b></div>
+            <div class="donut-legend-row"><span><span class="legend-dot" style="background:var(--secondary-container)"></span>الفعاليات</span><b>4</b></div>
+          </div>
+        </div>
+    </section>
+  </main>
+</div>
+
+</body>
+</html>

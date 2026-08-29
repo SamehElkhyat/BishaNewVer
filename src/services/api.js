@@ -102,6 +102,22 @@ export const authAPI = {
       body: JSON.stringify(userData),
     });
   },
+
+  // Request a password-reset link by email
+  forgotPassword: async (email) => {
+    return fetchAPI("/Register/Forgot-Password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  },
+
+  // Set a new password using the token from the emailed link
+  resetPassword: async ({ email, token, newPassword, confirmPassword }) => {
+    return fetchAPI("/Register/Reset-Password", {
+      method: "POST",
+      body: JSON.stringify({ email, token, newPassword, confirmPassword }),
+    });
+  },
 };
 
 // Verification (2FA) APIs

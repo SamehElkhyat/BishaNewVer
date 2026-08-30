@@ -280,6 +280,18 @@
   margin-top: 1rem;
 }
 
+.imagePreviewGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.imagePreviewGrid .imagePreviewContainer {
+  max-width: 9rem;
+  margin-top: 0;
+}
+
 .imagePreview {
   width: 100%;
   height: auto;

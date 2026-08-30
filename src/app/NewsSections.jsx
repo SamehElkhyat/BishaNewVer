@@ -237,19 +237,41 @@ export default function NewsSections() {
                                 className={styles.cardImage}
                                 loading="lazy"
                               />
+                              <div className={styles.imageScrim} />
+                              <div className={styles.dateBadge}>
+                                <span className={styles.dateNumber}>{day}</span>
+                                <span
+                                  className={styles.dateText}
+                                >{`${month} ${year}`}</span>
+                              </div>
                             </div>
                             <div className={styles.newsContent}>
-                              <div className={styles.newsDate}>
-                                <div className={styles.dateBox}>
-                                  <span className={styles.dateNumber}>
-                                    {day}
-                                  </span>
-                                  <span
-                                    className={styles.dateText}
-                                  >{`${month} ${year}`}</span>
-                                </div>
-                              </div>
                               <h3 className={styles.newsTitle}>{news.title}</h3>
+                              {(news.description || news.content) && (
+                                <p className={styles.newsExcerpt}>
+                                  {(news.description || news.content)
+                                    .replace(/<[^>]*>/g, "")
+                                    .substring(0, 110)}
+                                </p>
+                              )}
+                              <span className={styles.newsReadMore}>
+                                التفاصيل
+                                <svg
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  className={styles.readMoreIcon}
+                                >
+                                  <path
+                                    d="M19 12H5M5 12l6-6M5 12l6 6"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              </span>
                             </div>
                           </Link>
                         </motion.div>

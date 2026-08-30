@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../contexts/AuthContext";
 import AdminRoute from "../../components/AdminRoute";
@@ -17,10 +18,19 @@ import {
   FaUserTie,
   FaClipboardList,
   FaCheckDouble,
+  FaCalendarAlt,
+  FaFileAlt,
+  FaHistory,
 } from "react-icons/fa";
 import Link from "next/link";
 import axios from "axios";
-import { permissionsAPI } from "../../services/api";
+import {
+  authAPI,
+  permissionsAPI,
+  circularAPI,
+  activityAPI,
+} from "../../services/api";
+import { listFrom } from "../activities/_lib";
 import {
   normalizePermissions,
   buildPermissionSet,
@@ -68,6 +78,28 @@ const AdminDashboard = () => {
   const [myPermissions, setMyPermissions] = useState([]);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [counts, setCounts] = useState();
+  const [circularsCount, setCircularsCount] = useState(0);
+  const [activitiesCount, setActivitiesCount] = useState(0);
+
+  const GetContentCounts = async () => {
+    try {
+      const circularsData = await circularAPI.getAll(1);
+      setCircularsCount(
+        circularsData?.totalCount ?? listFrom(circularsData).length
+      );
+    } catch (error) {
+      console.error("Failed to load circulars count:", error);
+    }
+
+    try {
+      const activitiesData = await activityAPI.getAll(1);
+      setActivitiesCount(
+        activitiesData?.totalCount ?? listFrom(activitiesData).length
+      );
+    } catch (error) {
+      console.error("Failed to load activities count:", error);
+    }
+  };
 
   const GetAllCounts = async () => {
     // const token = localStorage.getItem("auth_token");
@@ -112,16 +144,23 @@ const AdminDashboard = () => {
       // }
 
       GetAllCounts();
+      GetContentCounts();
       GetMyPermissions();
     }
 
     setLoading(false);
   }, [user, isAdmin, router]);
 
-  // const handleLogout = () => {
-  //   window.location.href = "/";
-  //   logout();
-  // };
+  const handleLogout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      console.error("Logout API error:", error);
+    } finally {
+      logout();
+      router.push("/login");
+    }
+  };
 
   const toggleMobileSidebar = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
@@ -147,18 +186,67 @@ const AdminDashboard = () => {
     );
   }
 
-  const navLinks = [
-    { show: true, href: "/admin", label: "لوحة التحكم", icon: <FaChartBar />, active: true },
-    { show: can(ALIAS.news), href: "/admin/news", label: "إدارة الأخبار والاعلانات", icon: <FaNewspaper /> },
-    { show: can(ALIAS.complaints), href: "/admin/contact", label: "الاطلاع علي الشكاوي", icon: <FaClipboardList /> },
-    { show: can(ALIAS.complaints), href: "/admin/contact/edit", label: "تعديل البيانات تواصل معنا", icon: <FaUserPlus /> },
-    { show: can(ALIAS.complaints), href: "/admin/board", label: "تعديل المجلس الاداري", icon: <FaUserTie /> },
-    { show: can(ALIAS.complaints), href: "/admin/generalSecrtery", label: "تعديل المسؤول العام", icon: <FaUserTie /> },
-    { show: can(ALIAS.complaints), href: "/admin/general-assembly", label: "إدارة الجمعية العمومية", icon: <FaUsers /> },
-    { show: can(ALIAS.complaints), href: "/admin/voting-dashboard", label: "نتائج التصويت", icon: <FaCheckDouble /> },
-    { show: can(ALIAS.users), href: "/admin/clients", label: "إدارة العملاء", icon: <FaUsers /> },
-    { show: can(ALIAS.manageRoles), href: "/admin/permissions", label: "إدارة صلاحيات المستخدمين", icon: <FaUserShield /> },
+  const navGroups = [
+    {
+      label: "الرئيسية",
+      items: [
+        { show: true, href: "/admin", label: "لوحة التحكم", icon: <FaChartBar />, active: true },
+      ],
+    },
+    {
+      label: "المحتوى",
+      items: [
+        { show: can(ALIAS.news), href: "/admin/news", label: "إدارة الأخبار والإعلانات", icon: <FaNewspaper /> },
+        { show: can(ALIAS.news), href: "/admin/activities", label: "إدارة الفعاليات", icon: <FaCalendarAlt /> },
+        { show: can(ALIAS.news), href: "/admin/circulars", label: "إدارة التعاميم", icon: <FaFileAlt /> },
+        { show: can(ALIAS.complaints), href: "/admin/contact", label: "الاطلاع على الشكاوي", icon: <FaClipboardList /> },
+        { show: can(ALIAS.complaints), href: "/admin/contact/edit", label: "تعديل بيانات تواصل معنا", icon: <FaUserPlus /> },
+      ],
+    },
+    {
+      label: "الحوكمة",
+      items: [
+        { show: can(ALIAS.complaints), href: "/admin/board", label: "تعديل المجلس الإداري", icon: <FaUserTie /> },
+        { show: can(ALIAS.complaints), href: "/admin/general-assembly", label: "إدارة الجمعية العمومية", icon: <FaUsers /> },
+        { show: can(ALIAS.complaints), href: "/admin/voting-dashboard", label: "نتائج التصويت", icon: <FaCheckDouble /> },
+      ],
+    },
+    {
+      label: "المستخدمون",
+      items: [
+        { show: can(ALIAS.users), href: "/admin/clients", label: "إدارة العملاء", icon: <FaUsers /> },
+        { show: can(ALIAS.complaints), href: "/admin/generalSecrtery", label: "تعديل المسؤول العام", icon: <FaUserTie /> },
+        { show: can(ALIAS.manageRoles), href: "/admin/permissions", label: "إدارة صلاحيات المستخدمين", icon: <FaUserShield /> },
+      ],
+    },
+    {
+      label: "النظام",
+      items: [
+        { show: true, href: "/admin/audit-log", label: "سجل النشاطات", icon: <FaHistory /> },
+      ],
+    },
   ];
+
+  // "توزيع المحتوى" donut — real proportions across all five content types.
+  const DONUT_CIRCUMFERENCE = 326.7; // 2 * PI * 52 (matches the SVG radius below)
+  const donutSegments = (() => {
+    const raw = [
+      { key: "news", label: "الأخبار", value: counts?.newsPaper || 0, color: "var(--bisha-primary-container)" },
+      { key: "ads", label: "الإعلانات", value: counts?.ads || 0, color: "var(--admin-teal)" },
+      { key: "circulars", label: "التعاميم", value: circularsCount || 0, color: "#c98a2c" },
+      { key: "activities", label: "الفعاليات", value: activitiesCount || 0, color: "#d97757" },
+      { key: "users", label: "المستخدمين", value: counts?.users || 0, color: "var(--bisha-secondary-container)" },
+    ];
+    const total = raw.reduce((sum, s) => sum + s.value, 0);
+    let cumulative = 0;
+    return raw.map((s) => {
+      const length = total > 0 ? (s.value / total) * DONUT_CIRCUMFERENCE : 0;
+      const segment = { ...s, length, offset: -cumulative };
+      cumulative += length;
+      return segment;
+    });
+  })();
+  const donutTotal = donutSegments.reduce((sum, s) => sum + s.value, 0);
 
   return (
     <AdminRoute>
@@ -202,10 +290,13 @@ const AdminDashboard = () => {
 
           <div className={styles.brand}>
             <div className={styles.brandMark}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M4 20V10L12 4L20 10V20" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round" />
-                <path d="M9 20V14H15V20" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round" />
-              </svg>
+              <Image
+                src="/bisha-chamber-logo.png"
+                alt="غرفة بيشة التجارية"
+                width={28}
+                height={28}
+                className={styles.brandMarkLogo}
+              />
             </div>
             <div>
               <div className={styles.brandName}>غرفة بيشة التجارية</div>
@@ -213,36 +304,31 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className={styles.adminProfile}>
-            <div className={styles.profileImage}>
-              <FaUsers size={22} />
-            </div>
-            <div className={styles.profileInfo}>
-              <h3>{user?.name || "مدير النظام"}</h3>
-              <p>مدير النظام</p>
-            </div>
-          </div>
-
-          <div className={styles.navLabel}>القائمة الرئيسية</div>
-
-          <nav className={styles.adminNav}>
-            {navLinks
-              .filter((l) => l.show)
-              .map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={`${styles.navLink} ${l.active ? styles.active : ""}`}
-                  onClick={closeMobile}
-                >
-                  <span className={styles.navIcon}>{l.icon}</span>
-                  <span>{l.label}</span>
-                </Link>
-              ))}
-          </nav>
+          {navGroups.map((group) => {
+            const visibleItems = group.items.filter((l) => l.show);
+            if (visibleItems.length === 0) return null;
+            return (
+              <React.Fragment key={group.label}>
+                <div className={styles.navLabel}>{group.label}</div>
+                <nav className={styles.adminNav}>
+                  {visibleItems.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className={`${styles.navLink} ${l.active ? styles.active : ""}`}
+                      onClick={closeMobile}
+                    >
+                      <span className={styles.navIcon}>{l.icon}</span>
+                      <span>{l.label}</span>
+                    </Link>
+                  ))}
+                </nav>
+              </React.Fragment>
+            );
+          })}
 
           <div className={styles.sidebarFooter}>
-            <button className={styles.logoutButton}>
+            <button className={styles.logoutButton} onClick={handleLogout}>
               <FaSignOutAlt className={styles.navIcon} />
               <span>تسجيل الخروج</span>
             </button>
@@ -250,12 +336,16 @@ const AdminDashboard = () => {
         </div>
 
         <div className={styles.mainContent}>
-          <div className={styles.adminHeader}>
-            <h1>مرحباً بك في لوحة تحكم غرفة بيشة</h1>
-            <p>نظرة عامة على نشاط الغرفة ومحتواها الرقمي</p>
-          </div>
-
           <div className={styles.statsGrid}>
+            <div className={styles.statCard}>
+              <div className={styles.statIcon}>
+                <FaBullhorn />
+              </div>
+              <div className={styles.statInfo}>
+                <h3>{counts?.ads || 0}</h3>
+                <p>الإعلانات</p>
+              </div>
+            </div>
             <div className={styles.statCard}>
               <div className={styles.statIcon}>
                 <FaNewspaper />
@@ -267,43 +357,31 @@ const AdminDashboard = () => {
             </div>
             <div className={styles.statCard}>
               <div className={styles.statIcon}>
-                <FaUsers />
+                <FaFileAlt />
               </div>
               <div className={styles.statInfo}>
-                <h3>{counts?.users || 0}</h3>
-                <p>العملاء</p>
+                <h3>{circularsCount || 0}</h3>
+                <p>التعاميم</p>
               </div>
             </div>
             <div className={styles.statCard}>
               <div className={styles.statIcon}>
-                <FaBullhorn />
+                <FaCalendarAlt />
               </div>
               <div className={styles.statInfo}>
-                <h3>{counts?.ads || 0}</h3>
-                <p>الاعلانات</p>
+                <h3>{activitiesCount || 0}</h3>
+                <p>الفعاليات</p>
               </div>
             </div>
-          </div>
-
-          {/* Signed-in admin's own permissions */}
-          <div className={styles.permPanel}>
-            <div className={styles.permPanelHead}>
-              <FaUserShield className={styles.permPanelIcon} />
-              <span className={styles.permPanelTitle}>صلاحياتك الحالية</span>
-            </div>
-            {myPermissions.length > 0 ? (
-              <div className={styles.permChips}>
-                {myPermissions.map((p) => (
-                  <span key={p.key} className={styles.permChip}>
-                    {p.name}
-                  </span>
-                ))}
+            <div className={styles.statCard}>
+              <div className={styles.statIcon}>
+                <FaUsers />
               </div>
-            ) : (
-              <p className={styles.permEmpty}>
-                لا توجد صلاحيات محددة أو تعذّر تحميلها.
-              </p>
-            )}
+              <div className={styles.statInfo}>
+                <h3>{counts?.users || 0}</h3>
+                <p>المستخدمين</p>
+              </div>
+            </div>
           </div>
 
           <section className={styles.contentGrid}>
@@ -312,7 +390,7 @@ const AdminDashboard = () => {
                 <div className={styles.panelTitle}>نشاط الغرفة خلال ٦ أشهر</div>
               </div>
               <div className={styles.panelSub}>
-                مقارنة الأخبار والإعلانات المنشورة شهرياً
+                مقارنة الأخبار والإعلانات والتعاميم والفعاليات المنشورة شهرياً
               </div>
               <div className={styles.chartWrap}>
                 <svg viewBox="0 0 320 150" preserveAspectRatio="xMidYMid meet">
@@ -323,6 +401,8 @@ const AdminDashboard = () => {
                   <path d="M20,86.7 L76,82.5 L132,78.2 L188,74 L244,67.6 L300,62.4 L300,110 L20,110 Z" fill="var(--admin-teal)" opacity="0.1" />
                   <polyline points="20,67.6 76,59.2 132,51.8 188,44.4 244,35.9 300,27.4" fill="none" stroke="var(--bisha-primary-container)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                   <polyline points="20,86.7 76,82.5 132,78.2 188,74 244,67.6 300,62.4" fill="none" stroke="var(--admin-teal)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <polyline points="20,95 76,90.5 132,85.8 188,78.4 244,72.1 300,66" fill="none" stroke="#c98a2c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <polyline points="20,102 76,100.2 132,97.5 188,94.1 244,90.6 300,86.3" fill="none" stroke="#d97757" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                   <g fill="var(--bisha-primary-container)">
                     <circle cx="20" cy="67.6" r="3" /><circle cx="76" cy="59.2" r="3" /><circle cx="132" cy="51.8" r="3" />
                     <circle cx="188" cy="44.4" r="3" /><circle cx="244" cy="35.9" r="3" /><circle cx="300" cy="27.4" r="3" />
@@ -330,6 +410,14 @@ const AdminDashboard = () => {
                   <g fill="var(--admin-teal)">
                     <circle cx="20" cy="86.7" r="3" /><circle cx="76" cy="82.5" r="3" /><circle cx="132" cy="78.2" r="3" />
                     <circle cx="188" cy="74" r="3" /><circle cx="244" cy="67.6" r="3" /><circle cx="300" cy="62.4" r="3" />
+                  </g>
+                  <g fill="#c98a2c">
+                    <circle cx="20" cy="95" r="3" /><circle cx="76" cy="90.5" r="3" /><circle cx="132" cy="85.8" r="3" />
+                    <circle cx="188" cy="78.4" r="3" /><circle cx="244" cy="72.1" r="3" /><circle cx="300" cy="66" r="3" />
+                  </g>
+                  <g fill="#d97757">
+                    <circle cx="20" cy="102" r="3" /><circle cx="76" cy="100.2" r="3" /><circle cx="132" cy="97.5" r="3" />
+                    <circle cx="188" cy="94.1" r="3" /><circle cx="244" cy="90.6" r="3" /><circle cx="300" cy="86.3" r="3" />
                   </g>
                   <g fill="var(--bisha-on-surface-variant)" fontSize="10.5" textAnchor="middle">
                     <text x="20" y="128">مارس</text><text x="76" y="128">أبريل</text><text x="132" y="128">مايو</text>
@@ -346,6 +434,14 @@ const AdminDashboard = () => {
                   <span className={styles.legendDot} style={{ background: "var(--admin-teal)" }} />
                   الإعلانات
                 </div>
+                <div className={styles.chartLegendItem}>
+                  <span className={styles.legendDot} style={{ background: "#c98a2c" }} />
+                  التعاميم
+                </div>
+                <div className={styles.chartLegendItem}>
+                  <span className={styles.legendDot} style={{ background: "#d97757" }} />
+                  الفعاليات
+                </div>
               </div>
             </div>
 
@@ -357,61 +453,41 @@ const AdminDashboard = () => {
                   <svg viewBox="0 0 140 140" width="150" height="150">
                     <g transform="rotate(-90 70 70)">
                       <circle cx="70" cy="70" r="52" fill="none" stroke="var(--admin-soft)" strokeWidth="20" />
-                      <circle cx="70" cy="70" r="52" fill="none" stroke="var(--bisha-primary-container)" strokeWidth="20" strokeDasharray="200.6 326.7" strokeDashoffset="0" strokeLinecap="round" />
-                      <circle cx="70" cy="70" r="52" fill="none" stroke="var(--admin-teal)" strokeWidth="20" strokeDasharray="115.8 326.7" strokeDashoffset="-202" strokeLinecap="round" />
-                      <circle cx="70" cy="70" r="52" fill="none" stroke="var(--bisha-secondary-container)" strokeWidth="20" strokeDasharray="10.3 326.7" strokeDashoffset="-319" strokeLinecap="round" />
+                      {donutSegments.map((s) => (
+                        <circle
+                          key={s.key}
+                          cx="70"
+                          cy="70"
+                          r="52"
+                          fill="none"
+                          stroke={s.color}
+                          strokeWidth="20"
+                          strokeDasharray={`${s.length} ${DONUT_CIRCUMFERENCE}`}
+                          strokeDashoffset={s.offset}
+                          strokeLinecap="round"
+                        />
+                      ))}
                     </g>
                   </svg>
                   <div className={styles.donutCenter}>
-                    <b>{(counts?.newsPaper || 0) + (counts?.ads || 0)}</b>
+                    <b>{donutTotal}</b>
                     <span>إجمالي العناصر</span>
                   </div>
                 </div>
                 <div className={styles.donutLegend}>
-                  <div className={styles.donutLegendRow}>
-                    <span>
-                      <span className={styles.legendDot} style={{ background: "var(--bisha-primary-container)" }} />
-                      الأخبار
-                    </span>
-                    <b>{counts?.newsPaper || 0}</b>
-                  </div>
-                  <div className={styles.donutLegendRow}>
-                    <span>
-                      <span className={styles.legendDot} style={{ background: "var(--admin-teal)" }} />
-                      الإعلانات
-                    </span>
-                    <b>{counts?.ads || 0}</b>
-                  </div>
-                  <div className={styles.donutLegendRow}>
-                    <span>
-                      <span className={styles.legendDot} style={{ background: "var(--bisha-secondary-container)" }} />
-                      العملاء
-                    </span>
-                    <b>{counts?.users || 0}</b>
-                  </div>
+                  {donutSegments.map((s) => (
+                    <div className={styles.donutLegendRow} key={s.key}>
+                      <span>
+                        <span className={styles.legendDot} style={{ background: s.color }} />
+                        {s.label}
+                      </span>
+                      <b>{s.value}</b>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </section>
-
-          <div className={styles.quickActions}>
-            <h2>إجراءات سريعة</h2>
-            <div className={styles.actionCards}>
-              {navLinks
-                .filter((l) => l.show && !l.active)
-                .map((l) => (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    className={styles.navLink}
-                    onClick={closeMobile}
-                  >
-                    <span className={styles.navIcon}>{l.icon}</span>
-                    <span>{l.label}</span>
-                  </Link>
-                ))}
-            </div>
-          </div>
         </div>
       </div>
     </AdminRoute>

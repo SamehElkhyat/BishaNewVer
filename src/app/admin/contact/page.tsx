@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../contexts/AuthContext';
 import styles from '../../../styles/AdminList.module.css';
-import { FaEnvelope, FaUser, FaPhone, FaCalendarAlt, FaEye, FaReply, FaSearch, FaChevronLeft, FaChevronRight, FaComments, FaEdit } from 'react-icons/fa';
+import { FaEnvelope, FaUser, FaPhone, FaCalendarAlt, FaEye, FaReply, FaSearch, FaComments } from 'react-icons/fa';
 import { toast, Toaster } from 'react-hot-toast';
-import Link from 'next/link';
+import PaginationComponent from '../../../components/PaginationComponent';
 
 // Contact data interface
 interface Contact {
@@ -186,10 +186,6 @@ const AdminContactPage = () => {
           <FaSearch className={styles.searchIcon} />
         </div>
       </div>
-      <Link href="/admin/contact/edit" className={styles.addButton}> 
-        <FaEdit /> تعديل البيانات
-      </Link>
-
 
       <div className={styles.tableContainer}>
         <table className={styles.dataTable}>
@@ -201,7 +197,6 @@ const AdminContactPage = () => {
               <th>رقم الهاتف</th>
               <th>نوع الخدمة</th>
               <th>تاريخ الإرسال</th>
-              <th>الحالة</th>
               <th>الإجراءات</th>
             </tr>
           </thead>
@@ -218,11 +213,6 @@ const AdminContactPage = () => {
                     {contact.serviceType.length > 30 ? `${contact.serviceType.substring(0, 30)}...` : contact.serviceType}
                   </td>
                   <td className='text-black'>{contact.createdAt ? formatDate(contact.createdAt) : 'غير محدد'}</td>
-                  <td>
-                    <span className={contact.isRead ? styles.readStatus : styles.unreadStatus}>
-                      {contact.isRead ? 'مقروءة' : 'غير مقروءة'}
-                    </span>
-                  </td>
                   <td className={styles.actionsCell}>
                     <button
                       className={styles.viewButton}
@@ -236,7 +226,7 @@ const AdminContactPage = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={8} className={styles.noResults}>
+                <td colSpan={7} className={styles.noResults}>
                   لا توجد رسائل
                 </td>
               </tr>
@@ -245,29 +235,11 @@ const AdminContactPage = () => {
         </table>
       </div>
 
-      {totalPages > 1 && (
-        <div className={styles.pagination}>
-          <button
-            className={styles.paginationButton}
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            <FaChevronRight />
-          </button>
-
-          <div className={styles.pageInfo}>
-            الصفحة {currentPage} من {totalPages} (إجمالي: {totalCount})
-          </div>
-
-          <button
-            className={styles.paginationButton}
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            <FaChevronLeft />
-          </button>
-        </div>
-      )}
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
 
       {/* Contact Details Modal */}
       {isViewModalOpen && selectedContact && (

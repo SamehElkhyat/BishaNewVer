@@ -160,11 +160,9 @@ export default function VotingDashboardPage() {
     setAuthMode(readAuthMode());
     async function fetchData() {
       try {
-        console.log(process.env.NEXT_PUBLIC_API_URL);
-
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/GeneralAssembly/GetFiles`,
-          { cache: "no-store" }
+          { cache: "no-store", credentials: "include" }
         );
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data?.message || "فشل تحميل البيانات");
@@ -216,6 +214,7 @@ export default function VotingDashboardPage() {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           id: Number(userId),
           action: action,
@@ -410,7 +409,6 @@ export default function VotingDashboardPage() {
                   const current = votes[item.id] ?? null;
                   const votingDisabled = authMode === "none";
                   const isBusy = !!rowLoading[item.id];
-                  console.log("item:", item);
 
                   return (
                     <tr
@@ -475,13 +473,11 @@ export default function VotingDashboardPage() {
                                 e.preventDefault();
                                 return;
                               }
-                              console.log(item.id);
-
                               // Call download API with file ID
                               try {
                                 const res = await fetch(
                                   `${process.env.NEXT_PUBLIC_API_URL}/GeneralAssembly/DownloadFile/${item.id}`,
-                                  { cache: "no-store" }
+                                  { cache: "no-store", credentials: "include" }
                                 );
 
                                 if (!res.ok) {

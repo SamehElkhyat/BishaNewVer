@@ -32,23 +32,7 @@
 }
 
 .backgroundImage1 {
-  animation: backgroundSwitch 8s infinite;
   z-index: 1;
-}
-
-.backgroundImage2 {
-  animation: backgroundSwitch 8s infinite reverse;
-  opacity: 0;
-  z-index: 2;
-}
-
-@keyframes backgroundSwitch {
-  0%, 45% {
-    opacity: 1;
-  }
-  55%, 100% {
-    opacity: 0;
-  }
 }
 
 .overlay {
@@ -57,6 +41,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 40, 80, 0.65);
+  background-color: rgba(0, 40, 80, 0.28);
   /* Solid background color instead of gradient to prevent blur */
 }

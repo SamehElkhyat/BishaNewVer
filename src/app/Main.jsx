@@ -10,16 +10,7 @@ export default function Main() {
   const controls = useAnimation();
 
   useEffect(() => {
-    // Initial animation sequence with staggered timing
-    const sequence = async () => {
-      // First animate the background and overlay
-      await controls.start("backgroundVisible");
-
-      // Then animate the logo and buttons
-      await controls.start("elementsVisible");
-    };
-
-    sequence();
+    controls.start("visible");
 
     // Parallax effect
     const handleParallax = () => {
@@ -33,59 +24,39 @@ export default function Main() {
     return () => window.removeEventListener("scroll", handleParallax);
   }, [controls]);
 
-  // Animation variants
+  // Animation variants — quick, immediate fade-in (small stagger via the
+  // parent's transition below), no artificial delay before content appears.
   const backgroundVariants = {
     hidden: { opacity: 0 },
-    backgroundVisible: {
+    visible: {
       opacity: 1,
-      transition: {
-        duration: 1,
-        ease: "easeOut",
-      },
-    },
-    elementsVisible: {
-      opacity: 1,
-      transition: {
-        duration: 0,
-      },
+      transition: { duration: 0.5, ease: "easeOut", staggerChildren: 0.08 },
     },
   };
 
   const overlayVariants = {
     hidden: { opacity: 0 },
-    backgroundVisible: {
+    visible: {
       opacity: 0.3,
-      transition: {
-        duration: 1.5,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
   };
 
   const logoVariants = {
     hidden: { opacity: 0, scale: 0.9 },
-    elementsVisible: {
+    visible: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 1,
-        ease: "easeOut",
-        delay: 0.5,
-      },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
   };
 
   const buttonVariants = {
-    hidden: { opacity: 0, y: 20 },
-    elementsVisible: {
+    hidden: { opacity: 0, y: 12 },
+    visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12,
-        delay: 0.8,
-      },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
   };
 

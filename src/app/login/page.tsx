@@ -33,8 +33,6 @@ const LoginPage = () => {
     try {
       const success = await login(email, password);
 
-      console.log("Login result:", success);
-
       if (success) {
         router.push("/verify");
       } else {

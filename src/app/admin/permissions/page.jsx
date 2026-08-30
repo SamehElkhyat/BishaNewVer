@@ -12,7 +12,10 @@ import {
 } from "react-icons/fa";
 import { toast, Toaster } from "react-hot-toast";
 import { permissionsAPI } from "../../../services/api";
-import { normalizePermissions } from "../../../utils/permissions";
+import {
+  normalizePermissions,
+  filterArabicPermissions,
+} from "../../../utils/permissions";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://backend.bishahcc.org/api";
@@ -34,7 +37,7 @@ export default function AdminPermissionsPage() {
   const loadPermissions = async () => {
     try {
       const res = await permissionsAPI.getAll();
-      setAllPermissions(normalizePermissions(res));
+      setAllPermissions(filterArabicPermissions(normalizePermissions(res)));
     } catch (err) {
       console.error("Failed to load permissions catalogue:", err);
       setError("تعذّر تحميل قائمة الصلاحيات المتاحة.");

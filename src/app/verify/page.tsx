@@ -85,10 +85,6 @@ const VerifyPage = () => {
     try {
       const res = await verifyAPI.verifyCode(joined, TYPE_OF_GENERATE);
 
-      // Helps confirm the exact response shape while wiring this up.
-      // eslint-disable-next-line no-console
-      console.log("VerifyCode response:", res);
-
       const payload =
         res && typeof res === "object"
           ? res.data && typeof res.data === "object"

@@ -43,8 +43,9 @@
 @layer base {
   :root {
     --foreground: #ffffff;
-    --font-sans: 'Tajawal Variable', 'Tajawal', system-ui, -apple-system, 
-                 BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, 
+    --font-sans: var(--font-ibm-plex-arabic), 'IBM Plex Sans Arabic',
+                 var(--font-tajawal), 'Tajawal Variable', 'Tajawal', system-ui, -apple-system,
+                 BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
                  Ubuntu, Cantarell, sans-serif;
   }
 

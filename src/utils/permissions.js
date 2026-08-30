@@ -19,9 +19,25 @@ function extractArray(res) {
   );
 }
 
+const ARABIC_RE = /[؀-ۿ]/;
+
+/**
+ * Pick the first candidate that contains Arabic script; fall back to the
+ * first non-empty candidate (e.g. an English-only permission) if none do.
+ */
+export function preferArabicValue(candidates = []) {
+  const strings = candidates
+    .map((c) => (c == null ? "" : String(c).trim()))
+    .filter(Boolean);
+  return strings.find((s) => ARABIC_RE.test(s)) || strings[0] || "";
+}
+
 /**
  * Normalize an API response into a list of { key, name } objects.
  * Accepts arrays of strings or of objects with assorted field names.
+ * `name` prefers whichever field actually holds the Arabic label — the
+ * backend may return both an English code and an Arabic display name under
+ * different keys, and the Arabic one is what's shown (and sent back on save).
  */
 export function normalizePermissions(res) {
   const raw = extractArray(res);
@@ -34,15 +50,22 @@ export function normalizePermissions(res) {
         return v ? { key: v, name: v } : null;
       }
       if (p && typeof p === "object") {
-        const name =
-          p.name ??
-          p.permissionName ??
-          p.Name ??
-          p.PermissionName ??
-          p.title ??
-          p.displayName ??
-          p.label ??
-          "";
+        const name = preferArabicValue([
+          p.name,
+          p.permissionName,
+          p.Name,
+          p.PermissionName,
+          p.nameAr,
+          p.nameArabic,
+          p.arabicName,
+          p.displayNameAr,
+          p.permissionNameAr,
+          p.arName,
+          p.titleAr,
+          p.title,
+          p.displayName,
+          p.label,
+        ]);
         const key =
           p.key ??
           p.permission ??
@@ -80,4 +103,9 @@ export function buildPermissionSet(normalizedList = [], extraRaw = []) {
 /** True if the set contains any of the given aliases (case-insensitive). */
 export function hasAnyPermission(set, aliases = []) {
   return aliases.some((a) => set.has(String(a).trim().toLowerCase()));
+}
+
+/** Keep only permissions whose display name contains Arabic script. */
+export function filterArabicPermissions(normalizedList = []) {
+  return normalizedList.filter((p) => /[؀-ۿ]/.test(p?.name || ""));
 }

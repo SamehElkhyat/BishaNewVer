@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../../../contexts/AuthContext";
 import styles from "../../../../styles/AdminForms.module.css";
 import {
-  FaUsers,
+  FaAddressBook,
   FaSave,
   FaArrowRight,
-  FaIdCard,
   FaEnvelope,
   FaPhone,
-  FaLock,
-  FaCheckCircle,
+  FaMapMarkerAlt,
+  FaBuilding,
+  FaClock,
 } from "react-icons/fa";
 import Link from "next/link";
 import { clientsAPI } from "../../../../services/api";
@@ -47,6 +47,37 @@ const page = () => {
     }
   }, [user, isAdmin, router]);
 
+  // Pre-fill the form with the contact info that's already on file.
+  const fetchCurrentContact = async () => {
+    try {
+      const API_BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || "https://backend.bishahcc.org/api";
+      const response = await fetch(`${API_BASE_URL}/Admin/Get-Contact-US`, {
+        credentials: "include",
+      });
+      if (!response.ok) return;
+      const text = await response.text();
+      if (!text) return;
+      const data = JSON.parse(text);
+      setFormData((prev) => ({
+        ...prev,
+        id: data.id ?? prev.id,
+        firstPhoneNumber: data.firstPhoneNumber || "",
+        secondPhoneNumber: data.secondPhoneNumber || "",
+        location: data.location || "",
+        email: data.email || "",
+        address: data.address || "",
+        workingHours: data.workingHours || "",
+      }));
+    } catch (error) {
+      console.error("Failed to load current contact info:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentContact();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -64,7 +95,7 @@ const page = () => {
     try {
       // Prepare user data for API
       const userData = {
-        id: 1,
+        id: formData.id,
         firstPhoneNumber: formData.firstPhoneNumber,
         email: formData.email,
         secondPhoneNumber: formData.secondPhoneNumber,
@@ -100,24 +131,9 @@ const page = () => {
         throw new Error(errorData.message || `API error: ${response.status}`);
       }
 
-      // Show success message
+      // Show success message and refresh the form with what's now saved
       setSuccess("تم تعديل البيانات بنجاح");
-
-      // Reset form after success
-      setFormData({
-        id: 1,
-        firstPhoneNumber: "",
-        email: "",
-        secondPhoneNumber: "",
-        location: "",
-        address: "",
-        workingHours: "",
-      });
-
-      // Redirect after 2 seconds
-      setTimeout(() => {
-        router.push("/admin/contact");
-      }, 2000);
+      await fetchCurrentContact();
     } catch (error) {
       console.error("Failed to update contact:", error);
       setError(`فشل تعديل البيانات: ${error.message || "خطأ غير معروف"}`);
@@ -142,7 +158,7 @@ const page = () => {
           <FaArrowRight /> العودة
         </Link>
         <h1>
-          <FaUsers className={styles.headerIcon} /> تعديل البيانات تواصل معنا
+          <FaAddressBook className={styles.headerIcon} /> تعديل البيانات تواصل معنا
         </h1>
       </div>
 
@@ -153,7 +169,7 @@ const page = () => {
         <div className={styles.formGroup}>
           <label htmlFor="firstPhoneNumber">رقم الهاتف الأول *</label>
           <div className={styles.inputWithIcon}>
-            <FaIdCard className={styles.inputIcon} />
+            <FaPhone className={styles.inputIcon} />
             <input
               className="text-black"
               type="number"
@@ -170,7 +186,7 @@ const page = () => {
           <div className={styles.formGroup}>
             <label htmlFor="secondPhoneNumber">رقم الهاتف الثاني *</label>
             <div className={styles.inputWithIcon}>
-              <FaEnvelope className={styles.inputIcon} />
+              <FaPhone className={styles.inputIcon} />
               <input
                 className="text-black"
                 type="number"
@@ -186,7 +202,7 @@ const page = () => {
           <div className={styles.formGroup}>
             <label htmlFor="location">الموقع *</label>
             <div className={styles.inputWithIcon}>
-              <FaPhone className={styles.inputIcon} />
+              <FaMapMarkerAlt className={styles.inputIcon} />
               <input
                 className="text-black"
                 type="text"
@@ -203,7 +219,7 @@ const page = () => {
         <div className={styles.formGroup}>
           <label htmlFor="email">البريد الإلكتروني *</label>
           <div className={styles.inputWithIcon}>
-            <FaLock className={styles.inputIcon} />
+            <FaEnvelope className={styles.inputIcon} />
             <input
               className="text-black"
               type="email"
@@ -219,7 +235,7 @@ const page = () => {
         <div className={styles.formGroup}>
           <label htmlFor="address">العنوان *</label>
           <div className={styles.inputWithIcon}>
-            <FaCheckCircle className={styles.inputIcon} />
+            <FaBuilding className={styles.inputIcon} />
             <input
               className="text-black"
               type="text"
@@ -235,7 +251,7 @@ const page = () => {
         <div className={styles.formGroup}>
           <label htmlFor="workingHours">ساعات العمل *</label>
           <div className={styles.inputWithIcon}>
-            <FaCheckCircle className={styles.inputIcon} />
+            <FaClock className={styles.inputIcon} />
             <input
               className="text-black"
               type="text"
@@ -253,15 +269,10 @@ const page = () => {
             className={styles.submitButton}
             disabled={isSubmitting}
           >
-            {isSubmitting ? (
-              <>
-                <div className={styles.spinnerSmall}></div> جاري الحفظ...
-              </>
-            ) : (
-              <>
-                <FaSave /> حفظ البيانات
-              </>
-            )}
+            <span className={styles.buttonContent}>
+              {isSubmitting ? <span className={styles.spinnerSmall} /> : <FaSave />}
+              <span>{isSubmitting ? "جاري الحفظ..." : "حفظ البيانات"}</span>
+            </span>
           </button>
           <Link href="/admin/contact" className={styles.cancelButton}>
             إلغاء

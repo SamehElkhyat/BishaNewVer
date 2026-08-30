@@ -6,6 +6,7 @@ import styles from '../../../styles/AdminList.module.css';
 import { FaUsers, FaPlus, FaEdit, FaTrash, FaSearch, FaFilter, FaChevronLeft, FaChevronRight, FaUserPlus, FaTimes, FaCheck, FaSpinner } from 'react-icons/fa';
 import Link from 'next/link';
 import { toast, Toaster } from 'react-hot-toast';
+import { preferArabicValue } from '../../../utils/permissions';
 // User data interface
 interface User {
   id: number;
@@ -24,16 +25,10 @@ interface UserUpdate {
   confirmPassword: string;
 }
 
-// Permissions interface
-interface UserPermissions {
-  canDeleteNews: boolean;
-  canAddNews: boolean;
-  canEditNews: boolean;
-  canRegisterAndViewComplaints: boolean;
-  canViewClients: boolean;
-  canChangePermissions: boolean;
-  canUpdateUser: boolean;
-  canDeleteUser: boolean;
+// A single assignable permission, as shown in the "تخصيص الصلاحيات" modal
+interface Permission {
+  key: string;
+  name: string;
 }
 
 // Pagination response interface
@@ -72,16 +67,86 @@ const AdminClientsPage = () => {
   const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [selectedUserName, setSelectedUserName] = useState('');
-  const [userPermissions, setUserPermissions] = useState<UserPermissions>({
-    canDeleteNews: false,
-    canAddNews: false,
-    canEditNews: false,
-    canRegisterAndViewComplaints: false,
-    canViewClients: false,
-    canChangePermissions: false,
-    canUpdateUser: false,
-    canDeleteUser: false,
-  });
+  const [selectedPermissions, setSelectedPermissions] = useState<Set<string>>(new Set());
+
+  // Catalogue of assignable permissions (Arabic names only), loaded once
+  const [allPermissions, setAllPermissions] = useState<Permission[]>([]);
+  const [permissionsLoading, setPermissionsLoading] = useState(false);
+  const [permissionsError, setPermissionsError] = useState('');
+
+  // Fetch the full permissions catalogue — every permission the API returns
+  const fetchPermissions = async () => {
+    setPermissionsLoading(true);
+    setPermissionsError('');
+    try {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend.bishahcc.org/api';
+      const response = await fetch(`${API_BASE_URL}/Admin/Get-All-Permissions`, {
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const raw: any[] = Array.isArray(data)
+        ? data
+        : data?.permissions || data?.data || data?.result || data?.items || [];
+
+      const all: Permission[] = raw
+        .map((p): Permission | null => {
+          if (typeof p === 'string') {
+            const v = p.trim();
+            return v ? { key: v, name: v } : null;
+          }
+          if (p && typeof p === 'object') {
+            // Prefer whichever field actually holds the Arabic label — the
+            // backend may return an English code and an Arabic name under
+            // different keys, and we always want the Arabic one displayed.
+            const name = preferArabicValue([
+              p.name,
+              p.permissionName,
+              p.Name,
+              p.PermissionName,
+              p.nameAr,
+              p.nameArabic,
+              p.arabicName,
+              p.displayNameAr,
+              p.permissionNameAr,
+              p.arName,
+              p.titleAr,
+              p.title,
+              p.displayName,
+            ]);
+            const key = String(p.key ?? p.permission ?? p.Permission ?? p.id ?? p.Id ?? name).trim();
+            return key ? { key, name: name || key } : null;
+          }
+          return null;
+        })
+        .filter((p): p is Permission => !!p);
+
+      setAllPermissions(all);
+    } catch (error: any) {
+      console.error('Failed to fetch permissions:', error);
+      setPermissionsError('تعذّر تحميل قائمة الصلاحيات المتاحة.');
+    } finally {
+      setPermissionsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPermissions();
+  }, []);
+
+  const togglePermission = (name: string) => {
+    setSelectedPermissions((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  };
 
   // Function to fetch users from API
   const fetchUsers = async (page: number) => {
@@ -210,26 +275,8 @@ const AdminClientsPage = () => {
   const handlePermissionClick = (userId: number, userName: string) => {
     setSelectedUserId(userId);
     setSelectedUserName(userName);
-    // Reset permissions to default
-    setUserPermissions({
-      canDeleteNews: false,
-      canAddNews: false,
-      canEditNews: false,
-      canRegisterAndViewComplaints: false,
-      canViewClients: false,
-      canChangePermissions: false,
-      canUpdateUser: false,
-      canDeleteUser: false,
-    });
+    setSelectedPermissions(new Set());
     setIsPermissionModalOpen(true);
-  };
-
-  // Handle permission change
-  const handlePermissionChange = (permission: keyof UserPermissions) => {
-    setUserPermissions(prev => ({
-      ...prev,
-      [permission]: !prev[permission]
-    }));
   };
 
   // Handle edit button click
@@ -351,6 +398,7 @@ const AdminClientsPage = () => {
     setIsPermissionModalOpen(false);
     setSelectedUserId(null);
     setSelectedUserName('');
+    setSelectedPermissions(new Set());
   };
 
   // Save user permissions
@@ -371,17 +419,8 @@ const AdminClientsPage = () => {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      // Convert permissions object to array of permission names
-      const permissionNames: string[] = [];
-
-      if (userPermissions.canDeleteNews) permissionNames.push('حذف الأخبار');
-      if (userPermissions.canAddNews) permissionNames.push('إضافة الأخبار');
-      if (userPermissions.canEditNews) permissionNames.push('تعديل الأخبار');
-      if (userPermissions.canRegisterAndViewComplaints) permissionNames.push('تسجيل والاطلاع على الشكاوي');
-      if (userPermissions.canViewClients) permissionNames.push('عملاء');
-      if (userPermissions.canChangePermissions) permissionNames.push('تغيير صلاحيات');
-      if (userPermissions.canUpdateUser) permissionNames.push('تعديل المستخدم');
-      if (userPermissions.canDeleteUser) permissionNames.push('حذف المستخدم');
+      // Selected permission names (Arabic), straight from the checklist
+      const permissionNames: string[] = Array.from(selectedPermissions);
 
       // Prepare request body
       const requestBody = {
@@ -453,7 +492,6 @@ const AdminClientsPage = () => {
               <th>الاسم الكامل</th>
               <th>البريد الإلكتروني</th>
               <th>رقم الهاتف</th>
-              <th>الحالة</th>
               <th>الإجراءات</th>
               <th>تخصيص الصلاحيات</th>
 
@@ -467,11 +505,6 @@ const AdminClientsPage = () => {
                 <td className='text-black'>{user.fullName}</td>
                 <td className='text-black'>{user.email}</td>
                 <td className='text-black'>{user.phoneNumber}</td>
-                <td>
-                  <span className={user.isActive ? styles.activeStatus : styles.inactiveStatus}>
-                    {user.isActive ? 'نشط' : 'غير نشط'}
-                  </span>
-                </td>
                 <td className={styles.actionsCell}>
                   <button 
                     className={styles.editButton}
@@ -543,126 +576,31 @@ const AdminClientsPage = () => {
 
             <div className={styles.modalBody}>
               <div className={styles.permissionsGrid}>
-
-                {/* News Permissions */}
                 <div className={styles.permissionSection}>
-                  <h3>صلاحيات الأخبار</h3>
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canAddNews}
-                        onChange={() => handlePermissionChange('canAddNews')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canAddNews && <FaCheck />}
-                      </span>
-                      إضافة الأخبار
-                    </label>
-                  </div>
-
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canEditNews}
-                        onChange={() => handlePermissionChange('canEditNews')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canEditNews && <FaCheck />}
-                      </span>
-                      تعديل الأخبار
-                    </label>
-                  </div>
-
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canDeleteNews}
-                        onChange={() => handlePermissionChange('canDeleteNews')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canDeleteNews && <FaCheck />}
-                      </span>
-                      حذف الأخبار
-                    </label>
-                  </div>
-                </div>
-
-
-                {/* Other Permissions */}
-                <div className={styles.permissionSection}>
-                  <h3>صلاحيات أخرى</h3>
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canRegisterAndViewComplaints}
-                        onChange={() => handlePermissionChange('canRegisterAndViewComplaints')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canRegisterAndViewComplaints && <FaCheck />}
-                      </span>
-                      تسجيل والاطلاع على الشكاوي
-                    </label>
-                  </div>
-
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canViewClients}
-                        onChange={() => handlePermissionChange('canViewClients')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canViewClients && <FaCheck />}
-                      </span>
-                      عملاء
-                    </label>
-                  </div>
-
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canChangePermissions}
-                        onChange={() => handlePermissionChange('canChangePermissions')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canChangePermissions && <FaCheck />}
-                      </span>
-                      تغيير صلاحيات
-                    </label>
-                  </div>
-
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canUpdateUser}
-                        onChange={() => handlePermissionChange('canUpdateUser')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canUpdateUser && <FaCheck />}
-                      </span>
-                      تعديل المستخدم
-                    </label>
-                  </div>
-
-                  <div className={styles.permissionItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={userPermissions.canDeleteUser}
-                        onChange={() => handlePermissionChange('canDeleteUser')}
-                      />
-                      <span className={styles.checkboxCustom}>
-                        {userPermissions.canDeleteUser && <FaCheck />}
-                      </span>
-                      حذف المستخدم
-                    </label>
-                  </div>
+                  <h3>الصلاحيات</h3>
+                  {permissionsLoading ? (
+                    <p>جاري تحميل الصلاحيات...</p>
+                  ) : permissionsError ? (
+                    <p className={styles.errorMessage}>{permissionsError}</p>
+                  ) : allPermissions.length === 0 ? (
+                    <p>لا توجد صلاحيات متاحة</p>
+                  ) : (
+                    allPermissions.map((p) => (
+                      <div key={p.key} className={styles.permissionItem}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={selectedPermissions.has(p.name)}
+                            onChange={() => togglePermission(p.name)}
+                          />
+                          <span className={styles.checkboxCustom}>
+                            {selectedPermissions.has(p.name) && <FaCheck />}
+                          </span>
+                          {p.name}
+                        </label>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

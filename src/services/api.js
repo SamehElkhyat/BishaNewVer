@@ -118,6 +118,13 @@ export const authAPI = {
       body: JSON.stringify({ email, token, newPassword, confirmPassword }),
     });
   },
+
+  // End the current session on the server (clears the auth cookie)
+  logout: async () => {
+    return fetchAPI("/Register/Logout", {
+      method: "POST",
+    });
+  },
 };
 
 // Permissions APIs
@@ -129,7 +136,7 @@ export const permissionsAPI = {
 
   // Full catalogue of assignable permissions
   getAll: async () => {
-    return fetchAPI("/Register/Get-All-Permissions");
+    return fetchAPI("/Admin/Get-All-Permissions");
   },
 
   // Replace a user's permission set
@@ -195,6 +202,33 @@ export const newsAPI = {
   },
 };
 
+// Helper for multipart (file upload) POSTs — bypasses fetchAPI's JSON
+// Content-Type default so the browser can set its own multipart boundary.
+async function postFormData(endpoint, formData) {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+  const headers = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    method: "POST",
+    headers,
+    credentials: "include",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `API error: ${response.status}`);
+  }
+
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return await response.json();
+  }
+  return await response.text();
+}
+
 // Chamber activities / events APIs
 export const activityAPI = {
   getAll: async (pageNumber = 1) => {
@@ -203,6 +237,24 @@ export const activityAPI = {
 
   getById: async (id) => {
     return fetchAPI(`/Activity/Get-By-Id/${id}`);
+  },
+
+  // formData: Title, Details, Images[] (multiple files)
+  create: async (formData) => {
+    return postFormData("/Activity/Add", formData);
+  },
+
+  // formData: id, Title, Details, Images[]
+  update: async (formData) => {
+    return postFormData("/Activity/Update", formData);
+  },
+
+  deleteImage: async (imageId) => {
+    return fetchAPI(`/Activity/Delete-Image/${imageId}`, { method: "DELETE" });
+  },
+
+  delete: async (id) => {
+    return fetchAPI(`/Activity/Delete/${id}`, { method: "DELETE" });
   },
 };
 
@@ -213,7 +265,38 @@ export const circularAPI = {
   },
 
   getById: async (id) => {
-    return fetchAPI(`/Activity/Get-By-Id/${id}`);
+    return fetchAPI(`/Circular/Get-By-Id/${id}`);
+  },
+
+  // formData: Title, Details, ImageUrl (single file)
+  create: async (formData) => {
+    return postFormData("/Circular/Add", formData);
+  },
+
+  // formData: id, Title, Details, ImageUrl
+  update: async (formData) => {
+    return postFormData("/Circular/Update", formData);
+  },
+
+  delete: async (id) => {
+    return fetchAPI(`/Circular/Delete/${id}`, { method: "DELETE" });
+  },
+};
+
+// Audit log (سجل النشاطات) APIs
+export const auditLogAPI = {
+  getAll: async (pageNumber = 1, filters = {}) => {
+    const params = new URLSearchParams();
+    if (filters.date) params.set("date", filters.date);
+    if (filters.targetType) params.set("targetType", filters.targetType);
+    if (filters.userId) params.set("userId", filters.userId);
+    if (filters.search) params.set("search", filters.search);
+    const qs = params.toString();
+    return fetchAPI(`/AuditLog/Get-All/${pageNumber}${qs ? `?${qs}` : ""}`);
+  },
+
+  getTargetTypes: async () => {
+    return fetchAPI("/AuditLog/Target-Types");
   },
 };
 

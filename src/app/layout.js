@@ -3,7 +3,9 @@ import "./globals.css";
 import VideoBackground from "../components/VideoBackground";
 import { AuthProvider } from "../contexts/AuthContext";
 import SEO from "../components/SEO";
+import SiteChrome from "../components/SiteChrome";
 import localFont from 'next/font/local';
+import { IBM_Plex_Sans_Arabic } from 'next/font/google';
 
 const PRIMARY_COLOR = "#003366";
 const SITE_URL = "https://bishahcc.org";
@@ -26,6 +28,14 @@ const tajawal = localFont({
     },
   ],
   variable: '--font-tajawal',
+  display: 'swap',
+});
+
+// IBM Plex Sans Arabic — used for the site header, matching the stitch mockup
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['arabic'],
+  variable: '--font-ibm-plex-arabic',
   display: 'swap',
 });
 
@@ -71,7 +81,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ar" dir="rtl" className={`${tajawal.variable} font-sans`}>
+    <html lang="ar" dir="rtl" className={`${tajawal.variable} ${ibmPlexArabic.variable} font-sans`}>
       <head>
         {/* Viewport is now handled by the viewport export */}
 
@@ -107,7 +117,9 @@ export default function RootLayout({ children }) {
         <VideoBackground />
 
         <div style={{ position: "relative", zIndex: 1 }}>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <SiteChrome>{children}</SiteChrome>
+          </AuthProvider>
         </div>
       </body>
     </html>

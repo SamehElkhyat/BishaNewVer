@@ -24,24 +24,33 @@ export async function POST(req: Request) {
   const upstream = await fetch(url, {
     method: 'POST',
     headers: {
+      ...(req.headers.get('cookie') ? { cookie: req.headers.get('cookie') as string } : {}),
       ...(req.headers.get('authorization') ? { authorization: req.headers.get('authorization') as string } : {}),
     },
     body: formData,
     cache: 'no-store',
   });
 
+  const forwardSetCookie = (res: NextResponse) => {
+    const cookies = upstream.headers.getSetCookie?.() ?? [];
+    cookies.forEach((c) => res.headers.append('set-cookie', c));
+    return res;
+  };
+
   const contentType = upstream.headers.get('content-type') || '';
 
   if (contentType.includes('application/json')) {
     const data = await upstream.json().catch(() => ({}));
-    return NextResponse.json(data, { status: upstream.status });
+    return forwardSetCookie(NextResponse.json(data, { status: upstream.status }));
   }
 
   const text = await upstream.text();
-  return new NextResponse(text, {
-    status: upstream.status,
-    headers: {
-      'content-type': contentType || 'text/plain; charset=utf-8',
-    },
-  });
+  return forwardSetCookie(
+    new NextResponse(text, {
+      status: upstream.status,
+      headers: {
+        'content-type': contentType || 'text/plain; charset=utf-8',
+      },
+    })
+  );
 }

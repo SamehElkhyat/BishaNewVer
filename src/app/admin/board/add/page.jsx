@@ -26,11 +26,6 @@ export default function AddBoardMember() {
         formData.append("Image", values.Image);
       }
 
-      // ✅ طباعة البيانات المرسلة في الـ console
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
-
       const response = await axios.post(url, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("auth_token")}`,

@@ -50,7 +50,18 @@ export const getDesc = (a: Activity) =>
     "about",
   ]);
 
+// Activities carry multiple images as `images: [{ id, imageUrl }]`; circulars
+// carry a single `imageUrl` string. Handle both shapes before falling back.
+const firstFromImagesArray = (a: Activity): string => {
+  const arr = a?.["images"];
+  if (!Array.isArray(arr) || arr.length === 0) return "";
+  const first = arr[0] as Record<string, unknown>;
+  if (typeof first === "string") return first;
+  return pick(first, ["imageUrl", "url", "image", "path"]);
+};
+
 export const getImg = (a: Activity) =>
+  firstFromImagesArray(a) ||
   pick(a, [
     "image",
     "imageUrl",
@@ -60,7 +71,8 @@ export const getImg = (a: Activity) =>
     "photo",
     "coverImage",
     "picture",
-  ]) || "/news-placeholder.jpg";
+  ]) ||
+  "/news-placeholder.jpg";
 
 export const getDate = (a: Activity) =>
   pick(a, [

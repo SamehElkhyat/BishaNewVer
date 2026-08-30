@@ -53,6 +53,10 @@
   background: linear-gradient(155deg, var(--bisha-primary-container), var(--bisha-primary));
 }
 
+.brandMarkLogo {
+  filter: brightness(0) invert(1);
+}
+
 .brandName {
   font-size: 15px;
   font-weight: 700;
@@ -95,12 +99,6 @@
   color: var(--bisha-primary);
 }
 
-.profileInfo p {
-  margin: 0;
-  font-size: 11.5px;
-  color: var(--bisha-on-surface-variant);
-}
-
 .navLabel {
   margin: 4px 8px 8px;
   font-size: 11px;
@@ -112,7 +110,6 @@
 .adminNav {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   gap: 2px;
 }
 
@@ -188,53 +185,16 @@
   flex: 1;
   min-width: 0;
   height: 100vh;
-  overflow-y: auto;
-  padding: 24px 32px 40px;
-}
-
-/* ---- Hero (was .adminHeader) ---- */
-.adminHeader {
-  position: relative;
   overflow: hidden;
-  margin-bottom: 22px;
-  padding: 30px 34px;
-  color: #fff;
-  border-radius: 20px;
-  background: linear-gradient(120deg, var(--bisha-primary) 0%, var(--bisha-primary-container) 62%, var(--admin-teal) 100%);
-  box-shadow: var(--admin-shadow-lg);
-}
-
-.adminHeader h1 {
-  margin: 0 0 8px;
-  font-size: clamp(1.4rem, 3.4vw, 1.85rem);
-  font-weight: 700;
-  color: #fff;
-}
-
-.adminHeader p {
-  margin: 0;
-  max-width: 460px;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.adminHeader::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 10px;
-  opacity: 0.85;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.28) 0 10px,
-    rgba(255, 255, 255, 0.06) 10px 20px
-  );
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ---- Stats ---- */
 .statsGrid {
   display: grid;
+  flex: 0 0 auto;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 16px;
   margin-bottom: 18px;
@@ -292,62 +252,14 @@
   opacity: 0.45;
 }
 
-/* ---- "Your permissions" panel ---- */
-.permPanel {
-  margin-bottom: 18px;
-  padding: 18px 22px;
-  background: var(--bisha-surface-lowest);
-  border: 1px solid var(--admin-outline);
-  border-radius: var(--bisha-radius);
-  box-shadow: var(--admin-shadow);
-}
-
-.permPanelHead {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.permPanelIcon {
-  font-size: 1rem;
-  color: var(--bisha-primary);
-}
-
-.permPanelTitle {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--bisha-primary);
-}
-
-.permChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.permChip {
-  padding: 5px 12px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--bisha-on-secondary-container);
-  background: var(--bisha-secondary-container);
-  border-radius: 9999px;
-}
-
-.permEmpty {
-  margin: 0;
-  font-size: 13px;
-  color: var(--bisha-on-surface-variant);
-}
-
 /* ---- Content grid (analytics) ---- */
 .contentGrid {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 18px;
   align-items: stretch;
-  margin-bottom: 18px;
+  flex: 1;
+  min-height: 0;
 }
 
 .panel {
@@ -401,9 +313,10 @@
 
 .chartLegend {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: 10px 22px;
   margin-top: 8px;
 }
 
@@ -475,70 +388,6 @@
 .donutLegendRow b {
   font-weight: 600;
   color: var(--bisha-on-surface);
-}
-
-/* ---- Quick actions ---- */
-.quickActions {
-  padding: 20px 22px;
-  background-color: var(--bisha-surface-lowest);
-  border: 1px solid var(--admin-outline);
-  border-radius: var(--bisha-radius);
-  box-shadow: var(--admin-shadow);
-}
-
-.quickActions h2 {
-  margin: 0 0 2px;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--bisha-primary);
-}
-
-.actionCards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.actionCard,
-.actionCards .navLink {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 14px;
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.35;
-  text-align: right;
-  text-decoration: none;
-  color: var(--bisha-on-surface);
-  background-color: var(--bisha-surface-low);
-  border: 1px solid transparent;
-  border-radius: 12px;
-  transition: border-color 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
-}
-
-.actionCard:hover,
-.actionCards .navLink:hover {
-  border-color: var(--admin-teal);
-  background-color: var(--admin-soft);
-  color: var(--bisha-primary);
-  transform: translateY(-2px);
-}
-
-.actionCards .navLink .navIcon,
-.actionIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  font-size: 1rem;
-  color: var(--bisha-primary);
-  background: var(--bisha-secondary-container);
-  border-radius: 9px;
-  opacity: 1;
 }
 
 /* ---- Loading ---- */
@@ -649,6 +498,16 @@
 
 /* ---- Responsive ---- */
 @media (max-width: 1200px) {
+  .adminContainer {
+    height: auto;
+    overflow: visible;
+  }
+
+  .mainContent {
+    height: auto;
+    overflow: visible;
+  }
+
   .contentGrid {
     grid-template-columns: 1fr;
   }
@@ -702,12 +561,7 @@
     padding: 16px 14px 32px;
   }
 
-  .adminHeader {
-    padding: 22px 20px;
-  }
-
-  .statsGrid,
-  .actionCards {
+  .statsGrid {
     grid-template-columns: 1fr;
     gap: 12px;
   }

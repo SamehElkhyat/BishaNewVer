@@ -90,6 +90,7 @@ const UsersPage = () => {
   }, [searchTerm, users]);
 
   const handleDelete = async (id) => {
+    if (!confirm('هل تريد حذف هذا المستخدم؟')) return;
     try {
       setError('');
       await usersAPI.delete(id);
@@ -175,7 +176,6 @@ const UsersPage = () => {
                 <th>الاسم</th>
                 <th>البريد الإلكتروني</th>
                 <th>رقم الهاتف</th>
-                <th>الحالة</th>
                 <th>الإجراءات</th>
               </tr>
             </thead>
@@ -185,11 +185,6 @@ const UsersPage = () => {
                   <td className='text-black'>{user.fullName}</td>
                   <td className='text-black'>{user.email}</td>
                   <td className='text-black'>{user.phoneNumber}</td>
-                  <td>
-                    <span className={user.isActive ? styles.activeStatus : styles.inactiveStatus}>
-                      {user.isActive ? 'نشط' : 'غير نشط'}
-                    </span>
-                  </td>
                   <td>
                     <div className={styles.actionButtons}>
                       <button

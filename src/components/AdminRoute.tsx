@@ -65,7 +65,11 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
     );
   }
 
-  // Don't render anything if user is not admin (will redirect)
+  // Don't render anything if user is not admin (will redirect).
+  // Keep this visually identical to the loading state above — this also
+  // fires for a split second right after logout (user briefly becomes
+  // null while the redirect to /login is in flight), so it must not read
+  // like an error screen.
   if (!user || !isAdmin()) {
     return (
       <div style={{
@@ -74,12 +78,23 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
         alignItems: 'center',
         height: '100vh',
         flexDirection: 'column',
-        gap: '1rem',
-        color: '#dc3545'
+        gap: '1rem'
       }}>
-        <h2>🚫 غير مصرح لك بالوصول</h2>
-        <p>هذه الصفحة مخصصة للمديرين فقط</p>
+        <div style={{
+          width: '50px',
+          height: '50px',
+          border: '4px solid #f3f3f3',
+          borderTop: '4px solid #3498db',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}></div>
         <p>جاري إعادة التوجيه...</p>
+        <style jsx>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     );
   }

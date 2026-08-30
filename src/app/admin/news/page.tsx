@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { newsAPI } from '../../../services/api';
 import axios from 'axios';
 import PaginationComponent from '../../../components/PaginationComponent';
+import { formatDate } from '../../activities/_lib';
 
 const AdminNewsPage = () => {
   const router = useRouter();
@@ -231,6 +232,7 @@ const AdminNewsPage = () => {
   };
   // Format date function
   const handleDelete = async (id: number) => {
+    if (!confirm('هل تريد حذف هذا العنصر؟')) return;
     const response = await newsAPI.delete(id);
     if (response.message === "تم حذف الخبر بنجاح") {
       alert('تم الحذف بنجاح');
@@ -290,7 +292,7 @@ const AdminNewsPage = () => {
                 <tr key={item.id}>
                   <td className="text-black">{index + 1}</td>
                   <td className="text-black">{item.title}</td>
-                  <td className="text-black">{new Date(item.createdAt).toDateString()}</td>
+                  <td className="text-black">{formatDate(item.createdAt)}</td>
                   <td className={styles.actionsCell}>
                     <button
                       className={styles.editButton}
@@ -357,7 +359,7 @@ const AdminNewsPage = () => {
                   <td className="text-black">{index + 1}</td>
                   <td className="text-black">{item.title || 'غير محدد'}</td>
                   <td className="text-black">
-                    {new Date(item.createdAt).toDateString()}
+                    {formatDate(item.createdAt)}
                   </td>
                   <td className={styles.actionsCell}>
                     <button

@@ -24,6 +24,7 @@ export default function page() {
   });
 
   const handleDeleteClick = async (id) => {
+    if (!confirm("هل تريد حذف هذا العضو؟")) return;
     try {
       const API_BASE_URL =
         process.env.NEXT_PUBLIC_API_URL || "https://backend.bishahcc.org/api";

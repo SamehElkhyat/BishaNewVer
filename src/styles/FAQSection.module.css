@@ -1,0 +1,112 @@
+.faqSection {
+  padding: clamp(3rem, 7vw, 4.5rem) 0;
+  background: var(--bisha-surface);
+}
+
+.container {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.subtitle {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.item {
+  background: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: var(--bisha-radius);
+  overflow: hidden;
+}
+
+.item[open] {
+  border-color: var(--bisha-secondary-fixed-dim);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  direction: rtl;
+  text-align: right;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bisha-on-surface);
+  cursor: pointer;
+  list-style: none;
+}
+
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.item:hover .question {
+  color: var(--bisha-primary);
+}
+
+.chevron {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+  background: var(--bisha-surface-container);
+  border-radius: 9999px;
+  transition: transform 0.25s ease;
+}
+
+.item[open] .chevron {
+  transform: rotate(45deg);
+}
+
+.answer {
+  margin: 0;
+  padding: 0 1.25rem 1.1rem;
+  direction: rtl;
+  text-align: right;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--bisha-on-surface-variant);
+}
+
+.moreLink {
+  display: block;
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+  text-decoration: none;
+}
+
+.moreLink:hover {
+  text-decoration: underline;
+}

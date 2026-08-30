@@ -1,6 +1,7 @@
 "use client";
 
 import { Tajawal } from "next/font/google";
+import Image from "next/image";
 import {
   KeyRound,
   Loader2,
@@ -9,7 +10,6 @@ import {
   Landmark,
   CheckCircle2,
   Smartphone,
-  Building2,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -203,17 +203,15 @@ export default function VotingAuthPage() {
               الاطلاع على التقارير السنوية، والمساهمة في رسم مستقبل اقتصاد المنطقة.
             </p>
           </div>
-          <div className="relative hidden h-[240px] w-full flex-1 overflow-hidden rounded-2xl border border-[#bec9c6]/50 bg-gradient-to-br from-[#0b5d56] to-[#246960] shadow-lg md:block md:h-[300px]">
-            <div
-              className="absolute inset-0 opacity-20"
-              style={{
-                backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
-                backgroundSize: "18px 18px",
-              }}
+          <div className="relative hidden h-[240px] w-full flex-1 overflow-hidden rounded-2xl border border-[#bec9c6]/50 shadow-lg md:block md:h-[300px]">
+            <Image
+              src="/voting-auth.png"
+              alt="اجتماعات مثمرة"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ objectFit: "cover" }}
+              priority
             />
-            <div className="absolute inset-0 flex items-center justify-center text-white/80">
-              <Building2 className="h-24 w-24" strokeWidth={1.2} />
-            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
             <div className="absolute bottom-4 right-4 text-white">
               <span className="block text-lg font-semibold">اجتماعات مثمرة</span>

@@ -1,0 +1,324 @@
+/* Audit log (سجل النشاطات) — styled to the Stitch "سجل الأنشطة" reference. */
+
+.container {
+  max-width: 1280px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+  direction: rtl;
+  background-color: var(--bisha-surface);
+}
+
+.headerRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.title {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--bisha-primary);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Filter bar ---- */
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid rgba(190, 201, 198, 0.3);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.searchBox {
+  position: relative;
+  flex: 1 1 260px;
+}
+
+.searchIcon,
+.dateIcon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  color: var(--bisha-outline);
+  pointer-events: none;
+}
+
+.searchInput,
+.filterSelect,
+.dateInput {
+  width: 100%;
+  padding: 0.65rem 2.5rem 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--bisha-on-surface);
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filterSelect {
+  padding: 0.65rem 0.9rem;
+  flex: 1 1 200px;
+  cursor: pointer;
+}
+
+.dateBox {
+  position: relative;
+  flex: 1 1 200px;
+}
+
+.searchInput:focus,
+.filterSelect:focus,
+.dateInput:focus {
+  border-color: var(--bisha-secondary);
+  box-shadow: 0 0 0 3px rgba(169, 236, 225, 0.5);
+}
+
+/* ---- Table card ---- */
+.tableCard {
+  overflow: hidden;
+  background-color: var(--bisha-surface-lowest);
+  border: 1px solid rgba(190, 201, 198, 0.3);
+  border-radius: var(--bisha-radius);
+  box-shadow: var(--bisha-shadow-sm);
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+}
+
+.table thead {
+  background-color: var(--bisha-surface-low);
+  border-bottom: 2px solid var(--bisha-primary);
+}
+
+.table th {
+  padding: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--bisha-primary);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: var(--bisha-on-surface);
+  border-top: 1px solid rgba(190, 201, 198, 0.3);
+}
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table tbody tr:hover {
+  background-color: var(--bisha-surface-low);
+}
+
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bisha-secondary);
+  background-color: var(--bisha-secondary-container);
+  border-radius: 9999px;
+}
+
+.userName {
+  font-weight: 500;
+}
+
+.userEmail {
+  font-size: 0.8rem;
+  color: var(--bisha-outline);
+}
+
+.actionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 9999px;
+}
+
+.actionCreate {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-high);
+}
+
+.actionEdit {
+  color: var(--bisha-secondary);
+  background-color: var(--bisha-surface-variant);
+}
+
+.actionDelete {
+  color: #93000a;
+  background-color: var(--bisha-error-container);
+}
+
+.actionDefault {
+  color: var(--bisha-on-surface-variant);
+  background-color: var(--bisha-surface-low);
+}
+
+.dateCell {
+  color: var(--bisha-on-surface-variant);
+  white-space: nowrap;
+}
+
+.noResults {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--bisha-on-surface-variant);
+}
+
+/* ---- Footer / pagination ---- */
+.footerBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(190, 201, 198, 0.3);
+}
+
+.pageInfo {
+  font-size: 0.85rem;
+  color: var(--bisha-on-surface-variant);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pagerArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  color: var(--bisha-outline);
+  background: none;
+  border: 1px solid var(--bisha-outline-variant);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.pagerArrow:hover:not(:disabled) {
+  color: var(--bisha-primary);
+  background-color: var(--bisha-surface-low);
+}
+
+.pagerArrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--bisha-on-surface-variant);
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.pagerBtn:hover {
+  background-color: var(--bisha-surface-low);
+}
+
+.pagerBtnActive {
+  color: #fff;
+  background-color: var(--bisha-primary);
+}
+
+.pagerBtnActive:hover {
+  background-color: var(--bisha-primary);
+}
+
+.pagerEllipsis {
+  color: var(--bisha-outline);
+  padding: 0 0.25rem;
+}
+
+/* ---- Loading ---- */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 50vh;
+  color: var(--bisha-on-surface-variant);
+}
+
+.spinner {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 4px solid var(--bisha-surface-variant);
+  border-top-color: var(--bisha-primary);
+  border-radius: 9999px;
+  animation: auditLogSpin 1s linear infinite;
+}
+
+@keyframes auditLogSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+}

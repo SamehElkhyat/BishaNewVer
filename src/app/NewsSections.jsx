@@ -312,11 +312,11 @@ export default function NewsSections() {
               )}
 
               {/* API Pagination for navigating between pages */}
-              <PaginationComponent
+              {/* <PaginationComponent
                 currentPage={apiPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
-              />
+              /> */}
             </>
           )}
         </div>

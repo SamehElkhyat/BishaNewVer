@@ -12,31 +12,20 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading }) => {
   if (!isLoading) return null;
 
   return (
-    <div className={styles.loadingOverlay}>
+    <div className={styles.loadingOverlay} role="status" aria-live="polite">
       <div className={styles.loadingContainer}>
-        <div className={styles.logoContainer}>
-          <Image
-            src="/bisha-chamber-logo.png"
-            alt="غرفة بيشة التجارية"
-            width={200}
-            height={200}
-            className={styles.logo}
-            loading="lazy"
-          />
-        </div>
-        
-        <div className={styles.loadingSpinner}>
-          <div className={styles.spinner}></div>
-        </div>
-        
-        <div className={styles.loadingText}>
-          <h2 className={styles.mainText}>غرفة بيشة التجارية</h2>
-          <p className={styles.subText}>جاري التحميل...</p>
-        </div>
-        
-        <div className={styles.progressBar}>
-          <div className={styles.progressFill}></div>
-        </div>
+        <Image
+          src="/bisha-chamber-logo.png"
+          alt="غرفة بيشة التجارية"
+          width={120}
+          height={120}
+          className={styles.logo}
+          priority
+        />
+
+        <span className={styles.spinner} aria-hidden="true" />
+
+        <p className={styles.subText}>جاري التحميل</p>
       </div>
     </div>
   );

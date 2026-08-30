@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: min(88vh, 620px);
+height: 100vh;
   padding: clamp(4.5rem, 12vw, 7rem) 1.5rem clamp(4rem, 10vw, 6rem);
   overflow: hidden;
   background-color: var(--bisha-surface);
@@ -28,19 +28,30 @@
   z-index: 0;
 }
 
-/* Light scrim — only enough to blend the photo into the section below and
-   keep the headline legible; the hero copy itself sits on no panel. */
+/* Dark scrim over the photo so the light hero copy stays readable, fading
+   back to the page surface at the very bottom to blend into the next block.
+   Lives on ::after (not .mainOverlay) because Main.jsx animates .mainOverlay
+   to a fixed low opacity. */
+.main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--bisha-surface) 0%,
+    rgba(15, 23, 30, 0.4) 8%,
+    rgba(15, 23, 30, 0.64) 24%,
+    rgba(15, 23, 30, 0.64) 100%
+  );
+}
+
 .mainOverlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    to top,
-    var(--bisha-surface) 0%,
-    rgba(247, 249, 255, 0.55) 30%,
-    rgba(247, 249, 255, 0.12) 65%,
-    rgba(247, 249, 255, 0) 100%
-  );
+  background: rgba(15, 23, 30, 0.12);
   transition: opacity 0.5s ease;
 }
 
@@ -55,7 +66,7 @@
   height: auto !important;
 }
 
-/* Hero copy + calls to action — transparent, straight over the photo */
+/* Hero copy + calls to action — sits straight on the darkened photo */
 .heroContent {
   position: relative;
   z-index: 2;
@@ -78,8 +89,8 @@
   font-size: clamp(2rem, 5.2vw, 3rem);
   font-weight: 800;
   line-height: 1.25;
-  color: var(--bisha-primary);
-  text-shadow: 0 1px 3px rgba(247, 249, 255, 0.85), 0 2px 22px rgba(247, 249, 255, 0.75);
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
 }
 
 .heroSubtitle {
@@ -87,9 +98,9 @@
   max-width: 42rem;
   font-size: clamp(1rem, 2.2vw, 1.2rem);
   line-height: 1.8;
-  font-weight: 600;
-  color: var(--bisha-on-surface);
-  text-shadow: 0 1px 2px rgba(247, 249, 255, 0.95), 0 1px 16px rgba(247, 249, 255, 0.9);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
 }
 
 .heroActions {
@@ -127,15 +138,17 @@
 }
 
 .heroBtnSecondary {
-  color: var(--bisha-primary);
-  background-color: var(--bisha-surface);
-  border: 1px solid var(--bisha-primary);
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .heroBtnSecondary:hover {
-  background-color: var(--bisha-surface-low);
+  background-color: rgba(255, 255, 255, 0.22);
   transform: translateY(-2px);
-  box-shadow: var(--bisha-shadow-md);
 }
 
 @media (max-width: 640px) {

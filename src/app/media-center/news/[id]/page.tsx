@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { FaCalendarAlt, FaTag, FaArrowRight, FaShare, FaFacebookF, FaWhatsapp, FaCopy, FaEye, FaHome, FaNewspaper, FaTimes, FaExpand, FaDownload, FaSearchPlus } from 'react-icons/fa';
-import styles from '../../../../styles/NewsDetail.module.css';
+import { FaCalendarAlt, FaTag, FaArrowRight, FaShare, FaFacebookF, FaWhatsapp, FaCopy, FaEye, FaHome, FaNewspaper, FaTimes, FaDownload, FaSearchPlus } from 'react-icons/fa';
+import styles from '../../../../styles/ContentDetail.module.css';
 import { newsAPI } from '../../../../services/api';
 
 // Define types for API responses
@@ -54,10 +54,10 @@ const NewsDetailPage = () => {
         setLoading(true);
         setError('');
         const data = await newsAPI.getById(id);
-        
+
         if (data) {
           setNewsItem(data);
-          
+
           // Fetch related news (we'll get all news and filter)
           try {
             const allNewsData: PaginatedResponse = await newsAPI.getAll(1);
@@ -66,7 +66,7 @@ const NewsDetailPage = () => {
               const related = allNewsData.newsPaper
                 .filter(item => item.type === data.type && item.id !== id)
                 .slice(0, 3);
-              
+
               setRelatedNews(related);
             }
           } catch (err) {
@@ -105,17 +105,17 @@ const NewsDetailPage = () => {
       } else {
         return '';
       }
-      
+
       const day = date.getDate().toString().padStart(2, '0');
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
-      
+
       const monthNames: { [key: string]: string } = {
         '01': 'يناير', '02': 'فبراير', '03': 'مارس', '04': 'أبريل',
         '05': 'مايو', '06': 'يونيو', '07': 'يوليو', '08': 'أغسطس',
         '09': 'سبتمبر', '10': 'أكتوبر', '11': 'نوفمبر', '12': 'ديسمبر'
       };
-      
+
       return `${day} ${monthNames[month]} ${year}`;
     } catch (error) {
       console.error('Error formatting date:', error);
@@ -229,7 +229,7 @@ const NewsDetailPage = () => {
       </div>
     );
   }
-  
+
   // Show error state
   if (error || !newsItem) {
     return (
@@ -237,132 +237,127 @@ const NewsDetailPage = () => {
         <h1>الخبر غير موجود</h1>
         <p>{error || 'عذراً، الخبر الذي تبحث عنه غير موجود.'}</p>
         <Link href="/media-center/news" className={styles.backButton}>
-          <FaArrowRight className={styles.backIcon} /> العودة إلى الأخبار
+          <FaArrowRight /> العودة إلى الأخبار
         </Link>
       </div>
     );
   }
 
   return (
-    <div className={styles.newsDetailContainer}>
+    <div className={styles.page}>
       {/* Breadcrumbs */}
       <div className={styles.breadcrumbs}>
         <Link href="/" className={styles.breadcrumbLink}>
-          <FaHome className={styles.breadcrumbIcon} />
+          <FaHome />
           الرئيسية
         </Link>
-        <span className={styles.breadcrumbSeparator}>/</span>
+        <span>/</span>
         <Link href="/media-center/news" className={styles.breadcrumbLink}>
-          <FaNewspaper className={styles.breadcrumbIcon} />
+          <FaNewspaper />
           الأخبار
         </Link>
-        <span className={styles.breadcrumbSeparator}>/</span>
+        <span>/</span>
         <span className={styles.breadcrumbCurrent}>تفاصيل الخبر</span>
       </div>
 
       <div className={styles.backLink}>
         <Link href="/media-center/news" className={styles.backButton}>
-          <FaArrowRight className={styles.backIcon} /> العودة إلى الأخبار
+          <FaArrowRight /> العودة إلى الأخبار
         </Link>
       </div>
 
-      <div className={styles.newsDetailContent}>
-        <div className={styles.newsHeader}>
-          <h1 className={styles.newsTitle}>{newsItem.title}</h1>
-          <div className={styles.newsMetadata}>
-            <div className={styles.metadataLeft}>
-              <span className={styles.newsDate}>
+      <article className={styles.article}>
+        <div className={styles.header}>
+          {newsItem.type && <span className={styles.badge}>{newsItem.type}</span>}
+          <h1 className={styles.title}>{newsItem.title}</h1>
+          <div className={styles.metaRow}>
+            <div className={styles.metaLeft}>
+              <span className={styles.metaItem}>
                 <FaCalendarAlt className={styles.metaIcon} />
                 {formatDate(newsItem.date)}
               </span>
-              <span className={styles.newsCategory}>
+              <span className={styles.metaItem}>
                 <FaTag className={styles.metaIcon} />
                 {newsItem.type}
               </span>
-              <span className={styles.viewCount}>
+              <span className={styles.metaItem}>
                 <FaEye className={styles.metaIcon} />
                 {viewCount} مشاهدة
               </span>
             </div>
-            <div className={styles.metadataRight}>
-              <div className={styles.shareContainer}>
-                <button 
-                  className={styles.shareButton}
-                  onClick={() => setShowShareMenu(!showShareMenu)}
-                >
-                  <FaShare className={styles.shareIcon} />
-                  مشاركة
-                </button>
-                {showShareMenu && (
-                  <div className={styles.shareMenu}>
-                    <button onClick={shareOnFacebook} className={styles.shareOption}>
-                      <FaFacebookF className={styles.shareOptionIcon} />
-                      فيسبوك
-                    </button>
-                    <button onClick={shareOnTwitter} className={styles.shareOption}>
-                      <XLogo />
-                      تويتر
-                    </button>
-                    <button onClick={shareOnWhatsApp} className={styles.shareOption}>
-                      <FaWhatsapp className={styles.shareOptionIcon} />
-                      واتساب
-                    </button>
-                    <button onClick={copyToClipboard} className={styles.shareOption}>
-                      <FaCopy className={styles.shareOptionIcon} />
-                      نسخ الرابط
-                    </button>
-                  </div>
-                )}
-              </div>
+            <div className={styles.shareContainer}>
+              <button
+                className={styles.shareButton}
+                onClick={() => setShowShareMenu(!showShareMenu)}
+              >
+                <FaShare />
+                مشاركة
+              </button>
+              {showShareMenu && (
+                <div className={styles.shareMenu}>
+                  <button onClick={shareOnFacebook} className={styles.shareOption}>
+                    <FaFacebookF />
+                    فيسبوك
+                  </button>
+                  <button onClick={shareOnTwitter} className={styles.shareOption}>
+                    <XLogo />
+                    تويتر
+                  </button>
+                  <button onClick={shareOnWhatsApp} className={styles.shareOption}>
+                    <FaWhatsapp />
+                    واتساب
+                  </button>
+                  <button onClick={copyToClipboard} className={styles.shareOption}>
+                    <FaCopy />
+                    نسخ الرابط
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        <div className={styles.newsImageContainer} onClick={openImageModal}>
+        <div className={styles.imageWrap} onClick={openImageModal}>
           <img
             src={newsItem.imageUrl || "/news-placeholder.jpg"}
             alt={newsItem.title}
-            className={styles.newsImage}
-            style={{ width: '100%', height: 'auto' }}
+            className={styles.image}
           />
           <div className={styles.imageOverlay}>
-            <div className={styles.imageOverlayContent}>
-              <FaSearchPlus className={styles.overlayIcon} />
-              <span className={styles.overlayText}>اضغط لعرض الصورة بالحجم الكامل</span>
-            </div>
+            <FaSearchPlus />
+            <span>اضغط لعرض الصورة بالحجم الكامل</span>
           </div>
         </div>
 
-        <div className={styles.newsBody}>
-          <p className={styles.newsContent}>{newsItem.description}</p>
+        <div className={styles.body}>
+          <p className={styles.content}>{newsItem.description}</p>
         </div>
+      </article>
 
-        {relatedNews.length > 0 && (
-          <div className={styles.relatedNews}>
-            <h2 className={styles.relatedTitle}>أخبار ذات صلة</h2>
-            <div className={styles.relatedGrid}>
-              {relatedNews.map((news) => (
-                <div key={news.id} className={styles.relatedCard}>
-                  <div className={styles.relatedImageContainer}>
-                    <img
-                      src={news.imageUrl || "/news-placeholder.jpg"}
-                      alt={news.title}
-                      className={styles.relatedImage}
-                      style={{ width: '100%', height: 'auto' }}
-                    />
-                  </div>
-                  <div className={styles.relatedContent}>
-                    <h3 className={styles.relatedNewsTitle}>{news.title}</h3>
-                    <Link href={`/media-center/news/${news.id}`} className={styles.relatedLink}>
-                      اقرأ المزيد
-                    </Link>
-                  </div>
+      {relatedNews.length > 0 && (
+        <div className={styles.related}>
+          <h2 className={styles.relatedTitle}>أخبار ذات صلة</h2>
+          <div className={styles.relatedGrid}>
+            {relatedNews.map((news) => (
+              <div key={news.id} className={styles.relatedCard}>
+                <div className={styles.relatedImageWrap}>
+                  <img
+                    src={news.imageUrl || "/news-placeholder.jpg"}
+                    alt={news.title}
+                    className={styles.relatedImage}
+                  />
                 </div>
-              ))}
-            </div>
+                <div className={styles.relatedContent}>
+                  <h3 className={styles.relatedCardTitle}>{news.title}</h3>
+                  <Link href={`/media-center/news/${news.id}`} className={styles.relatedLink}>
+                    اقرأ المزيد
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Image Detail Modal */}
       {isImageModalOpen && (
@@ -396,13 +391,12 @@ const NewsDetailPage = () => {
 
             {/* Modal Image */}
             <div className={styles.imageModalBody}>
-              <div 
+              <div
                 className={styles.imageWrapper}
                 style={{ transform: `scale(${imageZoom})` }}
               >
                 <Image
-                            loading="lazy"
-
+                  loading="lazy"
                   src={newsItem.imageUrl || "/news-placeholder.jpg"}
                   alt={newsItem.title}
                   width={1200}
@@ -414,17 +408,15 @@ const NewsDetailPage = () => {
 
             {/* Modal Footer */}
             <div className={styles.imageModalFooter}>
-              <div className={styles.imageInfo}>
-                <div className={styles.imageDetails}>
-                  <span><strong>العنوان:</strong> {newsItem.title}</span>
-                  <span><strong>التاريخ:</strong> {formatDate(newsItem.date)}</span>
-                  <span><strong>الفئة:</strong> {newsItem.type}</span>
-                </div>
-                <div className={styles.imageInstructions}>
-                  <small>
-                    استخدم الأزرار للتحكم أو اضغط: + للتكبير، - للتصغير، 0 للإعادة، Esc للإغلاق
-                  </small>
-                </div>
+              <div className={styles.imageDetails}>
+                <span><strong>العنوان:</strong> {newsItem.title}</span>
+                <span><strong>التاريخ:</strong> {formatDate(newsItem.date)}</span>
+                <span><strong>الفئة:</strong> {newsItem.type}</span>
+              </div>
+              <div className={styles.imageInstructions}>
+                <small>
+                  استخدم الأزرار للتحكم أو اضغط: + للتكبير، - للتصغير، 0 للإعادة، Esc للإغلاق
+                </small>
               </div>
             </div>
           </div>

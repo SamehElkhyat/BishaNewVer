@@ -31,6 +31,102 @@ interface Permission {
   name: string;
 }
 
+// Pull an array of permission entries out of whatever wrapper the API used.
+// Tolerant of a plain array, an array nested under a wrapper key, or a
+// flags-object (e.g. { "حذف الأخبار": true, ... }) — some endpoints
+// (like Get-User-Permissions) may return that shape instead of a list.
+function extractPermissionArray(data: any): any[] {
+  if (Array.isArray(data)) return data;
+  if (!data || typeof data !== 'object') return [];
+
+  const arrayCandidates = [
+    data.permissions,
+    data.Permissions,
+    data.data,
+    data.result,
+    data.items,
+    data.Permission,
+    data.roles,
+  ];
+  for (const c of arrayCandidates) {
+    if (Array.isArray(c)) return c;
+  }
+
+  const flagsObject = arrayCandidates.find((c) => c && typeof c === 'object') || data;
+  if (flagsObject && typeof flagsObject === 'object') {
+    return Object.entries(flagsObject)
+      .filter(([, v]) => v === true || v === 1 || v === '1' || v === 'true')
+      .map(([k]) => k);
+  }
+
+  return [];
+}
+
+// The backend identifies permissions with plain English PascalCase codes
+// (e.g. "ManageNewsPaper") — that's what Get-User-Permissions' flags-object
+// keys are, and what Change-Roles' PermissionName array must contain.
+// Authoritative Arabic-label → English-code mapping (confirmed against the
+// backend directly), used so saving always sends the code the API expects
+// even if the catalogue response doesn't expose it under a known field.
+const PERMISSION_CODE_BY_ARABIC_NAME: Record<string, string> = {
+  'إدارة الأخبار والإعلانات': 'ManageNewsPaper',
+  'إدارة الفعاليات': 'ManageActivity',
+  'إدارة التعاميم': 'ManageCircular',
+  'الاطلاع على الشكاوي': 'ViewComplaints',
+  'تعديل بيانات تواصل معنا': 'ManageContactUs',
+  'تعديل المجلس الإداري': 'ManageBOD',
+  'إدارة الجمعية العمومية': 'ManageGeneralAssembly',
+  'نتائج التصويت': 'ViewVotingResults',
+  'إدارة العملاء': 'ManageUsers',
+  'تعديل المسؤول العام': 'ManageSecretaryGeneral',
+  'سجل النشاطات': 'ViewAuditLog',
+};
+
+// Scan every string value on the object for something that already looks
+// like one of these English codes, regardless of which field name holds it.
+function pickEnglishCode(obj: Record<string, any>): string {
+  for (const v of Object.values(obj)) {
+    if (typeof v === 'string') {
+      const s = v.trim();
+      if (/^[A-Za-z][A-Za-z0-9]*$/.test(s) && /[A-Z]/.test(s)) return s;
+    }
+  }
+  return '';
+}
+
+// Map one raw permission entry (string or object) into { key, name }.
+// `name` prefers whichever field actually holds the Arabic label; `key` is
+// always the English code Change-Roles expects.
+function mapPermissionItem(p: any): Permission | null {
+  if (typeof p === 'string') {
+    const v = p.trim();
+    return v ? { key: v, name: v } : null;
+  }
+  if (p && typeof p === 'object') {
+    const name = preferArabicValue([
+      p.name,
+      p.permissionName,
+      p.Name,
+      p.PermissionName,
+      p.nameAr,
+      p.nameArabic,
+      p.arabicName,
+      p.displayNameAr,
+      p.permissionNameAr,
+      p.arName,
+      p.titleAr,
+      p.title,
+      p.displayName,
+    ]);
+    const key =
+      pickEnglishCode(p) ||
+      PERMISSION_CODE_BY_ARABIC_NAME[name] ||
+      String(p.key ?? p.permission ?? p.Permission ?? p.id ?? p.Id ?? name).trim();
+    return key ? { key, name: name || key } : null;
+  }
+  return null;
+}
+
 // Pagination response interface
 interface PaginatedResponse {
   newsPaper: User[];
@@ -68,6 +164,7 @@ const AdminClientsPage = () => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [selectedUserName, setSelectedUserName] = useState('');
   const [selectedPermissions, setSelectedPermissions] = useState<Set<string>>(new Set());
+  const [userPermissionsLoading, setUserPermissionsLoading] = useState(false);
 
   // Catalogue of assignable permissions (Arabic names only), loaded once
   const [allPermissions, setAllPermissions] = useState<Permission[]>([]);
@@ -90,40 +187,8 @@ const AdminClientsPage = () => {
       }
 
       const data = await response.json();
-      const raw: any[] = Array.isArray(data)
-        ? data
-        : data?.permissions || data?.data || data?.result || data?.items || [];
-
-      const all: Permission[] = raw
-        .map((p): Permission | null => {
-          if (typeof p === 'string') {
-            const v = p.trim();
-            return v ? { key: v, name: v } : null;
-          }
-          if (p && typeof p === 'object') {
-            // Prefer whichever field actually holds the Arabic label — the
-            // backend may return an English code and an Arabic name under
-            // different keys, and we always want the Arabic one displayed.
-            const name = preferArabicValue([
-              p.name,
-              p.permissionName,
-              p.Name,
-              p.PermissionName,
-              p.nameAr,
-              p.nameArabic,
-              p.arabicName,
-              p.displayNameAr,
-              p.permissionNameAr,
-              p.arName,
-              p.titleAr,
-              p.title,
-              p.displayName,
-            ]);
-            const key = String(p.key ?? p.permission ?? p.Permission ?? p.id ?? p.Id ?? name).trim();
-            return key ? { key, name: name || key } : null;
-          }
-          return null;
-        })
+      const all = extractPermissionArray(data)
+        .map(mapPermissionItem)
         .filter((p): p is Permission => !!p);
 
       setAllPermissions(all);
@@ -139,13 +204,24 @@ const AdminClientsPage = () => {
     fetchPermissions();
   }, []);
 
-  const togglePermission = (name: string) => {
+  // Selection is tracked by the permission's English code (the identifier
+  // the backend's Change-Roles endpoint actually expects), not its Arabic
+  // display name.
+  const togglePermission = (key: string) => {
     setSelectedPermissions((prev) => {
       const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
+  };
+
+  const selectAllPermissions = () => {
+    setSelectedPermissions(new Set(allPermissions.map((p) => p.key)));
+  };
+
+  const clearAllPermissions = () => {
+    setSelectedPermissions(new Set());
   };
 
   // Function to fetch users from API
@@ -271,12 +347,52 @@ const AdminClientsPage = () => {
     }
   };
 
-  // Handle permission button click
-  const handlePermissionClick = (userId: number, userName: string) => {
+  // Handle permission button click — opens the modal and loads this user's
+  // current permissions so their existing checkmarks show up pre-checked.
+  const handlePermissionClick = async (userId: number, userName: string) => {
     setSelectedUserId(userId);
     setSelectedUserName(userName);
     setSelectedPermissions(new Set());
     setIsPermissionModalOpen(true);
+    setUserPermissionsLoading(true);
+
+    try {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend.bishahcc.org/api';
+      const response = await fetch(`${API_BASE_URL}/Register/Get-User-Permissions/${userId}`, {
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const current = extractPermissionArray(data)
+        .map(mapPermissionItem)
+        .filter((p): p is Permission => !!p);
+
+      // Match against the loaded catalogue by either key or name (case
+      // -insensitive) — this endpoint may return English codes while the
+      // catalogue displays Arabic names, or vice versa.
+      const currentIdentifiers = new Set(
+        current.flatMap((c) => [c.key, c.name]).map((s) => s.trim().toLowerCase())
+      );
+      const matched = allPermissions.filter(
+        (p) =>
+          currentIdentifiers.has(p.key.trim().toLowerCase()) ||
+          currentIdentifiers.has(p.name.trim().toLowerCase())
+      );
+
+      // Fall back to whatever the endpoint returned directly if nothing in
+      // the catalogue matched (e.g. the catalogue hasn't loaded yet).
+      const keys = matched.length > 0 ? matched.map((p) => p.key) : current.map((p) => p.key);
+      setSelectedPermissions(new Set(keys));
+    } catch (error) {
+      console.error('Failed to fetch user permissions:', error);
+      toast.error('تعذّر تحميل صلاحيات المستخدم الحالية');
+    } finally {
+      setUserPermissionsLoading(false);
+    }
   };
 
   // Handle edit button click
@@ -419,7 +535,8 @@ const AdminClientsPage = () => {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      // Selected permission names (Arabic), straight from the checklist
+      // Selected permissions, by their English code (e.g. "ManageNewsPaper")
+      // — that's what Change-Roles expects, not the Arabic display name.
       const permissionNames: string[] = Array.from(selectedPermissions);
 
       // Prepare request body
@@ -575,10 +692,28 @@ const AdminClientsPage = () => {
             </div>
 
             <div className={styles.modalBody}>
+              {!permissionsLoading && !permissionsError && allPermissions.length > 0 && (
+                <div className={styles.catalogueActions}>
+                  <button
+                    type="button"
+                    className={styles.cancelButton}
+                    onClick={selectAllPermissions}
+                  >
+                    تحديد الكل
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.cancelButton}
+                    onClick={clearAllPermissions}
+                  >
+                    إلغاء تحديد الكل
+                  </button>
+                </div>
+              )}
               <div className={styles.permissionsGrid}>
                 <div className={styles.permissionSection}>
                   <h3>الصلاحيات</h3>
-                  {permissionsLoading ? (
+                  {permissionsLoading || userPermissionsLoading ? (
                     <p>جاري تحميل الصلاحيات...</p>
                   ) : permissionsError ? (
                     <p className={styles.errorMessage}>{permissionsError}</p>
@@ -590,11 +725,11 @@ const AdminClientsPage = () => {
                         <label>
                           <input
                             type="checkbox"
-                            checked={selectedPermissions.has(p.name)}
-                            onChange={() => togglePermission(p.name)}
+                            checked={selectedPermissions.has(p.key)}
+                            onChange={() => togglePermission(p.key)}
                           />
                           <span className={styles.checkboxCustom}>
-                            {selectedPermissions.has(p.name) && <FaCheck />}
+                            {selectedPermissions.has(p.key) && <FaCheck />}
                           </span>
                           {p.name}
                         </label>

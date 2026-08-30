@@ -13,7 +13,8 @@ function ResetPasswordInner() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
 
-  const [email, setEmail] = useState(searchParams.get("email") || "");
+  const emailFromLink = searchParams.get("email") || "";
+  const [email, setEmail] = useState(emailFromLink);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -118,6 +119,7 @@ function ResetPasswordInner() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@bishachamber.com"
+                    disabled={!!emailFromLink}
                   />
                 </div>
               </div>

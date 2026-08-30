@@ -61,8 +61,10 @@ export default function AdminVotingDashboardPage() {
     setStatsLoading(true);
     setStatsError('');
     try {
-      const res = await fetch('/api/GeneralAssembly/GetFiles', {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend.bishahcc.org/api';
+      const res = await fetch(`${API_BASE_URL}/GeneralAssembly/GetFiles`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           ...(localStorage.getItem('auth_token')
             ? { Authorization: `Bearer ${localStorage.getItem('auth_token')}` }

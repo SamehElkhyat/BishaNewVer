@@ -111,8 +111,10 @@ export default function AdminGeneralAssemblyPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`/api/GeneralAssembly/Get?Page=${encodeURIComponent(String(nextPage))}`, {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend.bishahcc.org/api';
+      const res = await fetch(`${API_BASE_URL}/GeneralAssembly/Get?Page=${encodeURIComponent(String(nextPage))}`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           ...(localStorage.getItem('auth_token')
             ? { Authorization: `Bearer ${localStorage.getItem('auth_token')}` }
@@ -202,8 +204,10 @@ export default function AdminGeneralAssemblyPage() {
       const formData = new FormData();
       formData.append('File', selectedFile);
 
-      const res = await fetch('/api/GeneralAssembly/UploadFile', {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend.bishahcc.org/api';
+      const res = await fetch(`${API_BASE_URL}/GeneralAssembly/UploadFile`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           ...(localStorage.getItem('auth_token')
             ? { Authorization: `Bearer ${localStorage.getItem('auth_token')}` }

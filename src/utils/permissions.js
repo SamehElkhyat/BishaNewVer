@@ -4,19 +4,35 @@
  */
 
 // Pull an array of permissions out of whatever wrapper the API used.
+// Tolerant of a plain array, an array nested under a wrapper key, or a
+// flags-object (e.g. { "ManageNewsPaper": true, ... }) — some endpoints
+// (like My-Permissions / Get-User-Permissions) return that shape instead
+// of a list.
 function extractArray(res) {
   if (Array.isArray(res)) return res;
   if (!res || typeof res !== "object") return [];
-  return (
-    res.permissions ||
-    res.Permissions ||
-    res.data ||
-    res.result ||
-    res.items ||
-    res.Permission ||
-    res.roles ||
-    []
-  );
+
+  const arrayCandidates = [
+    res.permissions,
+    res.Permissions,
+    res.data,
+    res.result,
+    res.items,
+    res.Permission,
+    res.roles,
+  ];
+  for (const c of arrayCandidates) {
+    if (Array.isArray(c)) return c;
+  }
+
+  const flagsObject = arrayCandidates.find((c) => c && typeof c === "object") || res;
+  if (flagsObject && typeof flagsObject === "object") {
+    return Object.entries(flagsObject)
+      .filter(([, v]) => v === true || v === 1 || v === "1" || v === "true")
+      .map(([k]) => k);
+  }
+
+  return [];
 }
 
 const ARABIC_RE = /[؀-ۿ]/;

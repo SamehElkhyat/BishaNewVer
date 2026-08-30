@@ -5,13 +5,14 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   FaArrowRight,
-  FaRegCalendarAlt,
+  FaHome,
+  FaCalendarAlt as FaRegCalendarAlt,
   FaRegClock,
   FaMapMarkerAlt,
   FaTag,
 } from "react-icons/fa";
 import { activityAPI } from "../../../services/api";
-import styles from "../../../styles/Activities.module.css";
+import styles from "../../../styles/ContentDetail.module.css";
 import {
   type Activity,
   getTitle,
@@ -78,29 +79,21 @@ const ActivityDetailPage = () => {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.detailWrap}>
-          <div className={styles.stateBox}>
-            <span className={styles.spinner} aria-hidden />
-            <p>جارِ تحميل الفعالية…</p>
-          </div>
-        </div>
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner} />
+        <p>جارِ تحميل الفعالية…</p>
       </div>
     );
   }
 
   if (error || !item) {
     return (
-      <div className={styles.container}>
-        <div className={styles.detailWrap}>
-          <div className={styles.stateBox}>
-            <h3>الفعالية غير موجودة</h3>
-            <p>{error || "عذراً، الفعالية التي تبحث عنها غير متاحة."}</p>
-            <Link href="/activities" className={styles.backButton}>
-              <FaArrowRight aria-hidden /> العودة إلى الفعاليات
-            </Link>
-          </div>
-        </div>
+      <div className={styles.notFound}>
+        <h1>الفعالية غير موجودة</h1>
+        <p>{error || "عذراً، الفعالية التي تبحث عنها غير متاحة."}</p>
+        <Link href="/activities" className={styles.backButton}>
+          <FaArrowRight /> العودة إلى الفعاليات
+        </Link>
       </div>
     );
   }
@@ -114,60 +107,79 @@ const ActivityDetailPage = () => {
   const type = getType(item);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.detailWrap}>
-        <Link href="/activities" className={styles.backButton}>
-          <FaArrowRight aria-hidden /> العودة إلى الفعاليات
+    <div className={styles.page}>
+      {/* Breadcrumbs */}
+      <div className={styles.breadcrumbs}>
+        <Link href="/" className={styles.breadcrumbLink}>
+          <FaHome />
+          الرئيسية
         </Link>
+        <span>/</span>
+        <Link href="/activities" className={styles.breadcrumbLink}>
+          <FaRegCalendarAlt />
+          الفعاليات
+        </Link>
+        <span>/</span>
+        <span className={styles.breadcrumbCurrent}>تفاصيل الفعالية</span>
+      </div>
 
-        <article className={styles.detailCard}>
-          <div className={styles.detailMedia}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={getImg(item)} alt={title} />
-            {type && <span className={styles.typeBadge}>{type}</span>}
-          </div>
+      <div className={styles.backLink}>
+        <Link href="/activities" className={styles.backButton}>
+          <FaArrowRight /> العودة إلى الفعاليات
+        </Link>
+      </div>
 
-          <div className={styles.detailBody}>
-            <h1 className={styles.detailTitle}>{title}</h1>
+      <article className={styles.article}>
+        <div className={styles.imageWrap} style={{ margin: 0, borderRadius: 0, border: "none", borderBottom: "1px solid var(--bisha-outline-variant)" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={getImg(item)} alt={title} className={styles.image} />
+          {type && <span className={styles.typeBadge}>{type}</span>}
+        </div>
 
-            <div className={styles.detailMeta}>
+        <div className={styles.header} style={{ paddingTop: "1.5rem" }}>
+          <h1 className={styles.title}>{title}</h1>
+
+          <div className={styles.metaRow}>
+            <div className={styles.metaLeft}>
               {date && (
-                <span>
-                  <FaRegCalendarAlt aria-hidden />
+                <span className={styles.metaItem}>
+                  <FaRegCalendarAlt className={styles.metaIcon} />
                   {formatDate(date)}
                   {endDate ? ` — ${formatDate(endDate)}` : ""}
                 </span>
               )}
               {time && (
-                <span>
-                  <FaRegClock aria-hidden />
+                <span className={styles.metaItem}>
+                  <FaRegClock className={styles.metaIcon} />
                   {time}
                 </span>
               )}
               {location && (
-                <span>
-                  <FaMapMarkerAlt aria-hidden />
+                <span className={styles.metaItem}>
+                  <FaMapMarkerAlt className={styles.metaIcon} />
                   {location}
                 </span>
               )}
               {type && (
-                <span>
-                  <FaTag aria-hidden />
+                <span className={styles.metaItem}>
+                  <FaTag className={styles.metaIcon} />
                   {type}
                 </span>
               )}
             </div>
-
-            {desc && (
-              <div className={styles.detailText}>
-                {desc.split(/\n+/).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-            )}
           </div>
-        </article>
-      </div>
+        </div>
+
+        {desc && (
+          <div className={styles.body}>
+            <div className={styles.content}>
+              {desc.split(/\n+/).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+          </div>
+        )}
+      </article>
     </div>
   );
 };

@@ -14,7 +14,6 @@ import {
   FaBullhorn,
   FaBars,
   FaTimes,
-  FaUserShield,
   FaUserTie,
   FaClipboardList,
   FaCheckDouble,
@@ -37,33 +36,21 @@ import {
   hasAnyPermission,
 } from "../../utils/permissions";
 
-// Aliases so gating works whether the API returns permission keys or Arabic names
+// One alias list per nav item, keyed to the exact English permission code
+// the backend returns from /Register/My-Permissions (confirmed against the
+// API directly), plus older guessed values kept as a fallback.
 const ALIAS = {
-  complaints: [
-    "GetContact",
-    "Contact",
-    "GetComplaints",
-    "تسجيل والاطلاع على الشكاوي",
-    "الاطلاع على الشكاوي",
-    "الشكاوي",
-  ],
-  news: [
-    "AddNewsPaper",
-    "AddNews",
-    "News",
-    "NewsPaper",
-    "إضافة الأخبار",
-    "تعديل الأخبار",
-    "حذف الأخبار",
-  ],
-  users: ["GetAllUsers", "GetUsers", "Users", "Clients", "عملاء"],
-  manageRoles: [
-    "ChangeRoles",
-    "Change-Roles",
-    "GetAllPermissions",
-    "Permissions",
-    "تغيير صلاحيات",
-  ],
+  news: ["ManageNewsPaper", "AddNewsPaper", "AddNews", "News", "NewsPaper", "إضافة الأخبار", "تعديل الأخبار", "حذف الأخبار", "إدارة الأخبار والإعلانات"],
+  activities: ["ManageActivity", "إدارة الفعاليات"],
+  circulars: ["ManageCircular", "إدارة التعاميم"],
+  viewComplaints: ["ViewComplaints", "GetContact", "Contact", "GetComplaints", "تسجيل والاطلاع على الشكاوي", "الاطلاع على الشكاوي", "الشكاوي"],
+  manageContactUs: ["ManageContactUs", "تعديل بيانات تواصل معنا"],
+  manageBOD: ["ManageBOD", "تعديل المجلس الإداري"],
+  manageGeneralAssembly: ["ManageGeneralAssembly", "إدارة الجمعية العمومية"],
+  viewVotingResults: ["ViewVotingResults", "نتائج التصويت"],
+  manageUsers: ["ManageUsers", "GetAllUsers", "GetUsers", "Users", "Clients", "عملاء", "إدارة العملاء"],
+  manageSecretaryGeneral: ["ManageSecretaryGeneral", "تعديل المسؤول العام"],
+  viewAuditLog: ["ViewAuditLog", "سجل النشاطات"],
 };
 
 const AdminDashboard = () => {
@@ -76,6 +63,7 @@ const AdminDashboard = () => {
     role: null,
   });
   const [myPermissions, setMyPermissions] = useState([]);
+  const [permissionsLoading, setPermissionsLoading] = useState(true);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [counts, setCounts] = useState();
   const [circularsCount, setCircularsCount] = useState(0);
@@ -128,6 +116,8 @@ const AdminDashboard = () => {
       setMyPermissions(normalizePermissions(res));
     } catch (error) {
       console.error("Failed to load permissions:", error);
+    } finally {
+      setPermissionsLoading(false);
     }
   };
 
@@ -169,10 +159,12 @@ const AdminDashboard = () => {
   const closeMobile = () => setIsMobileSidebarOpen(false);
 
   // ---- Permission gating -------------------------------------------------
-  const permSet = buildPermissionSet(
-    myPermissions,
-    Array.isArray(decodedToken?.Permission) ? decodedToken.Permission : []
-  );
+  // Sourced only from the live /Register/My-Permissions call — a cached
+  // decodedToken.Permission (left over from the old JWT-based login flow)
+  // used to be merged in here too, which could silently keep showing
+  // permissions from a stale token long after the account's real grants
+  // changed.
+  const permSet = buildPermissionSet(myPermissions);
   const knowsPerms = permSet.size > 0;
   // Permissive when we truly know nothing; otherwise honour the list.
   const can = (aliases) => !knowsPerms || hasAnyPermission(permSet, aliases);
@@ -197,32 +189,31 @@ const AdminDashboard = () => {
       label: "المحتوى",
       items: [
         { show: can(ALIAS.news), href: "/admin/news", label: "إدارة الأخبار والإعلانات", icon: <FaNewspaper /> },
-        { show: can(ALIAS.news), href: "/admin/activities", label: "إدارة الفعاليات", icon: <FaCalendarAlt /> },
-        { show: can(ALIAS.news), href: "/admin/circulars", label: "إدارة التعاميم", icon: <FaFileAlt /> },
-        { show: can(ALIAS.complaints), href: "/admin/contact", label: "الاطلاع على الشكاوي", icon: <FaClipboardList /> },
-        { show: can(ALIAS.complaints), href: "/admin/contact/edit", label: "تعديل بيانات تواصل معنا", icon: <FaUserPlus /> },
+        { show: can(ALIAS.activities), href: "/admin/activities", label: "إدارة الفعاليات", icon: <FaCalendarAlt /> },
+        { show: can(ALIAS.circulars), href: "/admin/circulars", label: "إدارة التعاميم", icon: <FaFileAlt /> },
+        { show: can(ALIAS.viewComplaints), href: "/admin/contact", label: "الاطلاع على الشكاوي", icon: <FaClipboardList /> },
+        { show: can(ALIAS.manageContactUs), href: "/admin/contact/edit", label: "تعديل بيانات تواصل معنا", icon: <FaUserPlus /> },
       ],
     },
     {
       label: "الحوكمة",
       items: [
-        { show: can(ALIAS.complaints), href: "/admin/board", label: "تعديل المجلس الإداري", icon: <FaUserTie /> },
-        { show: can(ALIAS.complaints), href: "/admin/general-assembly", label: "إدارة الجمعية العمومية", icon: <FaUsers /> },
-        { show: can(ALIAS.complaints), href: "/admin/voting-dashboard", label: "نتائج التصويت", icon: <FaCheckDouble /> },
+        { show: can(ALIAS.manageBOD), href: "/admin/board", label: "تعديل المجلس الإداري", icon: <FaUserTie /> },
+        { show: can(ALIAS.manageGeneralAssembly), href: "/admin/general-assembly", label: "إدارة الجمعية العمومية", icon: <FaUsers /> },
+        { show: can(ALIAS.viewVotingResults), href: "/admin/voting-dashboard", label: "نتائج التصويت", icon: <FaCheckDouble /> },
       ],
     },
     {
       label: "المستخدمون",
       items: [
-        { show: can(ALIAS.users), href: "/admin/clients", label: "إدارة العملاء", icon: <FaUsers /> },
-        { show: can(ALIAS.complaints), href: "/admin/generalSecrtery", label: "تعديل المسؤول العام", icon: <FaUserTie /> },
-        { show: can(ALIAS.manageRoles), href: "/admin/permissions", label: "إدارة صلاحيات المستخدمين", icon: <FaUserShield /> },
+        { show: can(ALIAS.manageUsers), href: "/admin/clients", label: "إدارة العملاء", icon: <FaUsers /> },
+        { show: can(ALIAS.manageSecretaryGeneral), href: "/admin/generalSecrtery", label: "تعديل المسؤول العام", icon: <FaUserTie /> },
       ],
     },
     {
       label: "النظام",
       items: [
-        { show: true, href: "/admin/audit-log", label: "سجل النشاطات", icon: <FaHistory /> },
+        { show: can(ALIAS.viewAuditLog), href: "/admin/audit-log", label: "سجل النشاطات", icon: <FaHistory /> },
       ],
     },
   ];
@@ -304,28 +295,33 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {navGroups.map((group) => {
-            const visibleItems = group.items.filter((l) => l.show);
-            if (visibleItems.length === 0) return null;
-            return (
-              <React.Fragment key={group.label}>
-                <div className={styles.navLabel}>{group.label}</div>
-                <nav className={styles.adminNav}>
-                  {visibleItems.map((l) => (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      className={`${styles.navLink} ${l.active ? styles.active : ""}`}
-                      onClick={closeMobile}
-                    >
-                      <span className={styles.navIcon}>{l.icon}</span>
-                      <span>{l.label}</span>
-                    </Link>
-                  ))}
-                </nav>
-              </React.Fragment>
-            );
-          })}
+          {/* Keep the sidebar blank while permissions are still loading —
+              otherwise every item briefly renders permissively, then a
+              chunk of them disappear once /Register/My-Permissions
+              resolves, which reads as a bug rather than a loading state. */}
+          {!permissionsLoading &&
+            navGroups.map((group) => {
+              const visibleItems = group.items.filter((l) => l.show);
+              if (visibleItems.length === 0) return null;
+              return (
+                <React.Fragment key={group.label}>
+                  <div className={styles.navLabel}>{group.label}</div>
+                  <nav className={styles.adminNav}>
+                    {visibleItems.map((l) => (
+                      <Link
+                        key={l.href}
+                        href={l.href}
+                        className={`${styles.navLink} ${l.active ? styles.active : ""}`}
+                        onClick={closeMobile}
+                      >
+                        <span className={styles.navIcon}>{l.icon}</span>
+                        <span>{l.label}</span>
+                      </Link>
+                    ))}
+                  </nav>
+                </React.Fragment>
+              );
+            })}
 
           <div className={styles.sidebarFooter}>
             <button className={styles.logoutButton} onClick={handleLogout}>

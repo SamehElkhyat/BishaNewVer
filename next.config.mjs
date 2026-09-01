@@ -37,6 +37,21 @@ const nextConfig = {
     });
     return config;
   },
+  // Prevent browsers from caching page HTML across deploys — a stale page
+  // (old design, old JS) served from a visitor's disk cache after a new
+  // release causes hydration/chunk mismatches. `_next/static` assets are
+  // content-hashed already, so they're excluded and keep their normal
+  // long-lived cache.
+  async headers() {
+    return [
+      {
+        source: '/:path((?!_next|favicon.ico|manifest.json).*)',
+        headers: [
+          { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

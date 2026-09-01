@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../../contexts/AuthContext';
 import styles from '../../../../styles/AdminForms.module.css';
-import { FaUsers, FaSave, FaArrowRight, FaIdCard, FaEnvelope, FaPhone, FaLock, FaCheckCircle } from 'react-icons/fa';
+import { FaUsers, FaSave, FaArrowRight, FaIdCard, FaEnvelope, FaPhone } from 'react-icons/fa';
 import Link from 'next/link';
 import { clientsAPI } from '../../../../services/api';
 
@@ -16,8 +16,6 @@ const AddClientPage = () => {
     fullName: '',
     email: '',
     phoneNumber: '',
-    passwordHash: '',
-    confirmPassword: ''
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -52,7 +50,7 @@ const AddClientPage = () => {
 
     try {
       // Validate form
-      if (!formData.fullName || !formData.email || !formData.phoneNumber || !formData.passwordHash || !formData.confirmPassword) {
+      if (!formData.fullName || !formData.email || !formData.phoneNumber) {
         setError('يرجى تعبئة جميع الحقول المطلوبة');
         setIsSubmitting(false);
         return;
@@ -65,28 +63,12 @@ const AddClientPage = () => {
         setIsSubmitting(false);
         return;
       }
-      
-      // Validate password match
-      if (formData.passwordHash !== formData.confirmPassword) {
-        setError('كلمة المرور وتأكيد كلمة المرور غير متطابقين');
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Validate password strength
-      if (formData.passwordHash.length < 6) {
-        setError('كلمة المرور يجب أن تكون على الأقل 6 أحرف');
-        setIsSubmitting(false);
-        return;
-      }
 
       // Prepare user data for API
       const userData = {
         fullName: formData.fullName,
         email: formData.email,
         phoneNumber: formData.phoneNumber,
-        passwordHash: formData.passwordHash,
-        confirmPassword: formData.confirmPassword
       };
 
       // Send to API
@@ -124,13 +106,11 @@ const AddClientPage = () => {
         fullName: '',
         email: '',
         phoneNumber: '',
-        passwordHash: '',
-        confirmPassword: ''
       });
-      
+
       // Redirect after 2 seconds
       setTimeout(() => {
-        router.push('/admin/users');
+        router.push('/admin/clients');
       }, 2000);
     } catch (error) {
       console.error('Failed to add user:', error);
@@ -152,7 +132,7 @@ const AddClientPage = () => {
   return (
     <div className={styles.adminFormContainer}>
       <div className={styles.formHeader}>
-        <Link href="/admin/users" className={styles.backButton}>
+        <Link href="/admin/clients" className={styles.backButton}>
           <FaArrowRight /> العودة
         </Link>
         <h1><FaUsers className={styles.headerIcon} /> إضافة مستخدم جديد</h1>
@@ -215,39 +195,6 @@ const AddClientPage = () => {
           </div>
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="passwordHash">كلمة المرور *</label>
-          <div className={styles.inputWithIcon}>
-            <FaLock className={styles.inputIcon} />
-            <input
-              className='text-black'
-              type="password"
-              id="passwordHash"
-              name="passwordHash"
-              value={formData.passwordHash}
-              onChange={handleChange}
-              placeholder="أدخل كلمة المرور"
-              required
-            />
-          </div>
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="confirmPassword">تأكيد كلمة المرور *</label>
-          <div className={styles.inputWithIcon}>
-            <FaCheckCircle className={styles.inputIcon} />
-            <input
-              className='text-black'
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="أعد إدخال كلمة المرور"
-              required
-            />
-          </div>
-        </div>
         <div className={styles.formActions}>
           <button 
             type="submit" 
@@ -264,7 +211,7 @@ const AddClientPage = () => {
               </>
             )}
           </button>
-          <Link href="/admin/users" className={styles.cancelButton}>
+          <Link href="/admin/clients" className={styles.cancelButton}>
             إلغاء
           </Link>
         </div>

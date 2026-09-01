@@ -21,8 +21,6 @@ interface UserUpdate {
   fullName: string;
   email: string;
   phoneNumber: string;
-  passwordHash: string;
-  confirmPassword: string;
 }
 
 // A single assignable permission, as shown in the "تخصيص الصلاحيات" modal
@@ -154,8 +152,6 @@ const AdminClientsPage = () => {
     fullName: '',
     email: '',
     phoneNumber: '',
-    passwordHash: '',
-    confirmPassword: ''
   });
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -404,8 +400,6 @@ const AdminClientsPage = () => {
       fullName: user.fullName,
       email: user.email,
       phoneNumber: user.phoneNumber,
-      passwordHash: '',
-      confirmPassword: ''
     });
     setIsEditModalOpen(true);
   };
@@ -418,8 +412,6 @@ const AdminClientsPage = () => {
       fullName: '',
       email: '',
       phoneNumber: '',
-      passwordHash: '',
-      confirmPassword: ''
     });
   };
 
@@ -450,12 +442,6 @@ const AdminClientsPage = () => {
     
     if (!editFormData.phoneNumber.trim()) {
       toast.error('الرجاء إدخال رقم الهاتف');
-      return;
-    }
-    
-    // If password is provided, check if it matches confirmation
-    if (editFormData.passwordHash && editFormData.passwordHash !== editFormData.confirmPassword) {
-      toast.error('كلمة المرور وتأكيدها غير متطابقين');
       return;
     }
     
@@ -813,30 +799,6 @@ const AdminClientsPage = () => {
                     onChange={handleInputChange}
                     className={styles.formControl}
                     required
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="passwordHash">كلمة المرور (اتركها فارغة إذا لم ترد تغييرها)</label>
-                  <input
-                    type="password"
-                    id="passwordHash"
-                    name="passwordHash"
-                    value={editFormData.passwordHash}
-                    onChange={handleInputChange}
-                    className={styles.formControl}
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="confirmPassword">تأكيد كلمة المرور</label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={editFormData.confirmPassword}
-                    onChange={handleInputChange}
-                    className={styles.formControl}
                   />
                 </div>
 
